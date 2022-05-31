@@ -1,0 +1,663 @@
+<p><img src="uoc-logo.png" alt="image" /></p>
+<p><span><strong>testDEX: Un DEX simple en la xarxa Elrond</strong></span></p>
+<p><strong>Sergio González Rubio</strong><br />
+Màster universitari de Ciberseguretat i Privadesa<br />
+Sistemes de blockchain</p>
+<p><strong>Consultor</strong>: Josep Lluís de la Rosa Esteva<br />
+<strong>Professor</strong>: Victor Garcia Font</p>
+<p><img src="licencia-cc.png" alt="image" /> Aquesta obra està subjecta a una llicència de<br />
+Reconeixement-NoComercial-SenseObraDerivada<br />
+<a href="http://creativecommons.org/licenses/by-nc-nd/3.0/es/">3.0 Espanya de Creative Commons</a></p>
+<p><strong>FITXA DEL TREBALL FINAL</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;"><strong>Títol del treball:</strong></th>
+<th style="text-align: left;"><em>testDEX: Un DEX simple en la xarxa Elrond</em></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Nom de l’autor:</strong></td>
+<td style="text-align: left;"><em>Sergio González Rubio</em></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Nom del consultor/a:</strong></td>
+<td style="text-align: left;"><em>Josep Lluís de la Rosa Esteva</em></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Nom del PRA:</strong></td>
+<td style="text-align: left;"><em>Victor Garcia Font</em></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Data de lliurament (mm/aaaa):</strong></td>
+<td style="text-align: left;"><em>juny/2022</em></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Titulació o programa:</strong></td>
+<td style="text-align: left;"><em>Màster universitari de Ciberseguretat i Privadesa</em></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Àrea del treball final:</strong></td>
+<td style="text-align: left;"><em>Sistemes de blockchain</em></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Idioma del treball:</strong></td>
+<td style="text-align: left;"><em>Català</em></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Paraules clau:</strong></td>
+<td style="text-align: left;"><em>Elrond, blockchain, EGLD, smart contract, swap</em></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;"><strong>Resum del treball:</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">L’adveniment Bitcoin i posteriorment d’Ethereum varen definir les bases de la tecnologia <em>blockchain</em>. Cal destacar que han suposat una disrupció tecnològica, econòmica i fins i tot política, despertant un interès acadèmic creixent i nous casos d’ús. En aquest context, se’ns presenten reptes per aconseguir una descentralització plena que sigui capaç de substituir els sistemes centralitzats tradicionals de transaccions electròniques i moviment de capitals. Alt consum d’energia, baixa taxa de transaccions, escalabilitat, seguretat o interoperabilitat són alguns dels reptes plantejats per les tecnologies actuals de <em>blockchain</em> que resol Elrond. Aquest treball presenta un exemple d’implementació de <em>swaps</em> entre criptovalors amb l’objectiu de comprovar que la proposta de <em>blockchain</em> pública d’Elrond ha vençut les limitacions actuals de Bitcoin i Ethereum.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Abstract:</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">The advent of Bitcoin and later of Ethereum described the foundations of blockchain technology. It should be noted that they have led to a technological, economical and even political disruption, arousing growing academic interest and new use cases. In this context, we are being challenged to achieve full decentralization that is capable of replacing traditional centralized systems of electronic transactions and movements of capital. High energy consumption, low transaction rates, scalability, security or interoperability are some challenges of current blockchain technologies that Elrond solves. This paper presents an example of the implementation of swaps between tokens in order to verify that Elrond’s public blockchain proposal has overcome the current limitations of Bitcoin and Ethereum.</td>
+</tr>
+</tbody>
+</table>
+<h1 id="introducció">Introducció</h1>
+<h2 id="sub:context">Context i justificació del treball</h2>
+<p>El <em>white paper</em> de <strong>Bitcoin</strong> fou presentat l’any 2008 per una o diverses persones ocultes rere el pseudònim de Satoshi Nakamoto <span class="citation" data-cites="nakamoto2008"></span>. Tot i que existeixen intents anteriors<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>, fou la primera solució “creïble” <span class="citation" data-cites="vuterin2014"></span> que va permetre transferir fons sense la intervenció de terceres parts (cosa que inclou a bancs centrals encarregats d’emetre la moneda). Gràcies a la implementació d’un programari client –lliure i de codi obert– s’estableix una xarxa d’igual a igual (<em>peer-to-peer</em>) on es connecten nodes –no controlats– que verifiquen i emmagatzemen en una base de dades pública la comptabilitat dels moviments entre usuaris de la xarxa. Les operacions s’agrupen en blocs, que s’enllacen i xifren per assegurar que no hi hagi modificacions malicioses posteriors. Els càlculs per realitzar el xifratge tenen cert nivell de dificultat i comporten una despesa energètica considerable, per aquest motiu s’incentiva els nodes “miners” amb una recompensa quan aconsegueixen crear un nou bloc a la cadena. Aquest és el motiu que coneguem aquesta tecnologia que implementa aquest llibre de comptes compartit i immutable com a <em>blockchain</em><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. Així mateix, com afirma V. Buterin <span class="citation" data-cites="vuterin2014"></span>, l’altra gran aportació és la manera com aplica el concepte de <em>Proof-of-Work</em> (PoW) perquè els nodes arribin a un consens per validar les transaccions solucionant certs problemes (com, per exemple, el de la doble despesa). Amb PoW es pretén evitar que nodes de la xarxa tinguin comportaments indesitjats. Com ja s’ha remarcat, a Bitcoin els càlculs de xifratge per crear un nou bloc comporten molta feina computacional, però la validació d’un bloc ja creat requereix un esforç molt inferior. Si dos nodes distribueixen simultàniament diferents versions del següent bloc, el que tingui la cadena més llarga serà el que els nodes acceptin com a vàlid i descartaran la resta <span class="citation" data-cites="nakamoto2008"></span>. Finalment, el protocol de Bitcoin també disposa d’un llenguatge de <em>scripting</em>, encara que amb limitacions importants (per exemple, no és Turing complet i no té estat <span class="citation" data-cites="vuterin2014"></span>).</p>
+<p>El 2014 V. Buterin va presentar el <em>white paper</em> d’<strong>Ethereum</strong> <span class="citation" data-cites="vuterin2014"></span> (la xarxa es va posar en producció el 30 de juliol de 2015 <span class="citation" data-cites="tual2015"></span>). Al igual que amb Bitcoin, s’utilitza el concepte PoW com a mecanisme de consens entre nodes, però s’incorpora un llenguatge anomenat “Solidity” (que sí que és Touring complet) per a la creació de “<em>smart contracts</em>” i d’aplicacions descentralitzades (o “dApps”). Els contractes intel·ligents són programes desplegats (o guardats) a la cadena de blocs que s’executen automàticament quan es compleixen certes condicions. A més, una dApp és una aplicació que funciona sense la necessitat de servidors centrals (gràcies a la tecnologia descrita). En el moment en què redacto aquestes línies, la versió d’Ethereum 2.0 “Serenity” encara no està completament desenvolupada. Aquest nou <em>fork</em> ha d’introduir millores com substituir el PoW per <em>Proof-of-Stake</em> (PoS), per reduir el consum d’energia i introduir tècniques de <em>sharding</em> per augmentar l’eficiència (la versió actual de la xarxa no arriba a suportar les 20 transaccions per segon <span class="citation" data-cites="mech2018"></span>).</p>
+<p>Amb Bitcoin i Ethereum consolidats, “The Elrond Team” va publicar el 19 de juny de 2019 el <em>white paper</em> d’una nova solució de cadena de blocs pública sota el títol “<strong>Elrond</strong>: A Highly Scalable Public Blockchain via Adaptive State Sharding and Secure Proof of Stake”. Entre els reptes que plantejaren <span class="citation" data-cites="elrond2022"></span><span class="citation" data-cites="elrond2019"></span>:</p>
+<ul>
+<li><p>Descentralització plena (sense necessitat de tercers).</p></li>
+<li><p>Seguretat robusta de les transaccions i prevenint qualsevol vector d’atac conegut.</p></li>
+<li><p>Alta escalabilitat, arribant a un nivell de rendiment similar al d’algun dels serveis similars amb arquitectura centralitzada.</p></li>
+<li><p>Eficiència a tots els serveis de xarxa amb el mínim consum energètic i esforç computacional.</p></li>
+<li><p>Millora de l’emmagatzematge i la sincronització de dades.</p></li>
+<li><p>Interoperabilitat entre cadenes de blocs des del disseny.</p></li>
+</ul>
+<p>Tot i la data de publicació del <em>white paper</em>, l’equip d’Elrond assegura que el seu <em>mainnet</em> és actiu des de l’any 2018. A més, citen com a aconseguides en la data de redacció del present treball les següents fites <span class="citation" data-cites="elrond2022"></span><span class="citation" data-cites="mincul2021"></span>:</p>
+<ul>
+<li><p>Primera arquitectura de <em>blockchain</em> en producció amb fragmentació d’estat (<em>state sharding</em>).</p></li>
+<li><p>1,5k TPS (escalable a més de 100k TPS<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>), latència de 6s i cost de $0,001 per transacció.</p></li>
+<li><p>Maiar App<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> (moneder mòbil d’Elrond), Elrond Web Wallet<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> i Maiar DeFi Wallet<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>.</p></li>
+<li><p><em>Smart Contracts</em>, <em>Staking &amp; Delegation</em>, <em>Tokens</em>.</p></li>
+<li><p>Maiar DEX<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a>.</p></li>
+<li><p>DeFi 2.0: Préstecs, sintètics.</p></li>
+<li><p>Validat mitjançant múltiples auditories per part de l’empresa Trail of Bits<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a> i d’altres.</p></li>
+</ul>
+<p>Referent al darrer punt, he cercat informació sobre quines auditories s’han fet i la informació que he trobat és escassa (pareix que per qüestions de seguretat han estat majoritàriament auditories internes <span class="citation" data-cites="mincub2019"></span>). Sí que apareix un acord de col·laboració per emprar les eines de l’empresa Runtime Verification<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a> i que s’han oferit recompenses a <em>white-hat hackers</em> <span class="citation" data-cites="bounties01"></span><span class="citation" data-cites="mincub2021"></span>.</p>
+<p>Tot i que hi ha altres projectes prometedors com Solana, Avalanche, Tron o Tezos <span class="citation" data-cites="baro2021"></span>, en la meva opinió, l’evolució d’Elrond des de l’aparició del seu <em>white paper</em> dona peu a parar el nostre interès acadèmic en aquest projecte i no en els altres. És per aquest motiu que es proposa desenvolupar un <strong>DEX</strong> molt simple que permeti fer intercanvis entre diferents criptomonedes emprant el protocol <strong><em>automated market makers</em></strong> (AMM) <span class="citation" data-cites="cryptopedia2021"></span> amb la intenció de <strong>posar a prova la xarxa d’Elrond</strong>.</p>
+<h2 id="objetius-del-treball">Objetius del treball</h2>
+<p>A nivell molt genèric, els quatre grans objectius que pretenc assolir són:</p>
+<ul>
+<li><p>L’anàlisi i estudi de la tecnologia de <em>blockchain</em> d’Elrond des d’un punt de vista acadèmic.</p></li>
+<li><p>La definició d’una proposta d’arquitectura per desenvolupar dApps en la xarxa d’Elrond.</p></li>
+<li><p>El desenvolupament d’un exemple pràctic emprant l’arquitectura anterior.</p></li>
+<li><p>La definició de proves per comprovar característiques de la xarxa d’Elrond.</p></li>
+</ul>
+<p>Vull destacar en aquest apartat que no he trobat cap altre treball acadèmic sobre la xarxa d’Elrond en llengua catalana.</p>
+<h2 id="enfocament-i-mètode-seguit">Enfocament i mètode seguit</h2>
+<p>Després de revisar ràpidament l’estat de l’art de les tecnologies <em>blockchain</em>, ha estat una aposta personal fer servir Elrond. És un projecte novedós i sé que, per aquest motiu, disposaré de menys bibliografia que amb Bitcoin o Ethereum. Aquest darrer fet espero que, més que ser una cosa negativa, em permeti fins i tot trobar nous objectius a mesura que vagi investigant. Així mateix, una bona planificació del projecte és ben necessària, on vull destacar que la fase d’investigació es realitzarà de forma paral·lela a la resta.</p>
+<p>Les <strong>fases</strong> que es desenvoluparan són les següents:</p>
+<ul>
+<li><p><strong>Plantejament del problema</strong>: Es duu a terme una entrevista amb Josep Lluís de la Rosa Esteva i es pacta desenvolupar un <strong>DEX</strong> emprant el protocol AMM amb el propòsit de provar i comprovar algunes de les característiques de la tecnologia d’Elrond. Com s’ha comentat, previ a l’entrevista, va haver-hi una feina d’investigació ràpida sobre l’estat de l’art en els sistemes <em>blockchain</em> que s’ha tocat només de passada per justificar l’elecció d’Elrond.</p></li>
+<li><p><strong>Pla de treball</strong>: Es definiran els recursos necessaris per fer el projecte, les tasques a fer i la seva temporalització.</p></li>
+<li><p><strong>Revisió de la tecnologia d’Elrond</strong>: Es descriurà a tall de resum la tecnologia i s’enumeraran els recursos que hi ha disponibles per desenvolupar en aquesta xarxa.</p></li>
+<li><p><strong>testDEX</strong>:</p>
+<ul>
+<li><p><strong>Anàlisi</strong>: Definició dels requeriments i dels models relacionats amb aquests.</p></li>
+<li><p><strong>Disseny</strong>: Realització dels models que defineixen el disseny del sistema i l’arquitectura.</p></li>
+<li><p><strong>Implementació</strong>: Escriptura del codi font.</p></li>
+<li><p><strong>Posada en producció</strong>: Desplegament en producció del projecte.</p></li>
+<li><p><strong>Proves</strong>: La fase de proves es durà a terme de forma paral·lela a la implementació i a la de posada en producció. S’han de definir uns criteris de qualitat mínims abans de posar l’aplicatiu en producció (on es continuarà realitzant proves).</p></li>
+</ul></li>
+<li><p><strong>Redacció de la memòria</strong>: Es farà de forma paral·lela mentre es duen a terme les fases anteriors.</p></li>
+<li><p><strong>Creació del vídeo de la presentació final</strong>: Necessari per defensar el treball.</p></li>
+<li><p><strong>Investigació i formació</strong>: Pel plantejament inicial del treball, es durà a terme a la vegada que es realitzen la resta de fases.</p></li>
+</ul>
+<h2 id="planificació-del-treball">Planificació del treball</h2>
+<p>Els recursos necessaris per desenvolupar el projecte són mínims: Un ordinador personal amb el seu sistema operatiu i un editor de codi (<em>Visual Studio Code</em><a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a>). Per altra banda, les tasques a realitzar han estat enumerades en el punt anterior i seran descrites en el seu apartat corresponent. Gràficament en un diagrama de Gantt queden de la següent forma:</p>
+<figure>
+<img src="gantt.png" style="width:100.0%" alt="" /><figcaption>Diagrama de Gantt del projecte (creat amb GNOME Planner 0.14.6).</figcaption>
+</figure>
+<p>La següent figura presenta la temporalització de les fases del proyecte, s’ha de considerar que un dia de feina correspon a una jornada de quatre hores:</p>
+<figure>
+<img src="gantttemp.png" style="width:85.0%" alt="" /><figcaption>Temporalització del projecte.</figcaption>
+</figure>
+<h2 id="breu-sumari-de-productes-obtinguts">Breu sumari de productes obtinguts</h2>
+<p>“No hay que entrar en detalle: la descripción detallada se hará en el resto de capítulos.”</p>
+<h2 id="breu-descripció-dels-altres-capítols-de-la-memòria">Breu descripció dels altres capítols de la memòria</h2>
+<p>“Explicación de los contenidos de cada capítulo y su relación con el trabajo en global.”</p>
+<h1 id="revisió-de-la-tecnologia-delrond">Revisió de la tecnologia d’Elrond</h1>
+<h2 id="visió-general-de-larquitectura">Visió general de l’arquitectura</h2>
+<p>Elrond és una cadena de blocs<a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a> pública i d’alt rendiment. Altres punts a destacar són <span class="citation" data-cites="elrond2022"></span><span class="citation" data-cites="elrond2022-2"></span>:</p>
+<ol>
+<li><p><strong>Entitats (usuaris i nodes)</strong>: Els usuaris despleguen transaccions a la xarxa, en forma de transferència de valor o executant un <em>smart contract</em>. Per altra banda, els nodes són dispositius en la xarxa que executen el programari d’Elrond i processen les transaccions.</p></li>
+<li><p><strong><em>Shards<a href="#fn12" class="footnote-ref" id="fnref12" role="doc-noteref"><sup>12</sup></a></em></strong>: Particions de la xarxa d’Elrond que permeten escalar-la. La feina de cada <em>shard</em> és gestionar una part de l’estat i processar paral·lelament la corresponent part de la transacció.</p></li>
+<li><p><strong><em>Adaptive State Sharding</em></strong>: S’aplica a tots els nivells (transacció, dades i xarxa) de forma adaptativa (això és, divisió i unió dinàmica de <em>shards</em> segons nombre de validadors disponibles i càrrega de la xarxa).</p></li>
+<li><p><strong><em>Validador</em></strong>: Node de la xarxa Elrond amb almenys 2500 EGLD en <em>staking</em> (o bloquejats<a href="#fn13" class="footnote-ref" id="fnref13" role="doc-noteref"><sup>13</sup></a>) que processa les transaccions i assegura la xarxa per la seva participació en el mecanisme de consens per validar els blocs (serà recompensat amb les tarifes –<em>fees</em>– de les transaccions).</p></li>
+<li><p><strong><em>Secure Proof of Stake</em></strong>: Els blocs són validats per consens entre els validadors del grup de consens, que és completat en dues passes de comunicació emprant una modificació de les signatures múltiples de Boneh-Lynn-Shacham (BLS) <span class="citation" data-cites="Boneh2004"></span>. El grup de consens és seleccionat aleatòriament i només és possible conèixer la seva composició amb una ronda d’antelaci.</p></li>
+<li><p><strong>Alta resiliència</strong>: Capacitat de recuperar-se d’atacs maliciosos pel canvi de nodes entre els <em>shards</em> (en cada “època” un terç dels nodes seran reubicats per prevenir connivències entre els mateixos).</p></li>
+<li><p><strong>Font d’aleatorietat segura</strong>: Utilitzant la signatura BLS, cosa que la fa no esbiaixada i impredictible.</p></li>
+<li><p><strong>Elrond WASM VM</strong>: Màquina virtual específica que permet executar contractes intel·ligents escrits en qualsevol llenguatge de programació que es permeti compilar amb <em>WebAssembly</em><a href="#fn14" class="footnote-ref" id="fnref14" role="doc-noteref"><sup>14</sup></a>.</p></li>
+<li><p><strong>Contractes intel·ligents</strong>: Que s’executaran emprant l’<em>Adaptative State Sharding</em>. Elrond recomana que siguin escrits en Rust, però –com s’ha dit– es poden utilitzar altres llenguatges. Una característica única, comparant per exemple amb Ethereum, és que es permet modificacions dels mateixos una vedada desplegats <span class="citation" data-cites="cwirko01"></span> (per exemple per corregir errors).</p></li>
+<li><p><strong>Execució ràpida de transaccions <em>cross-shard</em></strong>: Gestionada de forma nadiua a nivell de protocol fent servir un algorisme d’expedició (<em>dispatching</em>) i un algorisme d’encaminament.</p></li>
+<li><p><strong><em>Metachain</em></strong>: Cadena de blocs que s’executa en un <em>shard</em> especial. El seu rol principal no és processar transaccions sinó que és notificar i autenticar les capçaleres dels blocs processats.</p></li>
+<li><p><strong>Elrond Gold (EGLD)</strong>: Criptovalor (<em>token</em>) nadiu de la xarxa Elrond que serveix de mitjà de pagament per a les transaccions. Ajuda en el desplegament de dApps, en l’execució de contractes intel·ligents i també s’empra com a mecanisme de pagament pels validadors.</p></li>
+</ol>
+<h2 id="sub:entitat">Entitats</h2>
+<p>Bàsicament, en la xarxa Elrond hi ha dos tipus d’entitats: usuaris i nodes <span class="citation" data-cites="elrond2022"></span>. Un <strong>usuari</strong> és qualsevol ens que gestioni un dels comptes –o més– de la xarxa Elrond. Això és un parell de claus criptogràfiques (una pública i una privada) que li permetran enviar transaccions signades a la xarxa. Els comptes tenen associat una quantitat d’EGLD que es coneix com a balanç i a més tenen un espai d’emmagatzematge per a valors arbitraris (com per exemple informació sobre <em>tokens</em> creats pels usuaris). Els comptes s’identifiquen de forma unívoca per una adreça que coincideix amb la clau pública de l’usuari (32 bytes i fa servir la representació Bech32). Normalment, els usuaris gestionen els seus parells de claus emprant unes aplicacions informàtiques que s’anomenen carteres (o <em>wallets</em>)<a href="#fn15" class="footnote-ref" id="fnref15" role="doc-noteref"><sup>15</sup></a>. Per altra banda, els <strong>nodes</strong> són dispositius connectats a la xarxa d’Elrond que realitzen les operacions sol·licitades pels seus usuaris. Els nodes poden ser passius (<em>observers</em>) o actius (<em>validators</em> i <em>fishermen</em>). Els validadors s’encarreguen del consens, d’afegir blocs i mantenir l’estat, essent premiats per la seva contribució. Els <strong>validadors</strong> són identificats de forma única per una clau pública BLS de 96 bytes. Per garantir el correcte funcionament dels nodes, els validadors han de tenir en <em>staking</em> com a mínim 2500 EGLD. Sense bloquejar EGLD els nodes poden fer d’<strong>observadors</strong>, però no rebran cap recompensa. Aquests darrers són membres passius de la xarxa que poden actuar com a interfície de lectura i retransmissió. Poden ser complets (<em>full)</em>, mantenint tota la història de la cadena de blocs, o lleugers (<em>light</em>), mantenint només 2 èpoques de l’historial de la cadena de blocs. Finalment, trobem els <strong>pescadors</strong> (<em>fishermen</em>). La seva tasca és verificar la validesa dels blocs després d’haver estat proposats, detectant així actors maliciosos <span class="citation" data-cites="elrond2022-2"></span>. Rebran també una recompensa i aquest rol pot ser exercit per observadors o validadors que no formin part de la ronda de consens en curs.<a href="#fn16" class="footnote-ref" id="fnref16" role="doc-noteref"><sup>16</sup></a></p>
+<h2 id="cronologia">Cronologia</h2>
+<p>En la xarxa d’Elrond s’organitza el temps en <strong>rondes (<em>rounds</em>) i èpoques (<em>epochs</em>)</strong> <span class="citation" data-cites="elrond2022"></span>. A la primera ronda de la primera època se l’anomena ronda de gènesi (<em>genesis round</em>), que òbviament coincideix amb la fase d’arrencada de la xarxa.</p>
+<p>Les <strong>rondes</strong> tenen una durada fixa (que actualment és configurada en 5 segons). Per l’arquitectura en <em>shards</em> de la xarxa, en cada ronda només es podrà afegir un bloc a la cadena de blocs del <em>shard</em>. Òbviament, si no s’arriba a consens o quan el líder del grup de consens designat és fora de línia i no pot proposar un bloc, pot haver-hi rondes en què no s’afegeixi cap bloc a la <em>blockchain</em>.</p>
+<p>Una <strong>època</strong> és una seqüència de rondes consecutives en què la configuració de la xarxa no canvia. El nombre de rondes en una època es calcula perquè aquesta darrera duri 24 hores (ja que aquesta és la configuració actual de la duració d’una època). Quan hi ha un canvi d’època s’aprofita per adaptar la topologia de la xarxa segons el nombre de validadors disponibles i càrrega d’aquesta, a més de per acomplir amb altres tasques per tancar l’època anterior (com calcular les recompenses per als validadors).</p>
+<h2 id="secure-proof-of-stake"><em>Secure Proof of Stake</em></h2>
+<p>El funcionament <em>Secure Proof of Stake</em> (SPoS) d’Elrond es pot desgranar en les següents passes <span class="citation" data-cites="elrond2022"></span><span class="citation" data-cites="elrond2019"></span>:</p>
+<ol>
+<li><p>La font d’aleatorietat per seleccionar els validadors per al consens es calcula a partir del bloc anterior, que és signat pel líder de consens –també conegut com a proposador de blocs o <em>block proposer</em>– de la ronda que acaba. Això implica que aquesta font d’aleatorietat no podrà ser coneguda amb més d’una ronda d’antelació.</p></li>
+<li><p>Se selecciona el grup de consens, compost per validadors i un únic <em>block proposer</em>. Una vegada coneguda la font d’aleatorietat, el procediment de tria del grup és determinista (triga menys de 100ms<a href="#fn17" class="footnote-ref" id="fnref17" role="doc-noteref"><sup>17</sup></a> i no té requeriments de comunicació). S’ha de considerar que per triar els nodes es té en compte la quantitat d’EGLD en <em>staking</em> i una qualificació individual –revisada al final de cada època– que es basa en el comportament passat. Per exemple, es davallarà la seva puntuació si no proposa el bloc perquè és fora de línia, es detecta una activitat maliciosa, etc. Aquesta “meritocràcia” anima els propietaris dels nodes a tenir-los en bon funcionament.</p></li>
+<li><p>El líder de consens (o validació) produeix el bloc per a la nova ronda. Si, pel motiu que sigui, no s’ha creat un bloc en una finestra de temps s’utilitzarà la font d’aleatorietat de l’últim bloc per seleccionar un nou grup de consens.</p></li>
+<li><p>El líder de consens<a href="#fn18" class="footnote-ref" id="fnref18" role="doc-noteref"><sup>18</sup></a> envia el bloc que acaba de proposar als validadors.</p></li>
+<li><p>Aquests darrers components del grup validen i també signen el bloc rebut, basant-se en una modificació de <em>Practical Byzantine Fault Tolerance</em> (pBFT).</p></li>
+<li><p>Els validadors trameten les signatures al <em>block proposer</em>.</p></li>
+<li><p>El proposador agrega les signatures i distribueix el bloc.</p></li>
+<li><p>El <em>hash</em> del bloc, la signatura, les proves d’inclusió i el nombre de <em>shard</em> són tramesos a la <em>Metachain</em>.</p></li>
+</ol>
+<p>Aquestes passes es poden veure resumides en la Fig. <a href="#fig:SPoS" data-reference-type="ref" data-reference="fig:SPoS">2</a>.</p>
+<figure>
+<img src="SPoS01.png" id="fig:SPoS" alt="" /><figcaption>Estructura d’un bloc en la xarxa Elrond. (Font: Imatge dins l’apartat corresponent a SPoS a <span class="citation" data-cites="elrond2022"></span>).</figcaption>
+</figure>
+<figure>
+<img src="SPoS02.png" id="fig:SPoS" alt="" /><figcaption>Estructura d’un bloc en la xarxa Elrond. (Font: Imatge dins l’apartat corresponent a SPoS a <span class="citation" data-cites="elrond2022"></span>).</figcaption>
+</figure>
+<h2 id="adaptive-state-sharding"><em>Adaptive State Sharding</em></h2>
+<p>El <em>sharding</em> va sorgir originàriament en el camp de les bases de dades com un mètode per distribuir les dades entre múltiples màquines amb l’objectiu de suportar alt rendiment amb grans volums d’informació <span class="citation" data-cites="mongodb2021"></span>. Elrond empra aquesta tècnica d’escalat horitzontal per particionar tant la xarxa com l’estat i processament de les transaccions amb la finalitat que diferents nodes desenvolupin la seva tasca en paral·lel (amb el consegüent augment de l’eficiència). S’ha de destacar també que s’empren els tres tipus principals de <em>sharding</em> <span class="citation" data-cites="elrond2022"></span>:</p>
+<ul>
+<li><p><strong><em>Network sharding</em></strong><a href="#fn19" class="footnote-ref" id="fnref19" role="doc-noteref"><sup>19</sup></a>: Gestiona com els nodes es distribueixen i agrupen entre els diferents <em>shards</em>. S’ha de tenir en compte que les comunicacions dins del <em>shard</em> són més ràpides que fer una propagació dels missatges a tota la xarxa (<em>broadcast</em>). Però s’ha de tenir en compte que si un atacant arriba a controlar un <em>shard</em> sencer suposaria un greu problema de seguretat.</p></li>
+<li><p><strong><em>Transaction sharding</em></strong>: S’ocupa la forma en què les transaccions s’assignen als <em>shards</em> encarregats del seu processament. Les transaccions són assignades a un <em>shard</em> de forma determinista emprant les adreces de les transaccions.</p></li>
+<li><p><strong><em>State sharding</em></strong>: Cada <em>shard</em> només manté una part de l’estat. Els dos mètodes anteriors, si no es combinessin amb aquest, haurien d’emmagatzemar una còpia sencera de tot l’estat. Així, si els comptes implicats en una transacció resideixen en <em>shards</em> diferents, l’execució de la transacció implicaria l’intercanvi de missatges entre nodes per modificar els respectius estats. Per augmentar la tolerància a atacs maliciosos quan acaba una època es redistribueixen entre els diferents <em>shards</em> un subconjunt dels nodes.</p></li>
+</ul>
+<p>Com a resultat d’aquesta fusió s’aconsegueix <span class="citation" data-cites="elrond2022"></span>:</p>
+<ul>
+<li><p><strong>Escalabilitat sense afectar a la disponibilitat</strong>: En la Fig. <a href="#fig:sharding01a" data-reference-type="ref" data-reference="fig:sharding01a">3</a> podem observar la xarxa amb només un <em>shard</em>. Les figures <a href="#fig:sharding01b" data-reference-type="ref" data-reference="fig:sharding01b">4</a> i <a href="#fig:sharding01c" data-reference-type="ref" data-reference="fig:sharding01c">5</a> mostren una arquitectura amb dos i tres <em>shards</em><a href="#fn20" class="footnote-ref" id="fnref20" role="doc-noteref"><sup>20</sup></a>. Sense entrar en detall, es pot veure que augmentant o disminuint el nombre de <em>shards</em> –gràcies a la forma en què s’assignen les adreces al seu fragment– s’evita temps d’inactivitat per qüestions de configuració.</p></li>
+<li><p><strong>Expedició (<em>dispatching</em>) ràpida i traçabilitat</strong>: La Fig. <a href="#fig:sharding01c" data-reference-type="ref" data-reference="fig:sharding01c">5</a> mostra com es calcula el <em>shard</em> de destí (les adreces de color blau aniran al 0, les verds a l’1 i les grogues al 2).</p></li>
+<li><p><strong>Eficiènia i adaptabilitat</strong>: El sistema permet processar transaccions en paral·lel i adaptar-se a la càrrega de treball i/o estat de la xarxa. Però s’ha de destacar que la distribució dels <em>shards</em> hauria de ser tan equilibrada com fos possible. Si ens fixem en la Fig. <a href="#fig:sharding01c" data-reference-type="ref" data-reference="fig:sharding01c">5</a> veiem que no és equilibrada (ja que el nombre de <em>shards</em> no és una potència de 2).</p></li>
+</ul>
+<figure>
+<img src="sharding01.png" id="fig:sharding01a" alt="" /><figcaption>1 <em>shard</em></figcaption>
+</figure>
+<figure>
+<img src="sharding02.png" id="fig:sharding01b" alt="" /><figcaption>2 <em>shards</em></figcaption>
+</figure>
+<figure>
+<img src="sharding03.png" id="fig:sharding01c" alt="" /><figcaption>3 <em>shards</em></figcaption>
+</figure>
+<p>Una altra cosa a destacar, referent al fraccionament de l’estat, és que els nodes guarden una <strong>còpia de l’estat dels seus germans (redundància)</strong> per aportar <strong>tolerància a fallades</strong> (Fig. <a href="#fig:shardred" data-reference-type="ref" data-reference="fig:shardred">6</a>).</p>
+<p>Finalment, s’ha de remarcar el fet que els <strong>nodes es barregin entre <em>shards</em> al final de cada època</strong> per evitar la connivència entre nodes maliciosos. Això no es fa amb tots els nodes sinó que només es fa amb un nombre controlat de validadors que seran redistribuïts de manera no determinista i uniforme (aquesta tasca la realitza la <em>metachain</em> emprant una font d’aleatorietat procedent del bloc anterior de la metacadena). Es fa així, i no reorganitzant tots els nodes, per maximitzar la seguretat amb la mínima introducció de latències en el sistema. Els nodes triats es col·locaran als seus nous <em>shards</em> en una llista d’espera durant tota l’època actual fent la resincronització amb el nou fragment. Després el node es pot convertir en un validador elegible i unir-se al <em>shard</em> efectivament.<a href="#fn21" class="footnote-ref" id="fnref21" role="doc-noteref"><sup>21</sup></a></p>
+<figure>
+<img src="shardred.png" id="fig:shardred" style="width:40.0%" alt="" /><figcaption>Redundància als <em>shards</em> entre èpoques. (Font: Captura de <span class="citation" data-cites="elrond2019"></span>).</figcaption>
+</figure>
+<h2 id="sec:transshards">Transaccions entre <em>shards</em></h2>
+<p>Com a exemple de com s’executen les transaccions entre diferents <em>shards</em> i com es comuniquen amb la <em>metachain</em>, emprarem una <strong>arquitectura amb només dos <em>shards</em></strong>. Imaginem que un usuari des del seu <em>wallet</em> amb una adreça dins del <em>shard</em> 0 envia EGLD a l’adreça d’altre <em>wallet</em> que es troba en el <em>shard</em> 1 (Fig. <a href="#fig:shardingtrans" data-reference-type="ref" data-reference="fig:shardingtrans">7</a>). L’estructura dels blocs estarà formada per <span class="citation" data-cites="elrond2019"></span>:</p>
+<ul>
+<li><p><strong>Capçalera</strong> (<em>header</em>): Conté la informació referent al bloc (<em>nonce</em>, <em>round</em>, <em>proposer</em>, <em>validators</em>, <em>timestamps</em>, etc.).</p></li>
+<li><p><strong>Llista de miniblocs</strong>: Per a cada <em>shard</em> hi haurà un minibloc que contindrà transaccions a executar. S’ha de destacar que un minibloc és la unitat atòmica de processament, això significa que o es processen totes les transaccions del minibloc o no es processa cap (en aquest darrer cas, es posposarà l’execució al següent <em>round</em>). Dins d’un mateix bloc, poden aparèixer diversos miniblocs amb el mateix emissor i receptor (no hi ha cap limitació). Per exemple, en aquest cas simple amb només dos <em>shards</em>, un bloc en el <em>shard</em> 0 contindrà bàsicament tres tipus de miniblocs:</p>
+<ul>
+<li><p>Minibloc 0: Conté les transaccions on les adreces del remitent i del destinatari són al <em>shard</em> 0.</p></li>
+<li><p>Minibloc 1: Conté les transaccions on les adreces del remitent són al <em>shard</em> 0 i les del destinatari al <em>shard</em> 1.</p></li>
+<li><p>Minibloc 2: Conté les transaccions on les adreces del remitent són al <em>shard</em> 1 i les del destinatari al <em>shard</em> 0.</p></li>
+</ul></li>
+</ul>
+<figure>
+<img src="shardtrans.png" id="fig:shardingtrans" style="width:90.0%" alt="" /><figcaption>Exemple d’execució de transacció entre dos <em>shards</em>. (Font: Fig. 4 de <span class="citation" data-cites="elrond2019"></span>).</figcaption>
+</figure>
+<p>Observem en la <strong>Fig. <a href="#fig:shardingtrans" data-reference-type="ref" data-reference="fig:shardingtrans">7</a></strong> un exemple de transacció asíncrona amb dos <em>shards</em> implicats. Després d’arribar la transacció al <em>shard</em> 0 (<strong><em>step</em> 1</strong>), la capçalera del bloc i els miniblocs s’envien a la <em>metachain</em>. Aquesta darrera dona fe<a href="#fn22" class="footnote-ref" id="fnref22" role="doc-noteref"><sup>22</sup></a> d’aquest bloc del <em>shard</em> 0 creant un nou bloc a la metacadena que conté la següent informació sobre tots els miniblocs: identificador del <em>shard</em> remitent, identificador del <em>shard</em> receptor i <em>hash</em> del minibloc (<strong><em>step</em> 2</strong>). El <em>shard</em> 1 veu el minibloc a la <em>metachain</em> i obté el seu <em>hash</em> del metabloc (<strong><em>step</em> 3</strong>), per després demanar el minibloc al <em>shard</em> 0 i executar-lo altra vegada (<strong><em>step</em> 4</strong>). Finalment, el <em>shard</em> 1 envia el resultat a la <em>metachain</em> que valida la transacció creuada (<strong><em>step</em> 5</strong>). En aquest punt la transacció ja es pot considerar finalitzada.</p>
+<h2 id="la-màquina-virtual-delrond"><em>La màquina virtual d’Elrond</em></h2>
+<p>La màquina virtual d’Elrond executa WebAssembly (Wasm)<a href="#fn23" class="footnote-ref" id="fnref23" role="doc-noteref"><sup>23</sup></a>, un llenguatge de baix nivell amb format binari compacte anomenat <em>bytecode</em> <span class="citation" data-cites="mozilla2021"></span>. El fet que executi Wasm implica que es puguin escriure contractes intel·ligents en qualsevol llenguatge que sigui possible compilar cap a <em>bytecode</em> (C, C++, C#, Rust, Go, TypeScript, etc.). Tot i això, Elrond recomana als desenvolupadors que emprin Rust i els hi faciliten un <em>framework</em><a href="#fn24" class="footnote-ref" id="fnref24" role="doc-noteref"><sup>24</sup></a> per a aquest llenguatge, així com un <em>plugin</em> per a l’IDE de Microsoft Visual Studio Code<a href="#fn25" class="footnote-ref" id="fnref25" role="doc-noteref"><sup>25</sup></a>. Entre les característiques a destacar de la màquina virtual d’Elrond <span class="citation" data-cites="elrond2022"></span><span class="citation" data-cites="mincub2020"></span>:</p>
+<ul>
+<li><p><strong>Sense estat</strong>: Això significa que, quan un <em>smart contract</em> sigui executat, es guardarà la informació en una estructura de dades transitòria, en lloc d’escriure directament en l’estat. Quan acabi l’execució, si aquesta és exitosa, l’API aplicarà els canvis a l’emmagatzematge i/o a la cadena de blocs.</p></li>
+<li><p><strong>Execució fora de procés</strong>: La màquina virtual serà executada en un procés independent i el node en si mateix en un altre, tot i que compartiran informació a través de canonades (<em>pipes</em>) anònimes a memòria principal. A més, el <em>bytecode</em> s’executarà en un entorn aïllat i la memòria del procés de la màquina virtual serà inaccessible.</p></li>
+<li><p><strong>Motor d’execució ràpida</strong>: Com a motor d’execució s’empra una versió modificada per Elrond de Wasmer<a href="#fn26" class="footnote-ref" id="fnref26" role="doc-noteref"><sup>26</sup></a>, una implementació de Wasm<a href="#fn27" class="footnote-ref" id="fnref27" role="doc-noteref"><sup>27</sup></a> de codi obert escrita en Rust per entorns servidor. Per les característiques de Wasmer, l’execució dels contractes intel·ligents es fa a una velocitat gairebé nadiua.</p></li>
+<li><p><strong>Trucades asíncrones entre contractes</strong>: Els contractes intel·ligents poden executar trucades entre ells fent servir l’API de la màquina virtual. Com hem vist, la xarxa d’Elrond es fragmenta adaptativament, el que pot fer que es truqui a un <em>smart contract</em> que es trobi en un altre <em>shard</em>. En aquest cas l’execució serà asíncrona. Si ambdós estan en el mateix fragment, l’execució serà síncrona. Tot això es fa de forma transparent per al desenvolupador.</p></li>
+</ul>
+<p>En el cas general, els contractes intel·ligents seran compilats generant un arxiu WASM que serà desplegat en alguna de les xarxes d’Elrond.</p>
+<h2 id="execució-de-contractes-intelligents-en-larquitectura-amb-shards">Execució de contractes intel·ligents en l’arquitectura amb <em>shards</em></h2>
+<p>Un important punt a destacar és l’execució dels <em>smart contracts</em> en aquesta arquitectura fragmentada. Elrond arriba a una solució amb execució asíncrona entre els <em>shards</em> <span class="citation" data-cites="elrond2019"></span>.</p>
+<p>El procés comença quan l’usuari crea una transacció per executar un contracte intel·ligent. Si el contracte intel·ligent no és ubicat en el mateix <em>shard</em>, el cost de la transacció es lleva del compte del remitent i s’afegeix a un minibloc –segons correspongui a l’adreça del receptor– del seu <em>shard</em>. La transacció és “notaritzada” per la <em>metachain</em> i després processada pel <em>shard</em> de destí. Al fragment de destí, la transacció es tracta com una invocació del mètode del contracte intel·ligent, ja que és on es troba (l’adreça de destí és la del <em>smart contract</em>). Per a la trucada del contracte intel·ligent, es crea un compte temporal que suplanta el compte del remitent, amb el saldo del valor de la transacció i es crida el contracte intel·ligent. Després de l’execució, el contracte intel·ligent pot retornar resultats que afecten diversos comptes en diferents <em>shards</em>. Els resultats que afecten els comptes del <em>shard</em> del contracte intel·ligent s’executen a la mateixa ronda, en cas contrari es crearan transaccions <em>Smart Contract Result</em> (SCR). En aquest darrer cas, es creen miniblocs SCR per a cada <em>shard</em> de destí que posteriorment són “notaritzats” per la <em>metachain</em> (de la mateixa manera que hem vist a la secció <a href="#sec:transshards" data-reference-type="ref" data-reference="sec:transshards">2.6</a> per a les transaccions entre <em>shards</em>). Finalment, són processats pels <em>shards</em> respectius (on resideixen els comptes de destí). En el cas que un contracte intel·ligent truqui dinàmicament a un altre que es trobi en un <em>shard</em> diferent, aquesta trucada es desaria com a resultat intermedi i es tractaria de la mateixa manera que per als comptes. Aquesta solució necessitarà <strong>almenys 5 rondes per completar-se</strong>, però té els avantatges de què <strong>no es necessita bloqueig ni moure estats entre <em>shards</em></strong>.</p>
+<h2 id="muntar-un-node-validador">Muntar un node validador</h2>
+<p>Com ja s’ha deixat entreveure, la <strong>xarxa d’Elrond</strong> és composta pels seus nodes i per la interconnectivitat entre ells. Com s’ha dit en la secció <a href="#sub:entitat" data-reference-type="ref" data-reference="sub:entitat">2.2</a>, per <strong>node</strong> s’entendrà qualsevol instància del programari de codi obert desenvolupat per Elrond per a aquesta tasca <a href="#fn28" class="footnote-ref" id="fnref28" role="doc-noteref"><sup>28</sup></a>. A més a més, qualsevol persona o entitat responsable de la gestió d’un o més d’aquests nodes es coneix com “<strong>operador de nodes</strong>”. Com també s’ha vist, la xarxa és dissenyada per ser segura i per poder balancejar la seva càrrega. Així, quan un nou node s’uneix a la xarxa aporta més seguretat i eficiència. I la xarxa premiarà els nodes per la seva aportació, creant-se així una espècie de simbiosi.</p>
+<p>Elrond és una xarxa descentralitzada de <em>blockchain</em>, és a dir, nodes de procedència desconeguda s’uneixen per crear seqüencialment blocs amb una cadència determinada. Els blocs contenen operacions que es realitzaren a petició dels usuaris de la xarxa pagant unes taxes (<em>fees</em>) per l’execució d’aquestes. Entre les operacions es troben la transferència de <em>tokens</em> entre comptes o l’execució de contractes intel·ligents (totes les operacions prenen la forma de transaccions). Per tant, es defineix així un llibre de comptabilitat distribuït que no depèn de cap entitat central.</p>
+<p>Els nodes que estan autoritzats a prendre part en l’algorisme de consens s’anomenen <strong>validadors</strong>. Com que són els que veritablement produeixen i validen blocs, són els únics nodes recompensats amb EGLD per la seva contribució. Per assegurar el bon comportament dels validadors han de tenir bloquejats 2500 EGLD (<em>stake</em>). Com ja vàrem dir en la secció <a href="#sub:entitat" data-reference-type="ref" data-reference="sub:entitat">2.2</a>, els nodes sense <em>stake</em> s’anomenen <strong>observadors</strong> (no participen en el consens i no guanyen recompenses). Si el validador no funciona correctament (desconnexions de la xarxa en mig del procés de consens, accions malicioses, etc.) seran “multats” perdent EGLD (<em>stake slashing</em>) o fins i tot, en casos greus, se’ls hi llevarà l’estatus de validador (el node passarà a l’estat “<em>jailed</em>” i no es triarà per al consens si no paga una multa de 2,5 EGLD). Si això succeeix també davallarà la seva qualificació (<em>rating score</em>). Com que aquesta puntuació defineix la fiabilitat del validador, és considerada per l’algorisme de selecció de nodes per triar el grup de consens. Així, s’afavoreix l’elecció de nodes amb qualificacions altes, també se’ls hi premiarà amb més EGLD.</p>
+<p>Els requeriments mínims del sistema són:</p>
+<ul>
+<li><p>4 CPUs dedicades (Intel/AMD amb <em>flags</em> SSE4.1 i SSE4.2 activats).</p></li>
+<li><p>8 GB de RAM.</p></li>
+<li><p>Disc dur SSD amb 200 GB d’espai lliure.</p></li>
+<li><p>Connexió a Internet de 100 Mbit/s sempre activa (mínim 4 TB/mes).</p></li>
+<li><p>Sistema operatiu Linux<a href="#fn29" class="footnote-ref" id="fnref29" role="doc-noteref"><sup>29</sup></a>/MacOS.</p></li>
+</ul>
+<p>Com podem observar, són característiques d’un PC/Mac convencional en l’actualitat (i no d’ordinadors amb potents targetes gràfiques dedicades com passa amb el PoW de Bitcoin). No és l’objectiu del present treball, però guies com-es-fa<a href="#fn30" class="footnote-ref" id="fnref30" role="doc-noteref"><sup>30</sup></a> per instal·lar el programari per muntar un node validador en la xarxa Elrond es poden trobar a <span class="citation" data-cites="elrond2022"></span> o <span class="citation" data-cites="penalver2019"></span>.<a href="#fn31" class="footnote-ref" id="fnref31" role="doc-noteref"><sup>31</sup></a></p>
+<h2 id="xarxes-elrond-disponibles">Xarxes Elrond disponibles</h2>
+<p>En Elrond tenim tres xarxes disponibles:</p>
+<ul>
+<li><p><strong><em>Mainnet</em></strong>: És la xarxa en producció d’Elrond (transaccions reals amb el pertinent cost econòmic). En el moment de redactar la present secció, té més de 3000 nodes validadors distribuïts en 3 <em>shards</em> i una <em>metachain</em>.</p></li>
+<li><p><strong><em>Devnet</em></strong>: És una xarxa pública de proves mantinguda per la comunitat d’Elrond on qualsevol desenvolupador pot provar els seus contractes intel·ligents i dApps en un entorn real. Té uns 300 nodes validadors distribuïts en 3 <em>shards</em> i una <em>metachain</em>. En el present treball empraré aquesta xarxa, en detriment de <em>testnet</em>, per tenir més estabilitat.</p></li>
+<li><p><strong><em>Testnet</em></strong>: També pública i mantinguda per la comunitat d’Elrond, però s’empra per fer proves de futures millores i rendiment <span class="citation" data-cites="mincub2019-2"></span> (això implica que el <em>blockchain</em> es pot reiniciar<a href="#fn32" class="footnote-ref" id="fnref32" role="doc-noteref"><sup>32</sup></a>). Té uns 2000 nodes repartits en 3 <em>shards</em> i un <em>metachain</em>.</p></li>
+</ul>
+<figure>
+<img src="mainnet.png" id="fig:mainnet" alt="" /><figcaption><em>Mainnet</em>: <a href="https://explorer.elrond.com/validators">https://explorer.elrond.com/validators</a></figcaption>
+</figure>
+<figure>
+<img src="devnet.png" id="fig:devnet" alt="" /><figcaption><em>Devnet</em>: <a href="https://devnet-explorer.elrond.com/nodes">https://devnet-explorer.elrond.com/nodes</a></figcaption>
+</figure>
+<figure>
+<img src="testnet.png" id="fig:testnet" alt="" /><figcaption><em>Testnet</em>: <a href="https://testnet-explorer.elrond.com/nodes">https://testnet-explorer.elrond.com/nodes</a></figcaption>
+</figure>
+<h2 id="carteres">Carteres</h2>
+<p>Com ja s’ha comentat en la secció <a href="#sub:context" data-reference-type="ref" data-reference="sub:context">1.1</a> existeixen diferents carteres que es poden fer servir per enviar, rebre i emmagatzemar EGLD de forma segura.</p>
+<ul>
+<li><p><strong>Moneder web</strong>. Existeix una versió per a cadascuna de les xarxes:<a href="#fn33" class="footnote-ref" id="fnref33" role="doc-noteref"><sup>33</sup></a></p>
+<ul>
+<li><p><em>Mainnet</em>: Accesible a <a href="https://wallet.elrond.com/">https://wallet.elrond.com/</a>.</p></li>
+<li><p><em>Devnet</em>: Accesible a <a href="https://devnet-wallet.elrond.com/">https://devnet-wallet.elrond.com/</a>.</p></li>
+<li><p><em>Testnet</em>: Accesible a <a href="https://testnet-wallet.elrond.com/">https://testnet-wallet.elrond.com/</a>.</p></li>
+</ul>
+<p>Tampoc és l’objectiu del present treball explicar com crear un moneder, però una guia com-es-fa es pot trobar en <span class="citation" data-cites="elrond2022"></span>. Quan es crea s’haurà d’introduir una contrasenya<a href="#fn34" class="footnote-ref" id="fnref34" role="doc-noteref"><sup>34</sup></a> i se’ns donaran 24 paraules secretes (que permeten generar la clau privada). El procés finalitzarà descarregant un fitxer json (<em>keystore file</em>). Com es veu en la Fig. <a href="#fig:webwallet" data-reference-type="ref" data-reference="fig:webwallet">11</a>, podem accedir al nostre moneder amb aquest arxiu json i introduint la contrasenya que hem creat (1 a Fig. <a href="#fig:webwallet" data-reference-type="ref" data-reference="fig:webwallet">11</a>). Una altra opció és generar un fitxer “PEM” (<em>Privacy Enhanced Mail</em>) amb la nostra clau privada i emprar-lo per accedir (nombre 3 a Fig. <a href="#fig:webwallet" data-reference-type="ref" data-reference="fig:webwallet">11</a>), que es pot generar emprant la utilitat d’Elrond “<em>erdpy</em>” (s’hauran d’introduir les 24 paraules secretes separades per un espai):</p>
+<pre><code>[
+    basicstyle=\footnotesize,
+]
+erdpy --verbose wallet derive testdev-wallet.pem --mnemonic</code></pre>
+<p>Finalment, es pot iniciar sessió amb un moneder de maquinari (per exemple amb un Ledger Nano S) o llegint un codi QR amb l’aplicació mòbil Maiar (nombres 2 i 4 a Fig. <a href="#fig:webwallet" data-reference-type="ref" data-reference="fig:webwallet">11</a>, respectivament).</p>
+<figure>
+<img src="webwallet.png" id="fig:webwallet" style="width:50.0%" alt="" /><figcaption>Mètodes d’accés al moneder web.</figcaption>
+</figure></li>
+<li><p><strong>Maiar DeFi Wallet</strong>. Es tracta d’una extensió per a navegadors de la família de Chrome<a href="#fn35" class="footnote-ref" id="fnref35" role="doc-noteref"><sup>35</sup></a>. El funcionament i prestacions és similar al moneder web (i, fent la comparació, a l’extensió “Metamask”<a href="#fn36" class="footnote-ref" id="fnref36" role="doc-noteref"><sup>36</sup></a> de la xarxa Ethereum). En la Fig. <a href="#fig:maiarwalletb" data-reference-type="ref" data-reference="fig:maiarwalletb">13</a> es pot observar que també es pot canviar entre les tres xarxes disponibles.</p>
+<figure>
+<img src="maiarextensio.png" id="fig:maiarwalleta" alt="" />
+</figure>
+<figure>
+<img src="maiarextensio2.png" id="fig:maiarwalletb" alt="" />
+</figure></li>
+<li><p><strong><em>Maiar</em></strong><a href="#fn37" class="footnote-ref" id="fnref37" role="doc-noteref"><sup>37</sup></a>. DApp que implementa una cartera digital per dispositius iOS i Android. Permet enviar o rebre diners emprant el número de telèfon mòbil o un <em>herotag</em> (una espècie de nom d’usuari que es pot emprar en lloc de la teva adreça). És completament descentralitzada, sense custòdia i Elrond no té accés als fons de l’usuari en cap moment. Es pot treballar amb criptoactius com Elrond Gold (EGLD), Binance (BNB), Ethereum (ETH) o Bitcoin (BTC). Com no pot ser d’altra forma, es disposen de mecanismes de recuperació (un frase) per rescatar els fons en cas de pèrdua o robatori del nostre telèfon intel·ligent. No he trobat forma de connectar a la <em>devnet</em> o <em>testnet</em> des de Maiar, penso que déu ser així perquè és principalment dissenyada per treballar amb la <em>mainnet</em>. Òbviament, aquesta dApp és pensada per comprar criptoactius a través de pagaments amb targeta bancària o transferències SEPA (s’han d’emprar passarel·les en ambdós casos). Curiosament, no permet fer <em>swaps</em> entre criptoactius (només es poden fer des de Maiar Exchange).</p>
+<figure>
+<img src="maiarapp.png" id="fig:maiarapp" style="width:30.0%" alt="" /><figcaption>Maiar per iPhone.</figcaption>
+</figure></li>
+<li><p><strong><em>Webhooks</em></strong>. Són enllaços que criden<a href="#fn38" class="footnote-ref" id="fnref38" role="doc-noteref"><sup>38</sup></a> a la cartera de l’usuari perquè iniciï sessió o ompli un formulari per realitzar una transacció (del tipus pagament) amb els arguments proporcionats. Un cop realitzada l’acció, l’usuari és redirigit a un URL amb informació d’estat d’èxit o d’error. Un exemple seria <span class="citation" data-cites="elrond2022"></span>:</p>
+<pre><code>[
+    basicstyle=\scriptsize,
+]
+https://wallet.elrond.com/hook/login?callbackUrl=https://example.com/</code></pre></li>
+<li><p><strong><em>Ledger</em></strong>. Ja s’ha comentat al punt “Moneder web”, i a més és recomanat per Elrond si es treballa amb grans quantitats d’EGLD, també podem emmagatzemar els nostres criptoactius en moneders de maquinari com són els dispositius <em>Ledger Nano S</em> o <em>Ledger Nano X</em>.</p></li>
+</ul>
+<h2 id="subsec:maiarexchange">Maiar Exchange</h2>
+<p>Maiar Exchange<a href="#fn39" class="footnote-ref" id="fnref39" role="doc-noteref"><sup>39</sup></a> és un DEX (<em>Decentralized EXchange</em>) basat en <em>liquidity pools</em> –fons de liquiditat– creat per Elrond emprant la seva arquitectura escalable. Permet els usuaris efectuar la compravenda de criptoactius (<em>trading</em>). A més a més, els usuaris poden convertir-se en proveïdors de liquiditat aportant els seus actius (guanyant <em>tokens</em> MEX per cada transacció d’intercanvi realitzada segons el parell de <em>tokens</em> aportats com a reserva). MEX és el <em>token</em> nadiu de Maiar Exhange. A part de tenir la funció d’incentivar els usuaris perquè proporcionin liquiditat, també s’emprarà en processos de governança. Així, ens trobem davant d’un Exchange de <em>criptoactius</em> sense intermediaris, cosa que abarateix els costos de les transaccions i dels <em>swaps</em>.</p>
+<p>Entre el que podem fer amb Maiar Exchange vull destacar <span class="citation" data-cites="everstake2021"></span><span class="citation" data-cites="elrond2021"></span>:</p>
+<ul>
+<li><p><strong><em>Swapping</em></strong> (intercanvi): Consisteix a intercanviar un criptoactiu per un altre. El mecanisme d’intercanvi consisteix en permutar els actius de l’usuari amb els <em>liquidity pools</em> (fons de liquiditat), i no directament amb altres participants en el mercat. Els preus dels actius es fixen a partir d’una fórmula matemàtica del que s’anomena <em>Automated Market Making</em>. En lloc d’utilitzar un llibre de comptabilitat com en un intercanvi tradicional, els actius tenen uns preus calculats segons un algorisme. Elrond empra la fórmula <span class="math inline"><em>x</em> * <em>y</em> = <em>k</em></span>, on <span class="math inline"><em>x</em></span> és la quantitat d’un token al <em>liquidity pool</em> i <span class="math inline"><em>y</em></span> és la quantitat de l’altre. <span class="math inline"><em>k</em></span> és una constant fixa, el que significa que la liquiditat total del grup sempre romandrà en la mateixa proporció. Hi ha una comissió del 0,3% per intercanviar tokens (el 0,25% pels proveïdors de liquiditat proporcional a la seva contribució a les reserves de liquiditat i amb la resta es compraran MEX que es cremaran). En la data de redacció d’aquesta secció, els actius entre què es poden fer intercanvis són MEX, USDC, RIDE, CRU, ZPAY, ISET, AERO, EFFORT i WAM contra EGLD. Això significa que hi ha fons de liquiditat MEX-EGLD, EGLD-USDC, etc.</p></li>
+<li><p><em><strong>Liquidity Pools</strong></em>: Són reserves de tokens que es troben en contractes intel·ligents del DEX i estan disponibles perquè els usuaris facin intercanvis. Aquests tokens els proporcionen proveïdors de fons de liquiditat amb els quals els usuaris de la plataforma poden negociar. Els proveïdors són incentivats amb recompenses (tokens MEX) pels intercanvis que es produeixen en els seus <em>pools</em> (segons s’ha explicat en el punt anterior). S’ha de destacar que els proveïdors de liquiditat en qualsevol moment poden retirar els fons que han dipositat (independentment de les condicions del mercat).</p></li>
+<li><p><em><strong>Farming</strong></em><a href="#fn40" class="footnote-ref" id="fnref40" role="doc-noteref"><sup>40</sup></a>: Consisteix en el fet que els usuaris bloquegin la seva liquiditat per obtenir recompenses. Si posem els nostres actius en un <em>liquidity pool</em> obtindrem les recompenses descrites en els apartats anteriors (això és el <em>farming</em> i és el que s’ha descrit en el punt d’adalt). Però hi ha també l’opció de posar els nostres <em>liquidity pools</em> en <em>staking</em>, el que significa que no els podrem retirar durant un temps definit a canvi d’obtenir una recompensa major.</p></li>
+</ul>
+<figure>
+<img src="maiardex.png" id="fig:maiardex" style="width:75.0%" alt="" /><figcaption>Maiar Exchange.</figcaption>
+</figure>
+<h2 id="sub:altres">Altres punts destacables</h2>
+<ul>
+<li><p><strong>Camps d’una transacció</strong>:</p>
+<p>Els camps d’una transacció sense signar en la xarxa Elrond són <span class="citation" data-cites="elrond2022"></span>:</p>
+<ul>
+<li><p><strong>nonce</strong> (<em>number</em>): Nombre de seqüència del compte. És obligatori.</p></li>
+<li><p><strong>value</strong> (<em>string</em>): El valor a transferir. És obligatori (pot ser 0).</p></li>
+<li><p><strong>receiver</strong> (<em>string</em>): Adreça del receptor (format <em>bech32</em>). És obligatori.</p></li>
+<li><p><strong>sender</strong> (<em>string</em>): Adreça del remitent (format <em>bech32</em>). És obligatori.</p></li>
+<li><p><strong>gasPrice</strong> (<em>number</em>): El preu del <em>gas</em> que s’utilitzarà en l’abast de la transacció. És obligatori.</p></li>
+<li><p><strong>gasLimit</strong> (<em>number</em>): El nombre màxim d’unitats de <em>gas</em> assignades per a la transacció. És obligatori.</p></li>
+<li><p><strong>data</strong> (<em>string</em>): Informació arbitrària sobre la transacció, codificada en base64 . No és obligatori.</p></li>
+<li><p><strong>chainID</strong> (<em>string</em>): Identificador de cadena. ’D’ per a la xarxa <em>devnet</em>, ’T’ per a <em>textnet</em> i ’1’ per a la <em>mainnet</em>. És obligatori.</p></li>
+<li><p><strong>version</strong> (<em>number</em>): La versió de la transacció (p. ex 1). És obligatori.</p></li>
+</ul>
+<p>En les transaccions que han de ser signades, amb la clau pública del remitent (amb l’algorisme Ed2519), s’ha d’afegir el següent camp:</p>
+<ul>
+<li><p><strong>signature</strong> (<em>string</em>): Signatura digital que consta de 128 caràcters hexadecimals (64 bytes en representació en brut).</p></li>
+</ul>
+<p>Hi ha disponibles diferents eines per realitzar la signatura des de la <em>shell</em> de Linux i des del codi font: <em>erdpy</em>, erdwalletjs-cli o elrond-core-js.</p></li>
+<li><p><strong>Decimals per treballar amb EGLD</strong>: Un EGLD és configurat per tenir 18 decimals. Així, per exemple 2,5 EGLD tendrien un valor de <span class="math inline">2, 5 * 10<sup>18</sup> = 2500000000000000000</span>. L’usuari quan creï ESDTs podrà definir el seu nombre de decimals (amb un màxim de 18).</p></li>
+<li><p><strong>Costos de processament</strong> <span class="citation" data-cites="elrond2022"></span>: Una transacció en la xarxa Elrond té un cost de processament (<em>processing cost</em>), que s’expressa com una quantitat d’unitats de <em>gas</em>. Quan es llança una transacció s’ha de proporcionar un <em>gasLimit</em>, que és el cost màxim que estem disposats a assumir. El <strong>consum real de gas</strong> (<em>actual gas consumption</em> o també <em>used gas</em>) és la quantitat real que s’ha consumit del <em>gasLimit</em> requerida perquè la xarxa processi la transacció. Per calcular aquest darrer, la xarxa el divideix en dos components d’utilització del <em>gas</em> <span class="citation" data-cites="elrond2022"></span>:</p>
+<ul>
+<li><p><strong>Moviment de valors i tractament de dades</strong>: Això seria per exemple una transferència d’EGLD entre adreces. El cost es calcula amb la fórmula:</p>
+<pre><code>[
+    basicstyle=\tiny,
+]
+tx.gasLimit = 
+    networkConfig.erd_min_gas_limit + 
+    networkConfig.erd_gas_per_data_byte * lengthOf(tx.data)
+Nota:
+networkConfig.erd_min_gas_limit &lt;= tx.gasLimit i
+tx.gasLimit &lt;= networkConfig.erd_max_gas_per_transaction</code></pre></li>
+<li><p><strong>Execució de contracte intel·ligent</strong>: Una trucada a un <em>smart contract</em> requeriria aquest i l’anterior. El cost és més difícil de determinar, ja que depèn del codi font concret del contracte intel·ligent. Es solen emprar simulacions i estimacions.</p></li>
+</ul>
+<p>Finalment, la <strong>tarifa de processament</strong> (<em>processing fee</em>) es calcula amb respecte de l’<em>actual gas consumption</em> i dels seus dos components. Per moviment de valors i tractament de dades s’especifica en la transacció un <em>gas price per gas unit</em> (que ha de ser igual o superior al paràmetre de la xarxa <span class="math inline">$erdmin\textunderscore  gas\textunderscore price$</span>). Per execució de contracte intel·ligent el <em>gas price per gas unit</em> es calcula respecte a un altre paràmetre de xarxa anomenat <span class="math inline">$erd\textunderscore gas\textunderscore price\textunderscore modifier$</span>:</p>
+<pre><code>[
+    basicstyle=\tiny,
+]
+value_movement_and_data_handling_price_per_unit = tx.GasPrice
+contract_execution_price_per_unit = tx.GasPrice * networkConfig.erd_gas_price_modifier</code></pre></li>
+<li><p><strong>ESDT (<em>Elrond Standard Digital Token</em>)</strong>: La xarxa Elrond admet de forma nadiua l’emissió de <em>tokens</em> creats pels usuaris (des de codi, des d’un contracte intel·ligent o des de la <em>web wallet</em>). Això implica que no és necessari emprar contractes com els de tipus ERC20 de la xarxa Ethereum. Ja que el suport és nadiu, no es requereix processament extra per part de la màquina virtual (amb el que són tan eficients com el mateix EGLD).</p></li>
+<li><p><strong>NFT (<em>Non-Fungible Token</em>) i SFT (<em>Semi-Fungible Token</em>)</strong>: Suport nadiu d’NFT i SFT afegint metadades i atributs a sobre de l’ESDT. Així, són bastant similars a aquests darrers però amb atributs extra (<em>NFT Name</em>, <em>Quantity</em>, <em>Royalties</em>, <em>Hash</em>, <em>Attributes</em> i <em>URI</em>).</p></li>
+<li><p><strong><em>Local Testnet</em></strong>: Es pot configurar una <em>testnet</em> en local per fer proves i <em>debugging</em> del codi. Es pot configurar amb l’eina <em>erdpy</em> i conté nodes validadors, nodes observadors, un <em>seed node</em> i un <em>Elrond Proxy</em>.</p></li>
+<li><p><strong>API REST</strong>: Té dues capes a les quals es pot accedir públicament:</p>
+<ul>
+<li><p><strong>https://gateway.elrond.com</strong>: La de més baix nivell. Gestiona l’encaminament de les peticions de forma transparent segons els mecanismes de fragmentació que s’han descrit en els apartats anteriors.</p></li>
+<li><p><strong>https://api.elrond.com</strong>: La de més alt nivell (empra els serveis de la capa anterior). Aporta serveis com un mecanisme de memòria cau, cerques històriques amb Elasticsearch<a href="#fn41" class="footnote-ref" id="fnref41" role="doc-noteref"><sup>41</sup></a>, etc.</p></li>
+</ul></li>
+</ul>
+<h1 id="testdex">testDEX</h1>
+<h2 id="anàlisi">Anàlisi</h2>
+<h3 id="subsub:dexamm">DEX i AMM</h3>
+<p>Un <strong><em>Decentralized exchange</em> (DEX)</strong> és un mercat on els negociants de criptomonedes fan transaccions directament entre ells –d’igual a igual (<em>peer-to-peer</em>)– sense haver de lliurar la gestió dels seus fons a un intermediari <span class="citation" data-cites="cointelegraph"></span>. És a dir, són dissenyats per eliminar qualsevol autoritat de supervisió en els intercanvis (<em>swaps</em>) de criptoactius, evitant que s’hagin d’enviar dades de caràcter personal (noms, adreces, etc.). Per executar les ordres d’intercanvi sense intermediaris s’empren contractes intel·ligents. Això xoca amb el concepte de <em><strong>Centralized exchange</strong></em> on la gestió és responsabilitat d’una organització, com ara un banc o qualsevol altra corporació, que requerirà que els seus usuaris estiguin identificats i que custodiaran els actius dels usuaris (òbviament cercant un benefici econòmic).</p>
+<p>En el present treball ens centrarem en una versió simplificada de DEX fent servir <em>Automated Market Makers</em> (AMM). Els diferents tipus de DEX es poden observar en la figura <a href="#fig:dextypes" data-reference-type="ref" data-reference="fig:dextypes">16</a>.</p>
+<figure>
+<img src="DEXtypes.png" id="fig:dextypes" style="width:95.0%" alt="" /><figcaption>Tipus de DEX. (Font: <span class="citation" data-cites="cointelegraph"></span>).</figcaption>
+</figure>
+<p>En <span class="citation" data-cites="delarosa"></span> es descriu que una de les formes de prescindir del llibre d’ordres d’un <em>Exchange</em> tradicional és emprant AMM. Aquests protocols fan servir una fórmula matemàtica per calcular el preu de l’actiu i un fons de liquiditat per a cada parell de criptoactius (tal qual hem vist en la secció <a href="#subsec:maiarexchange" data-reference-type="ref" data-reference="subsec:maiarexchange">2.12</a>). Quan es vulgui fer un intercanvi entre criptoactius s’interactuarà directament amb un contracte intel·ligent que determinarà el preu de compra de l’actiu destí segons l’estat del fons de liquiditat. La fórmula per calcular això, també vista en la secció <a href="#subsec:maiarexchange" data-reference-type="ref" data-reference="subsec:maiarexchange">2.12</a>, és <span class="math inline"><em>x</em> * <em>y</em> = <em>k</em></span> (amb <span class="math inline"><em>x</em></span> la quantitat d’un token al fons de liquiditat, <span class="math inline"><em>y</em></span> és la quantitat de l’altre i <span class="math inline"><em>k</em></span> és una constant fixa per mantenir la proporcionalitat entre el parell de <em>tokens</em>). Així, imaginem que tenim un fons de liquiditat amb el parell xEGLD-UOC –“UOC” és un ESDT creat per mi– amb 10 xEGLD i 100000000 UOC. Tenint que <span class="math inline"><em>x</em> * <em>y</em> = <em>k</em></span> i, pel fons descrit, la fórmula quedarà com a <span class="math inline">10 * 100000000 = 1000000000</span>. Si volem calcular la quantitat <span class="math inline"><em>q</em><sub><em>w</em><em>i</em><em>t</em><em>h</em><em>o</em><em>u</em><em>t</em><em>F</em><em>e</em><em>e</em></sub></span> d’UOC que obtindríem per 1 xEGLD en aquest fons:</p>
+<p><br /><span class="math display">(10 + 1) * (100000000 − <em>q</em><sub><em>w</em><em>i</em><em>t</em><em>h</em><em>o</em><em>u</em><em>t</em><em>F</em><em>e</em><em>e</em></sub>) = 1000000000</span><br /> <br /><span class="math display">1100000000 − 11 * <em>q</em><sub><em>w</em><em>i</em><em>t</em><em>h</em><em>o</em><em>u</em><em>t</em><em>F</em><em>e</em><em>e</em></sub> = 1000000000</span><br /> <br /><span class="math display">1100000000 − 1000000000 = 11 * <em>q</em><sub><em>w</em><em>i</em><em>t</em><em>h</em><em>o</em><em>u</em><em>t</em><em>F</em><em>e</em><em>e</em></sub></span><br /> <br /><span class="math display">100000000 = 11 * <em>q</em><sub><em>w</em><em>i</em><em>t</em><em>h</em><em>o</em><em>u</em><em>t</em><em>F</em><em>e</em><em>e</em></sub></span><br /> <br /><span class="math display"><em>q</em><sub><em>w</em><em>i</em><em>t</em><em>h</em><em>o</em><em>u</em><em>t</em><em>F</em><em>e</em><em>e</em></sub> = 100000000/11</span><br /> <br /><span class="math display"><em>q</em><sub><em>w</em><em>i</em><em>t</em><em>h</em><em>o</em><em>u</em><em>t</em><em>F</em><em>e</em><em>e</em></sub> = 9090909, 090909091</span><br /></p>
+<p>A partir del resultat anterior, podem calcular el <strong>la quantitat d’UOC que obtindrem amb 1 EGLD</strong>: <br /><span class="math display"><em>p</em><em>r</em><em>i</em><em>c</em><em>e</em><sub><em>E</em><em>G</em><em>L</em><em>D</em> − <em>U</em><em>O</em><em>C</em></sub> = <em>q</em><sub><em>w</em><em>i</em><em>t</em><em>h</em><em>o</em><em>u</em><em>t</em><em>F</em><em>e</em><em>e</em></sub>/<em>q</em><sub><em>E</em><em>G</em><em>L</em><em>D</em></sub></span><br /> <br /><span class="math display"><em>p</em><em>r</em><em>i</em><em>c</em><em>e</em><sub><em>E</em><em>G</em><em>L</em><em>D</em> − <em>U</em><em>O</em><em>C</em></sub> = 9090909, 090909091/1 = 9090909, 090909091</span><br /></p>
+<p>Ara tenim que el <em>liquidity pool</em> ha quedat amb el parell xEGLD-UOC com <span class="math inline">11 − 90909090, 909090909</span> (<span class="math inline">90909090, 909090909 = 100000000 − 9090909, 090909091</span>). Amb això tenim que <span class="math inline">11 * 90909090, 909090909 = 1000000000</span> (es manté la constant <span class="math inline"><em>k</em></span>)<a href="#fn42" class="footnote-ref" id="fnref42" role="doc-noteref"><sup>42</sup></a>. El <strong>preu pagat per una unitat d’UOC en EGLD</strong> haurà estat: <br /><span class="math display"><em>p</em><em>r</em><em>i</em><em>c</em><em>e</em><sub><em>U</em><em>O</em><em>C</em> − <em>E</em><em>G</em><em>L</em><em>D</em></sub> = 1/9090909, 090909091 = 0, 00000011</span><br /></p>
+<p>En el procediment anterior no hem aplicat cap comissió, i com s’ha dit els <em>liquity providers</em> aportaran als fons de liquiditat parells d’actius obtenint una recompensa segons els <em>swaps</em> que es realitzin amb els seus parells. Recalculant la fórmula d’abans aplicant una comissió <span class="math inline"><em>f</em><em>e</em><em>e</em><sub><em>E</em><em>G</em><em>L</em><em>D</em></sub></span>: <br /><span class="math display">(10 + (1 − <em>f</em><em>e</em><em>e</em><sub><em>E</em><em>G</em><em>L</em><em>D</em></sub>)) * (100000000 − <em>q</em><sub><em>w</em><em>i</em><em>t</em><em>h</em><em>F</em><em>e</em><em>e</em></sub>) = 1000000000</span><br /> <br /><span class="math display">11 − 10 * <em>f</em><em>e</em><em>e</em><sub><em>E</em><em>G</em><em>L</em><em>D</em></sub>) * (100000000 − <em>q</em><sub><em>w</em><em>i</em><em>t</em><em>h</em><em>F</em><em>e</em><em>e</em></sub>) = 1000000000</span><br /> <br /><span class="math display">11 * (100000000 − <em>q</em><sub><em>w</em><em>i</em><em>t</em><em>h</em><em>F</em><em>e</em><em>e</em></sub>) − 10 * <em>f</em><em>e</em><em>e</em><sub><em>E</em><em>G</em><em>L</em><em>D</em></sub> * (100000000 − <em>q</em><sub><em>w</em><em>i</em><em>t</em><em>h</em><em>F</em><em>e</em><em>e</em></sub>) = 1000000000</span><br /> <br /><span class="math display">1100000000 − 11 * <em>q</em><sub><em>w</em><em>i</em><em>t</em><em>h</em><em>F</em><em>e</em><em>e</em></sub> − 1000000000 * <em>f</em><em>e</em><em>e</em><sub><em>E</em><em>G</em><em>L</em><em>D</em></sub> + 10 * <em>f</em><em>e</em><em>e</em><sub><em>E</em><em>G</em><em>L</em><em>D</em></sub> * <em>q</em><sub><em>w</em><em>i</em><em>t</em><em>h</em><em>F</em><em>e</em><em>e</em></sub> = 1000000000</span><br /> <br /><span class="math display"> − 11 * <em>q</em><sub><em>w</em><em>i</em><em>t</em><em>h</em><em>F</em><em>e</em><em>e</em></sub> + 10 * <em>f</em><em>e</em><em>e</em><sub><em>E</em><em>G</em><em>L</em><em>D</em></sub> * <em>q</em><sub><em>w</em><em>i</em><em>t</em><em>h</em><em>F</em><em>e</em><em>e</em></sub> = 1000000000 − 1100000000 + 1000000000 * <em>f</em><em>e</em><em>e</em><sub><em>E</em><em>G</em><em>L</em><em>D</em></sub></span><br /> <br /><span class="math display"><em>q</em><sub><em>w</em><em>i</em><em>t</em><em>h</em><em>F</em><em>e</em><em>e</em></sub> * ( − 11 + 10 * <em>f</em><em>e</em><em>e</em><sub><em>E</em><em>G</em><em>L</em><em>D</em></sub>) =  − 100000000 + 1000000000 * <em>f</em><em>e</em><em>e</em><sub><em>E</em><em>G</em><em>L</em><em>D</em></sub></span><br /> <br /><span class="math display"><em>q</em><sub><em>w</em><em>i</em><em>t</em><em>h</em><em>F</em><em>e</em><em>e</em></sub> = ( − 100000000 + 1000000000 * <em>f</em><em>e</em><em>e</em><sub><em>E</em><em>G</em><em>L</em><em>D</em></sub>)/( − 11 + 10 * <em>f</em><em>e</em><em>e</em><sub><em>E</em><em>G</em><em>L</em><em>D</em></sub>)</span><br /></p>
+<p>Aplicant, per exemple, una comissió del 0,3%: <br /><span class="math display"><em>q</em><sub><em>w</em><em>i</em><em>t</em><em>h</em><em>F</em><em>e</em><em>e</em></sub> = ( − 100000000 + 1000000000 * 0, 003)/( − 11 + 10 * 0, 003)</span><br /> <br /><span class="math display"><em>q</em><sub><em>w</em><em>i</em><em>t</em><em>h</em><em>F</em><em>e</em><em>e</em></sub> =  − 97000000/ − 10, 97</span><br /> <br /><span class="math display"><em>q</em><sub><em>w</em><em>i</em><em>t</em><em>h</em><em>F</em><em>e</em><em>e</em></sub> = 8842297, 174111212</span><br /></p>
+<p>I el <strong>preu en EGLD per unitat d’UOC</strong> haurà estat (augmenta un poc per la comissió): <br /><span class="math display"><em>p</em><em>r</em><em>i</em><em>c</em><em>e</em><sub><em>U</em><em>O</em><em>C</em> − <em>E</em><em>G</em><em>L</em><em>D</em></sub> = 1/8842297, 174111212 = 0, 000000113</span><br /></p>
+<p>També podem calcular a partir de la fórmula anterior la <strong>comissió pagada en EGLD</strong> (<span class="math inline"><em>f</em><em>e</em><em>e</em><sub><em>E</em><em>G</em><em>L</em><em>D</em></sub></span>): <br /><span class="math display"><em>q</em><sub><em>w</em><em>i</em><em>t</em><em>h</em><em>F</em><em>e</em><em>e</em></sub> * ( − 11 + 10 * <em>f</em><em>e</em><em>e</em><sub><em>E</em><em>G</em><em>L</em><em>D</em></sub>) =  − 100000000 + 1000000000 * <em>f</em><em>e</em><em>e</em><sub><em>E</em><em>G</em><em>L</em><em>D</em></sub></span><br /> <br /><span class="math display"> − 11 * <em>q</em><sub><em>w</em><em>i</em><em>t</em><em>h</em><em>F</em><em>e</em><em>e</em></sub> + 11 * 10 * <em>f</em><em>e</em><em>e</em><sub><em>E</em><em>G</em><em>L</em><em>D</em></sub> =  − 100000000 + 1000000000 * <em>f</em><em>e</em><em>e</em><sub><em>E</em><em>G</em><em>L</em><em>D</em></sub></span><br /> <br /><span class="math display">11 * 10 * <em>f</em><em>e</em><em>e</em><sub><em>E</em><em>G</em><em>L</em><em>D</em></sub> − 1000000000 * <em>f</em><em>e</em><em>e</em><sub><em>E</em><em>G</em><em>L</em><em>D</em></sub> =  − 100000000 + 11 * <em>q</em><sub><em>w</em><em>i</em><em>t</em><em>h</em><em>F</em><em>e</em><em>e</em></sub></span><br /> <br /><span class="math display"><em>f</em><em>e</em><em>e</em><sub><em>E</em><em>G</em><em>L</em><em>D</em></sub> * (11 * 10 − 1000000000) =  − 100000000 + 11 * <em>q</em><sub><em>w</em><em>i</em><em>t</em><em>h</em><em>F</em><em>e</em><em>e</em></sub></span><br /> <br /><span class="math display"><em>f</em><em>e</em><em>e</em><sub><em>E</em><em>G</em><em>L</em><em>D</em></sub> = ( − 100000000 + 11 * <em>q</em><sub><em>w</em><em>i</em><em>t</em><em>h</em><em>F</em><em>e</em><em>e</em></sub>)/(11 * 10 − 1000000000)</span><br /></p>
+<p>Com que ja hem calculat <span class="math inline"><em>q</em><sub><em>w</em><em>i</em><em>t</em><em>h</em><em>F</em><em>e</em><em>e</em></sub></span>: <br /><span class="math display"><em>f</em><em>e</em><em>e</em><sub><em>E</em><em>G</em><em>L</em><em>D</em></sub> = ( − 100000000 + 11 * 8842297, 174111212)/(11 * 10 − 1000000000)</span><br /> <br /><span class="math display"><em>f</em><em>e</em><em>e</em><sub><em>E</em><em>G</em><em>L</em><em>D</em></sub> =  − 2734731, 084776668/ − 999999890</span><br /> <br /><span class="math display"><em>f</em><em>e</em><em>e</em><sub><em>E</em><em>G</em><em>L</em><em>D</em></sub> = 0, 002734731</span><br /></p>
+<p>Finalment, podem calcular la <strong>comissió en UOC</strong> (<span class="math inline"><em>f</em><em>e</em><em>e</em><sub><em>U</em><em>O</em><em>C</em></sub></span>) fent la substracció de quantitat d’UOC que es dona sense i amb comissió: <br /><span class="math display"><em>f</em><em>e</em><em>e</em><sub><em>U</em><em>O</em><em>C</em></sub> = <em>q</em><sub><em>w</em><em>i</em><em>t</em><em>h</em><em>o</em><em>u</em><em>t</em><em>F</em><em>e</em><em>e</em></sub> − <em>q</em><sub><em>w</em><em>i</em><em>t</em><em>h</em><em>F</em><em>e</em><em>e</em></sub></span><br /> <br /><span class="math display"><em>f</em><em>e</em><em>e</em><sub><em>U</em><em>O</em><em>C</em></sub> = 9090909, 090909091 − 8842297, 174111212</span><br /> <br /><span class="math display"><em>f</em><em>e</em><em>e</em><sub><em>U</em><em>O</em><em>C</em></sub> = 248611, 916797879</span><br /></p>
+<p>Si tornem a comprovar la constant <span class="math inline"><em>k</em></span>, tenim que el <em>liquidity pool</em> ha quedat amb el parell xEGLD-UOC com <span class="math inline">10 + 1</span> i <span class="math inline">100000000 − 8842297, 1741112121 − 248611, 916797879</span> (s’ha de pensar que la comissió s’ha de llevar del pool perquè se li envia al proveïdor de liquiditat). És a dir, <span class="math inline">11</span> i <span class="math inline">90909090, 909090909</span>. Amb això tenim que <span class="math inline">11 * 90909090, 909090909 = 1000000000</span>. Així, l’usuari haurà pagat <span class="math inline">1</span> xEGLD per <span class="math inline">9090909, 090909091</span> UOC i el fons de liquiditat mantindrà la mateixa constant <span class="math inline"><em>k</em></span>. El <strong>preu pagat per una unitat de UOC en EGLD</strong> haurà estat: <br /><span class="math display"><em>p</em><em>r</em><em>i</em><em>c</em><em>e</em><sub><em>U</em><em>O</em><em>C</em> − <em>E</em><em>G</em><em>L</em><em>D</em></sub> = 1/9090909, 090909091 = 0, 00000011</span><br /></p>
+<p>En resum, amb aquest exemple s’ha mostrat que amb 1 xEGLD l’usuari ha pagat 0,002734731 xEGLD de comissió i ha rebut 8842297,174111212 UOC. La citada comissió serà tramesa al moneder del proveïdor de liquiditat automàticament.</p>
+<p>A tot això se li ha d’afegir una cosa més: <strong>la comissió que pagarà l’usuari a la xarxa Elrond</strong>. En la secció <a href="#sub:altres" data-reference-type="ref" data-reference="sub:altres">2.13</a> s’ha vist que emprar la xarxa Elrond duu associat uns costos pel moviment de valors i tractament de dades (transferim una quantitat de tokens al contracte intel·ligent) i per execució de contracte intel·ligent (el <em>smart contract</em> que implementa l’AMM). Això encarirà l’operació a l’usuari i les operacions que es realitzen dins aquest contracte influiran en el cost. En temps de disseny s’haurà de triar una opció òptima a nivell de repercusió en els costos de l’usuari.</p>
+<h3 id="les-variants-de-dex-i-amm-a-testdex">Les variants de DEX i AMM a testDEX</h3>
+<p>Per assolir els objectius del projecte no fa falta arribar a desenvolupar un DEX de l’estil de Maiar Exchange, Uniswap<a href="#fn43" class="footnote-ref" id="fnref43" role="doc-noteref"><sup>43</sup></a> o PancakeSwap<a href="#fn44" class="footnote-ref" id="fnref44" role="doc-noteref"><sup>44</sup></a>. Òbviament, un projecte d’aquesta envergagura seria poc realista per una limitació clara de temps. Per exemple, el protocol AMM no és exempt de problemes que s’haurien de tractar <span class="citation" data-cites="vuterin2018"></span>. Així en aquesta versió inicial faré una sèrie d’adaptacions per ajustar-me al temps disponible:</p>
+<ul>
+<li><p>El propietari del contracte intel·ligent serà l’únic que pot definir <em>liquidity pools</em>.</p></li>
+<li><p>El propietari del contracte serà, per tant, l’únic que rebi les comissions pels <em>swaps</em>.</p></li>
+<li><p>Tots els parells tindran com a un dels seus components EGLD.</p></li>
+</ul>
+<h3 id="subsub:rfun">Requeriments funcionals</h3>
+<p>Els requeriments funcionals responen a la pregunta “què ha de fer un sistema”. Pel present projecte s’especifiquen els següents:</p>
+<ul>
+<li><p>RF 1: El sistema permetrà el propietari del contracte intel·ligent dipositar un parell EGLD-ESDT en el fons de liquiditat des del seu <em>wallet</em>.</p></li>
+<li><p>RF 2: El sistema permetrà el propietari del contracte intel·ligent recuperar un parell EGLD-ESDT del fons de liquiditat cap al seu <em>wallet</em>, que prèviament haurà dipositat.</p></li>
+<li><p>RF 3: El sistema permetrà el propietari del contracte definir una taxa (“<em>fee</em>”) que serà gravada als usuaris quan intercanviïn <em>tokens</em>.</p></li>
+<li><p>RF 4: El sistema permetrà el propietari recuperar els guanys acumulats al seu contracte intel·ligent resultant del pagament de l’anterior taxa cap al seu <em>wallet</em>.</p></li>
+<li><p>RF 5: El sistema permetrà els usuaris intercanviar (<em>swap</em>) una quantitat d’un <em>token</em> ESDT de la cartera de l’usuari per un altre del fons de liquiditat (si existeix el parell adient).</p></li>
+<li><p>RF 6: El sistema permetrà els usuaris conèixer els parells donats d’alta al DEX.</p></li>
+<li><p>RF 7: El sistema permetrà els usuaris consultar si un parell és disponible per fer <em>swaps</em> (cap dels dos components pot tenir valor 0).</p></li>
+<li><p>RF 8: El sistema permetrà els usuaris consultar la constant K d’un parell en un moment donat.</p></li>
+<li><p>RF 9: El sistema mostrarà els preus dels actius en el moment actual (tant de compra com de venda).</p></li>
+<li><p>RF 10: El sistema enregistrarà el resultat de les transaccions per realitzar estadístiques.</p></li>
+</ul>
+<h3 id="subsub:rnofun">Requeriments no funcionals</h3>
+<p>Els requeriments no funcionals responen a la pregunta “com ha de fer un sistema”. Pel present projecte s’especifiquen els següents:</p>
+<ul>
+<li><p>RNF 1: La informació emprada en el sistema viatjarà per la xarxa emprant protocols segurs.</p></li>
+<li><p>RNF 2: El sistema serà accessible des de qualsevol ubicació a través d’Internet.</p></li>
+<li><p>RNF 3: Els usuaris del sistema el podran emprar utilitzant qualsevol moneder vàlid de la xarxa Elrond.</p></li>
+</ul>
+<h2 id="disseny">Disseny</h2>
+<h3 id="casos-dús">Casos d’ús</h3>
+<p>Tindrem un usuari privilegiat (el propietari del contracte intel·ligent) i usuaris genèrics. El primer, òbviament, podrà realitzar també les operacions dels segons. El sistema permetrà només el propietari interactuar amb el contracte intel·ligent de la següent forma:<span><a href="#fn45" class="footnote-ref" id="fnref45" role="doc-noteref"><sup>45</sup></a></span></p>
+<figure>
+<img src="cu_add_claim_liquidity.png" id="fig:addclaimliq" alt="" /><figcaption>Requerimens funcionals 1 i 2.</figcaption>
+</figure>
+<figure>
+<img src="cu_set_fee_claim_earnings.png" id="fig:setfeeclaim" alt="" /><figcaption>Requeriments funcionals 3 i 4.</figcaption>
+</figure>
+<p>Amb les interaccions anteriors es podran <strong>definir <em>liquity pools</em></strong> i una <strong>taxa (<em>fee</em>)</strong> que es cobrarà per les operacions de <em>swap</em>. Allò següent a definir seran els intercanvis en si mateixos. El criptoactiu de referència serà EGLD (tots els parells el tindran). Així es podrà passar una determinada quantitat d’EGLD a una quantitat d’ESDT, això també es pot anomenar “<strong>comprar ESDT amb EGLD</strong>”. A la inversa, podrem passar ESDT a EGLD, que dit d’altra forma seria “<strong>vendre ESDT per EGLD</strong>”. La següent figura ho mostra:</p>
+<figure>
+<img src="cu_buy_sell2.png" id="fig:buysell1" alt="" /><figcaption>RF 5 (EGLD-ESDT).</figcaption>
+</figure>
+<figure>
+<img src="cu_buy_sell1.png" id="fig:buysell2" alt="" /><figcaption>RF 5 (ESDT-EGLD).</figcaption>
+</figure>
+<p>Per altra banda, serà necessari que el sistema mostri als usuaris els <strong>parells disponibles per fer intercanvis i si es pot operar amb ells en un moment donat</strong> (requeriments funcionals 6 i 7).</p>
+<figure>
+<img src="cu_get_pairs.png" id="fig:getpairs" alt="" /><figcaption>RF 6.</figcaption>
+</figure>
+<figure>
+<img src="cu_status_pair.png" id="fig:statuspair" alt="" /><figcaption>RF 7.</figcaption>
+</figure>
+<p>A més, el sistema mostrarà la <strong>constant <span class="math inline"><em>k</em></span> del protocol AMM</strong> (que s’ha de mantenir constant) i el <strong>preu dels actius en el moment actual</strong>. Internament es treballa amb nombres sencers on es destinen les 18 posicions a la dreta per decimals, però realment són nombres sencers. Això farà que la constant <span class="math inline"><em>k</em></span> pugui fluctuar i que estigui sotmesa a correccions per mantenir-la en el seu valor inicial. Així mateix, els usuaris hauran de conèixer en temps real els preus de les parelles de tokens. Els casos d’ús sobre aquests punts es mostren en la Fig. <a href="#fig:RRFF8-9" data-reference-type="ref" data-reference="fig:RRFF8-9">[fig:RRFF8-9]</a>.</p>
+<figure>
+<img src="cu_k_constant.png" id="fig:kconstant" alt="" /><figcaption>RF 8.</figcaption>
+</figure>
+<figure>
+<img src="cu_current_price_EGLD_ESDT.png" id="fig:price_egld_esdt" alt="" /><figcaption>RF 9 (EGLD-ESDT).</figcaption>
+</figure>
+<figure>
+<img src="cu_current_price_ESDT_EGLD.png" id="fig:price_esdt_egld" alt="" /><figcaption>RF 9 (ESDT-EGLD).</figcaption>
+</figure>
+<p>El darrer requeriment funcional és un poc especial i fa referència a què <strong>el sistema tractarà el resultat de les transaccions</strong> per generar estadístiques per intentar comprovar les característiques de la xarxa Elrond.</p>
+<figure>
+<img src="cu_trans_results.png" id="fig:transresults" style="width:55.0%" alt="" /><figcaption>Requeriment funcional 10.</figcaption>
+</figure>
+<p>Finalment, pel que fa als <strong>requeriments no funcionals</strong>, no cal afegir res ja que formen part de les característiques intrínseques de les tecnologies d’Internet i de la xarxa Elrond.</p>
+<h3 id="smart-contract"><em>Smart contract</em></h3>
+<p>El contracte intel·ligent serà públic a la xarxa <em>devnet</em> d’Elrond. S’ha de remarcar que totes les dades dels <em>smart contracts</em> són disponibles públicament, tot i que pot ser complicat cercar manualment l’emmagatzematge del contracte i per això es solen definir <em>getters</em> públics<a href="#fn46" class="footnote-ref" id="fnref46" role="doc-noteref"><sup>46</sup></a>. Quan es desplegui a la xarxa se li assignarà automàticament una adreça amb el format que s’ha descrit en seccions anteriors.</p>
+<p>En la Fig. <a href="#fig:testdex" data-reference-type="ref" data-reference="fig:testdex">27</a> es mostren les propietats i mètodes del contracte intel·ligent que emprarem (anomenat “TestDEX”). Cal dir, que en argot específic de <em>blockchain</em> seria més apropiat anomenar a una propietat “emmagatzematge”.</p>
+<figure>
+<img src="TestDEX.png" id="fig:testdex" style="width:55.0%" alt="" /><figcaption>Estructura del contracte intel·ligent.</figcaption>
+</figure>
+<p>Aquesta és la seva descripció:</p>
+<ul>
+<li><p><strong>liquidity_token(TokenIdentifier)</strong>: Emmagatzema la liquiditat dels <em>tokens</em> (la meitat del parell). Per als identificadors del token dels que volguem guardar la informació, tindrem un valor del tipus BigUint<a href="#fn47" class="footnote-ref" id="fnref47" role="doc-noteref"><sup>47</sup></a> associat que defineix la quantitat de <em>token</em>.</p></li>
+<li><p><strong>liquidity_egld(TokenIdentifier)</strong>: Guarda la liquiditat en EGLD dels <em>token</em> (l’altra part del parell). Per als identificadors del token dels que volguem guardar la informació, tindrem un valor del tipus BigUint associat que defineix la quantitat d’EGLD.</p></li>
+<li><p><strong>tokens</strong>: Guarda un vector de TokenIdentifier, que descriu els <em>tokens</em> dels que disposem un parell disponible –<em>token</em>-EGLD o EGLD-<em>token</em>– per operar.</p></li>
+<li><p><strong>initial_k(TokenIdentifier)</strong>: Per a cada parell (EGLD o EGLD-<em>token</em>), emmagatzema un BigUint amb la seva constant <span class="math inline"><em>k</em></span> del moment en què es va donar d’alta.</p></li>
+<li><p><strong>fee</strong>: Guarda la taxa –amb un valor del tipus u32<a href="#fn48" class="footnote-ref" id="fnref48" role="doc-noteref"><sup>48</sup></a>– que s’aplicarà quan es faci un intercanvi. S’inicialitza quan es creï el contracte intel·ligent.</p></li>
+<li><p><strong>earnings_egld(TokenIdentifier)</strong>: Emmagatzema les taxes (<em>fees</em>) –BigUint– cobrades pels diferents <em>tokens</em>.</p></li>
+<li><p><strong>init(u32)</strong>: Mètode que realitza la tasca de constructor del contracte intel·ligent. Se li passa la taxa que es cobrarà en els intercanvis.</p></li>
+<li><p><strong>add_liquidity_token() -&gt;SCResult</strong>: Afegeix liquiditat a la part “<em>token</em>” del parell. Retorna un <span class="math inline"><em>e</em><em>n</em><em>u</em><em>m</em></span> anomenat SCResult, forma predeterminada de retornar opcionalment un error (<span class="math inline"><em>E</em><em>r</em><em>r</em>(<em>S</em><em>C</em><em>E</em><em>r</em><em>r</em><em>o</em><em>r</em>)</span>) o una confirmació de resultat satisfactori (<span class="math inline"><em>O</em><em>k</em>(<em>T</em>)</span>). El token i la quantitat les agafarà de la mateixa transacció dins de la xarxa Elrond. Mètode que només pot ser cridat pel propietari del contracte.</p></li>
+<li><p><strong>claim_liquidity_token(TokenIdentifier) -&gt;SCResult</strong>: Envia els fons de liquiditat d’un <em>token</em> determinat aportats pel propietari del contracte intel·ligent a l’adreça del seu moneder. Se li ha de passar com a paràmetre l’identificador del <em>token</em> del qual volem reclamar la liquiditat. Mètode que només pot ser cridat pel propietari del contracte. Retorna un BigUint equivalent a la quantitat transferida. El parell quedarà en estat “Funding”.</p></li>
+<li><p><strong>add_liquidity_egld(TokenIdentifier) -&gt;SCResult</strong>: Afegeix liquiditat a la part EGLD del parell. Se li ha de passar com a paràmetre l’identificador d’EGLD. La quantitat l’agafarà de la mateixa transacció dins de la xarxa Elrond. Mètode que només pot ser cridat pel propietari del contracte.</p></li>
+<li><p><strong>claim_liquidity_egld(TokenIdentifier) -&gt;SCResult</strong>: Envia els fons de liquiditat en EGLD del parell d’un determinat <em>token</em> aportats pel propietari del contracte intel·ligent a l’adreça del seu moneder. Se li ha de passar com a paràmetre l’identificador del token del que volem guardar la informació. Mètode que només pot ser cridat pel propietari del contracte. Retorna un BigUint equivalent a la quantitat transferida. El parell quedarà en estat “Funding”.</p></li>
+<li><p><strong>status(TokenIdentifier) -&gt;Status</strong>: Mostra l’estat d’un parell. Tindrà dos possibles estats: “Successful” i “Funding”. El primer significa que està preparat per fer intercanvis i el segon indica que encara s’han d’afegir fons a algun dels components del parell. Se li ha de passar com a paràmetre l’identificador del <em>token</em> del que volem retornar aquesta informació. Retorna o bé “Successful” o bé “Funding”.</p></li>
+<li><p><strong>calculate_k(TokenIdentifier) -&gt;BigUint</strong>: Calcula la constant <span class="math inline"><em>k</em></span> per a un parell en un moment donat de temps. Se li ha de passar com a paràmetre l’identificador del token que identifica el parell del que volem retornar aquesta informació (el que no sigui EGLD). Retorna la citada constant.</p></li>
+<li><p><strong>claim_earnings(TokenIdentifier) -&gt;BigUint</strong>: Envia els beneficis acumulats al contracte resultants d’aplicar la taxa als intercanvis d’un <em>token</em> determinat. Se li ha de passar com a paràmetre l’identificador del <em>token</em> del que volem transferir els beneficis. Mètode que només pot ser cridat pel propietari del contracte. Retorna un BigUint equivalent a la quantitat transferida.</p></li>
+<li><p><strong>price_egld_token(TokenIdentifier, BigUint) -&gt;BigUint</strong>: Calcula el preu d’una certa quantitat d’un <em>token</em> determinat en EGLD. Se li ha de passar com a arguments l’identificador del <em>token</em> del que volen calcular el preu i la citada quantitat. Retorna el preu com a nombre sencer. S’aplica la taxa (<em>fee</em>).</p></li>
+<li><p><strong>price_egld_token_no_fee(TokenIdentifier, BigUint)-&gt;BigUint</strong>: Igual que l’anterior però al preu retornat no se li aplica la taxa.</p></li>
+<li><p><strong>fee_egld_token(TokenIdentifier, BigUint) -&gt;BigUint</strong>: Calcula la taxa que es pagarà per una certa quantitat d’un <em>token</em> determinat en EGLD. Se li ha de passar com a arguments l’identificador del <em>token</em> del que volen calcular el preu i la citada quantitat. Retorna aquest cost com a nombre sencer.</p></li>
+<li><p><strong>price_token_egld(TokenIdentifier, BigUint) -&gt;BigUint</strong>: Calcula el preu d’una certa quantitat d’EGLD en un <em>token</em> determinat. Se li ha de passar com a arguments l’identificador del <em>token</em> amb el que volem pagar i la quantitat d’EGLD que volem obtenir. Retorna el preu com a nombre sencer. S’aplica la taxa (<em>fee</em>).</p></li>
+<li><p><strong>price_token_egld_no_fee(TokenIdentifier, BigUint) -&gt;BigUint</strong>: Igual que l’anterior però al preu retornat no se li aplica la taxa.</p></li>
+<li><p><strong>fee_token_egld(TokenIdentifier, BigUint) -&gt;BigUint</strong>: Calcula la taxa que es pagarà per una certa quantitat d’EGLD en un <em>token</em> determinat. Se li ha de passar com a arguments l’identificador del <em>token</em> i la citada quantitat. Retorna aquest cost com a nombre sencer.</p></li>
+<li><p><strong>ratio(TokenIdentifier) -&gt;BigUint</strong>: Retorna un nombre sencer amb la relació que hi ha entre els <em>tokens</em> que formen el parell. Si la relació és 0 perquè el primer és més petit que l’altre, es retornarà 1. S’emprarà per corregir la constant <span class="math inline"><em>k</em></span> per evitar l’error introduit pel redondeig de nombres sencers. Se li ha de passar com a argument el <em>token</em> que identifica el parell.</p></li>
+<li><p><strong>egld_to_token(TokenIdentifier) -&gt;SCResult</strong>: Compra de <em>token</em> amb EGLD. La quantitat d’EGLD s’agafarà de la transacció. S’enviarà la quantitat del <em>token</em> al moneder de l’usuari que faci la compra. Les taxes pagades s’acumularan al contracte intel·ligent. S’haurà de passar com a argument l’identificador del <em>token</em> que es vol comprar. Les taxes es llevaran de la quantitat que ha de rebre l’usuari com a resultat de l’intercanvi</p></li>
+<li><p><strong>token_to_egld() -&gt;SCResult</strong>: Compra d’EGLD amb <em>token</em>. El <em>token</em> i la quantitat d’EGLD s’agafaran de la transacció. S’enviarà la quantitat d’EGLD al moneder de l’usuari que faci la compra. Les taxes pagades s’acumularan al contracte intel·ligent. Les taxes es llevaran de la quantitat que ha de rebre l’usuari com a resultat de l’intercanvi.</p></li>
+</ul>
+<h3 id="arquitectura">Arquitectura</h3>
+<p>Una <strong>dApp</strong> ens permetrà escriure en la blockchain i llegir l’emmagatzematge –o estat– del contracte intel·ligent descrit en l’apartat anterior. Com es pot comprovar en la Fig. <a href="#fig:architecture" data-reference-type="ref" data-reference="fig:architecture">28</a> <strong>per escriure en la cadena de blocs</strong> la dApp haurà de llençar una <strong>transacció</strong> que invoqui a un mètode del contracte. Si per contra només necessitem <strong>llegir l’estat</strong> del contracte intel·ligent, emprarem una <strong>API</strong> aportada per Elrond per invocar certs mètodes del contracte, cosa que no farà pas cap canvi en la cadena de blocs.</p>
+<figure>
+<img src="architecture.png" id="fig:architecture" style="width:75.0%" alt="" /><figcaption>Arquitectura de testDEX. (Font: Elaboració pròpia inspirada en <span class="citation" data-cites="elrond2022"></span>).</figcaption>
+</figure>
+<p>Pot parèixer una descripció molt breu, però és que és veritablement una arquitectura molt senzilla.</p>
+<h3 id="pantalles">Pantalles</h3>
+<p>Per <strong>accedir a la dApp</strong> s’haurà de triar un dels mètodes habilitats per fer-ho a la xarxa Elrond (Fig. <a href="#fig:screen_login" data-reference-type="ref" data-reference="fig:screen_login">29</a>).</p>
+<figure>
+<img src="screen_login.png" id="fig:screen_login" style="width:90.0%" alt="" /><figcaption>Finestra de login.</figcaption>
+</figure>
+<p>Només per a l’<strong>usuari que sigui el propietari del contracte</strong>, li apareixerà en el menú d’adalt a la dreta l’<strong>opció “Fund”</strong>. En aquesta pantalla podrà <strong>crear els diferents fons de liquidesa del contracte intel·ligent</strong> (Fig. <a href="#fig:screen_fund" data-reference-type="ref" data-reference="fig:screen_fund">30</a>).</p>
+<figure>
+<img src="screen_fund.png" id="fig:screen_fund" style="width:90.0%" alt="" /><figcaption>Finestra on es provisionen els <em>liquidity pools</em>.</figcaption>
+</figure>
+<p>L’<strong>opció de menú “Wallet”</strong> simplement ens durà a una finestra on l’usuari podrà comprovar l’<strong>estat del seu moneder</strong> (Fig. <a href="#fig:screen_wallet" data-reference-type="ref" data-reference="fig:screen_wallet">31</a>).</p>
+<figure>
+<img src="screen_wallet.png" id="fig:screen_wallet" style="width:90.0%" alt="" /><figcaption>Finestra on es mostra el moneder de l’usuari.</figcaption>
+</figure>
+<p>En l’<strong>opció del menú “Trade”</strong> trobem la finestra amb el cor de l’aplicació (Fig. <a href="#fig:screen_trade" data-reference-type="ref" data-reference="fig:screen_trade">32</a>). Podem observar que apareixerà un gràfic on es pot consultar l’<strong>evolució dels preus del parell en el temps</strong>. A la dreta del gràfic es podran <strong>seleccionar el parells i realitzar compres o vendes</strong>. En la part inferior de la pantalla, a l’esquerra apareixerà un <strong>històric de les operacions fetes</strong> i a la seva dreta les <strong>estadístiques sobre les transaccions</strong>. <strong>Es mesuraran el nombre de transaccions, el temps transcorregut i la mitjana de transaccions per minut</strong>.</p>
+<figure>
+<img src="screen_trade.png" id="fig:screen_trade" style="width:90.0%" alt="" /><figcaption>Finestra on es fan els intercanvis.</figcaption>
+</figure>
+<h2 id="implementació">Implementació</h2>
+<h3 id="repositoris-disponibles">Repositoris disponibles</h3>
+<p>He dividit el projecte en quatre repositoris a Github:</p>
+<ul>
+<li><p><strong>TFM_latex</strong><a href="#fn49" class="footnote-ref" id="fnref49" role="doc-noteref"><sup>49</sup></a>: El present document amb tots els recursos necessaris per generar-lo.</p></li>
+<li><p><strong>TFM_smart_contract</strong><a href="#fn50" class="footnote-ref" id="fnref50" role="doc-noteref"><sup>50</sup></a>: Contracte intel·ligent del projecte escrit en Rust (es pot consultar en l’arxiu “testdex.rs”). Es troben també altres recursos necessaris per compilar-lo, així com d’altres per fer-ne proves.</p></li>
+<li><p><strong>TFM_dapp</strong><a href="#fn51" class="footnote-ref" id="fnref51" role="doc-noteref"><sup>51</sup></a>: Aquí es troba la dApp que interacciona amb el contracte intel·ligent del punt anterior. Es basa en la plantilla “dapp-template” aportada per Elrond<a href="#fn52" class="footnote-ref" id="fnref52" role="doc-noteref"><sup>52</sup></a>.</p></li>
+<li><p><strong>TFM_stats</strong><a href="#fn53" class="footnote-ref" id="fnref53" role="doc-noteref"><sup>53</sup></a>: Es tracta d’un <em>script</em> escrit en Python per comprovar el rendiment de la xarda d’elrond. Es llançaran peticions emprant <em>erdpy</em> al contracte intel·ligent descrit.</p></li>
+</ul>
+<h2 id="posada-en-producció">Posada en producció</h2>
+<p>Començarem compilant el contracte intel·ligent. Executarem dins el directori on es trobi el codi font del contracte intel·ligent:</p>
+<pre><code>[
+    basicstyle=\footnotesize,
+]
+erdpy contract build</code></pre>
+<p>Amb això generarem el fitxer “testdex.wasm” que desplegarem a la <em>devnet</em> d’Elrond amb la comanda:</p>
+<pre><code>[
+    basicstyle=\footnotesize,
+]
+erdpy contract deploy --pem=&quot;~/wallet/wallet1.pem&quot; \
+  --recall-nonce --gas-limit=100000000 --project=. \
+  --proxy=&quot;https://devnet-gateway.elrond.com&quot; \
+  --chain=&quot;D&quot; --arguments 0x05 --send</code></pre>
+<p>D’entre els paràmetres, s’ha de destacar que dins de “ /wallet/wallet1.pem” es troba la clau privada de l’usuari de la devnet d’Elrond que desplegarà el contracte intel·ligent a la xarxa (que serà el propietari) i amb “–arguments 0x05” li passem en hexadecimal l’argument necessari pel mètode que fa de constructor (un valor de 5 implica una comisió del 0.05%). Aquest comanda mostrarà per la consola l’adreça del contracte intel·ligent dins de la <em>devnet</em> d’Elrond, en el nostre cas:</p>
+<pre><code>[
+    basicstyle=\footnotesize,
+]
+erd1qqqqqqqqqqqqqpgq65ukpqvhhyghtnyysjtltcjndg7wlhl4mq2qey8vpl</code></pre>
+<h2 id="proves">Proves</h2>
+<h3 id="sobre-el-contracte-intelligent">Sobre el contracte intel·ligent</h3>
+<p>Les proves sobre el contracte intel·ligent tenen una especial importància, ja que errades en el seu disseny i/o implementació poden provocar pèrdues econòmiques. Per testejar el contracte intel·ligent allò primer que he fet és definir <strong>“interaccions” mitjançant <em>snippets</em></strong> que empren l’eina <em>erdpy</em>. En gerga d’Elrond, es crea un fitxer d’interacciones (en el nostre cas anomenat “devnet.snippets.sh”). Després fent clic amb el botó dret al <em>plugin</em><a href="#fn54" class="footnote-ref" id="fnref54" role="doc-noteref"><sup>54</sup></a> d’Elrond a Visual Studio Code podrem accedir als <em>snippets</em> (Fig. <a href="#fig:test-snippets" data-reference-type="ref" data-reference="fig:test-snippets">33</a>).</p>
+<figure>
+<img src="test-snippets.png" id="fig:test-snippets" style="width:100.0%" alt="" /><figcaption><em>Snippets</em> en l’IDE Visual Studio Code.</figcaption>
+</figure>
+<p>Hi ha definit un <em>snipped</em> per a cada mètode del contracte intel·ligent, a més de dos addicionals per compilar-lo i desplogar-lo a la xarxa d’Elrond. Ja s’han comentat anteriorment els mètodes del contracte intel·ligent i els respectius snippets permeten executar-los (i així comprovar si el comportamet és l’esperar). Vull parar l’atenció en els que penso que són il·lustratius del fundionament d’<em>erdpy</em>:</p>
+<ul>
+<li><p><strong>Trucades a mètodes del contracte intel·ligent que impliquen transferència d’actius</strong> (<span class="math inline"><em>e</em><em>r</em><em>d</em><em>p</em><em>y</em><em>c</em><em>o</em><em>n</em><em>t</em><em>r</em><em>a</em><em>c</em><em>t</em><em>c</em><em>a</em><em>l</em><em>l</em></span>):</p>
+<ul>
+<li><p><strong>Transferència d’EGLD del client cap al contracte</strong> (<em>snipped</em> “addLiquidityEgld”): En la Fig. <a href="#fig:test-addegld" data-reference-type="ref" data-reference="fig:test-addegld">38</a> es pot veure un exemple de com transferir EGLD al contracte intel·ligent. S’ha de destacar que l’opció “--value” inclourà la quantitat d’EGLD a traspassar en wei i l’opció “--function” especificarà el mètode del contracte amb la lògica que tractarà el citat moviment (els argument que se li passen es definiran en “--arguments” i estaran codificats en hexadecimal). Dins el mètode del contracte intel·ligent es podrà recuperar la quantitat d’EGLD amb:</p>
+<pre><code>let payment = self.call\_value().egld\_value();</code></pre></li>
+<li><p><strong>Transferència de tokens ESDT del client cap al contracte</strong> (<em>snipped</em> “addLiquidityToken”): Aquest cas és un exemple de com transferir tokens ESDT (Fig. <a href="#fig:test-addtoken" data-reference-type="ref" data-reference="fig:test-addtoken">39</a>). Aquí no s’especificarà opció “--value” i en l’opció “--function” es posarà el text “ESDTTransfer”. En l’opció arguments –codificat en hexadecimal– es passarà el nom del token, la quantitat del mateix i el nom del mètode del contracte amb la lògica per gestionar la trucada. Ja dins el mètode del contracte intel·ligent, el token i la quantitat es podran recuperar amb:</p>
+<pre><code>let (payment, token) =
+    self.call_value().payment_token_pair();</code></pre></li>
+<li><p><strong>Transferència d’EGLD/token del contracte cap al client</strong> (<em>snipped</em> “claimLiquidityToken”): Aquí es cridarà un mètode que generarà una transferència –tant d’EGLD com de tokens ESDT– cap a algun <em>wallet</em> (Fig. <a href="#fig:test-liquiditytoken" data-reference-type="ref" data-reference="fig:test-liquiditytoken">36</a>). . L’opció “--value” s’especificarà amb valor 0 i en l’opció “--function” es posarà el mètode del contracte amb la lògica que tractarà el citat moviment els argument que se li passen es definiran en “--arguments” i estaran codificats en hexadecimal).</p></li>
+</ul></li>
+<li><p><strong>Trucades a mètodes del contracte intel·ligent sense transferència d’actius</strong> (<em>erdpy contract query</em>): En la Fig. <a href="#fig:test-getearnings" data-reference-type="ref" data-reference="fig:test-getearnings">37</a> es pot vure aquest cas. Serà suficient amb especificar el mètode que es crida i els arguments codificats en hexadecimal. Com que no es tracta d’una trasacció que modifiqui la <em>blokchain</em>, és molt més ràpida.</p></li>
+</ul>
+<figure>
+<img src="test-addegld.png" id="fig:test-addegldsnip" alt="" /><figcaption>“addLiquidityEgld”.</figcaption>
+</figure>
+<figure>
+<img src="test-addtoken.png" id="fig:test-addtokensnip" alt="" /><figcaption>“addLiquidityToken”.</figcaption>
+</figure>
+<figure>
+<img src="test-liquiditytoken.png" id="fig:test-liquiditytoken" alt="" /><figcaption>“claimLiquidityToken”.</figcaption>
+</figure>
+<figure>
+<img src="test-getearnings.png" id="fig:test-getearnings" alt="" /><figcaption>“getFee”.</figcaption>
+</figure>
+<p>S’han executat els següents <strong>snippets</strong> per validar el contracte intel·ligent<a href="#fn55" class="footnote-ref" id="fnref55" role="doc-noteref"><sup>55</sup></a>:</p>
+<ul>
+<li><p>Compilar el contracte intel·ligent: <em>Snipped</em> “build”.</p></li>
+<li><p>Desplegar el contracte intel·ligent: <em>Snipped</em> “deploy”. Com a paràmetre si li passa la taxa (<em>fee</em>) que es cobrarà en els <em>swaps</em>.</p></li>
+<li><p>Comprovar que el contracte s’ha desplegat correctament: <em>Snipped</em> “checkDeployment”.</p></li>
+<li><p>Afegir un fons de liquiditat: <em>Snippeds</em> “addLiquidityToken” (Fig. <a href="#fig:test-addegld" data-reference-type="ref" data-reference="fig:test-addegld">38</a>) i “addLiquidityEgld” (Fig. <a href="#fig:test-addtoken" data-reference-type="ref" data-reference="fig:test-addtoken">39</a>). Es torna a afegir fons al parell per comprovar que no deixa. Finalment, s’intenta crear un fons des d’una cartera que no és la propietaria del contracte intel·ligent per comprovar que dona error (dins del fitxer <em>devenet.snipped.sh</em> s’ha de canviar la constant <em>OWNER_PEM=“./wallet/wallet1.pem”</em> per <em>OWNER_PEM=“./wallet/wallet2.pem”</em>).</p></li>
+<li><p>Obtenir la liquiditat del <em>pool</em>: <em>Snippeds</em> “getLiquidityToken” i “getLiquidityEgld”. Òbviament, els valors obtinguts hauran de coincidir amb les quantitats que s’han especificar en la creació del fons en el punt anterior.</p></li>
+<li><p>Obtenir l’estat del fons de liquiditat: <em>Snipped</em> “getLiquidityStatus”. Executat abans de constituir el fons i després de constituir-lo (ha de donar valors diferents).</p></li>
+<li><p>Calcular la constant K actual: <em>Snippeds</em> “calculateK” i “getRatio”. Per l’error de rendodeig en la divisió entre nombres sencers que s’ha comentat abans, anirà fluctuant un poc per sobre i per sota del valor de la constant del moment de constituir el fons. S’ha comprovat fent <em>swaps</em> que així és.</p></li>
+<li><p>Comprovar que la taxa (<em>fee</em>): <em>Snipped</em> “getFee”. La taxa ha de ser la mateixa que es va definir en el moment de desplegar el contracte intel·ligent.</p></li>
+<li><p>Calcular el preu en token de l’EGLD (amb i sense taxa): <em>Snippeds</em> “getPriceEgldToken”, “getPriceEgldTokenNumerator”, “getPriceEgldTokenDenominator”, “getPriceEgldTokenNoFee” i “getFeeEgldToken”<a href="#fn56" class="footnote-ref" id="fnref56" role="doc-noteref"><sup>56</sup></a>. S’ha comprovat que es generen els mateixos preus que en l’exemple descrit en la secció <a href="#subsub:dexamm" data-reference-type="ref" data-reference="subsub:dexamm">3.1.1</a>.</p></li>
+<li><p>Calcular el preu en EGLD del token (amb i sense taxa): <em>Snippeds</em> “getPriceTokenEgld”, “getPriceTokenEgldNumerator” i “getPriceTokenEgldDenominator”<a href="#fn57" class="footnote-ref" id="fnref57" role="doc-noteref"><sup>57</sup></a>. S’ha comprovat que es generen els mateixos preus que en l’exemple descrit en la secció <a href="#subsub:dexamm" data-reference-type="ref" data-reference="subsub:dexamm">3.1.1</a>.</p></li>
+<li><p>Comprovar els beneficis obtinguts pels swaps realitzats: <em>Snippeds</em> “getEarningsEgld” i “getEarningsToken”. També s’han comprovat que complien amb l’estudi teòric fet a la secció <a href="#subsub:dexamm" data-reference-type="ref" data-reference="subsub:dexamm">3.1.1</a>.</p></li>
+<li><p>Comprovar que el propietari del contracte rep els beneficis d’un token concret quan els reclama: <em>Snipped</em> “claimEarningsToken()”. S’ha d’emprar també el <em>snipped</em> “getEarningsToken” per esbrinar la quantitat a rebre i després d’executar-lo <em>snipped</em> ha d’aparèixer a la cartera del propietari del <em>smart contract</em>.</p></li>
+<li><p>Comprovar que el propietari del contracte rep els beneficis en EGLD quan els reclama: <span>Snipped</span> “claimEarningsEgld()”. S’ha d’emprar també el <em>snipped</em> “getEarningsEgld” per esbrinar la quantitat a rebre i després d’executar-lo ha d’aparèixer a la cartera del propietari del <em>smart contract</em>. Per disseny, l’EGLD que es recuperarà serà el generat amb tots els <em>swaps</em> (independentment del parell).</p></li>
+<li><p>Comprovar que el propietari del contracte rep la part d’EGLD d’un fons de liquiditat quan la reclama: <span>Snipped</span> “claimLiquidityEgld()”. S’ha d’emprar també el <em>snipped</em> “getLiquidityEgld” per esbrinar la quantitat a rebre i després d’executar-lo ha d’aparèixer a la cartera del propietari del <em>smart contract</em>. A diferència del que passa amb “claimEarningsEgld()”, aquí només es rebrà l’EGLDd’un parell en concret.</p></li>
+<li><p>Comprovar que el propietari del contracte rep la part del token d’un fons de liquiditat quan la reclama: <span>Snipped</span> “claimLiquidityToken()”. S’ha d’emprar també el <em>snipped</em> “getLiquidityToken” per esbrinar la quantitat a rebre i després d’executar-lo ha d’aparèixer a la cartera del propietari del <em>smart contract</em>.</p></li>
+<li><p>Comprovar que es poden intercanviar EGLD per token: <span>Snipped</span> “swapEgldForToken()”. S’ha comprovat que es generen els mateixos resultats que els descrits en l’exemple de la secció <a href="#subsub:dexamm" data-reference-type="ref" data-reference="subsub:dexamm">3.1.1</a>. Així mateix, s’emprarà el <em>snipped</em> “getPriceEgldToken” per conèixer la quantitat de token que hem de rebre a la cartera.</p></li>
+<li><p>Comprovar que es poden intercanviar token per EGLD: <span>Snipped</span> “swapTokenForEgld()”. S’ha comprovat que es generen els mateixos resultats que els descrits en l’exemple de la secció <a href="#subsub:dexamm" data-reference-type="ref" data-reference="subsub:dexamm">3.1.1</a>. Així mateix, s’emprarà el <em>snipped</em> “getPriceTokenEgld” per conèixer la quantitat de t’EGLD que hem de rebre a la cartera.</p>
+<figure>
+<img src="testsnipped-addegld.png" id="fig:test-addegld" alt="" /><figcaption>“addLiquidityEgld”.</figcaption>
+</figure>
+<figure>
+<img src="testsnipped-addtoken.png" id="fig:test-addtoken" alt="" /><figcaption>“addLiquidityToken”.</figcaption>
+</figure></li>
+</ul>
+<p>Finalment, Elrond disposa d’una eina anomenada <strong>Mandos i</strong> d’una <strong>testnet</strong> (local), que permeten <strong>automatitzar les proves</strong> en un entorn controlat (<span class="citation" data-cites="elrond2022"></span>, seccions “<em>Mandos tests reference</em>” i “<em>Setup a Local Testnet</em>”). A part de per una qüestió merament de temps (són eines específiques que requereixen un temps d’aprenentatge i no podia abarcar-ho tot), per l’objectiu de posar a prova el rediment de la xarxa Elrond he triat realitzar les proves directament a la devnet amb els <em>snippets</em>. Com s’ha dit, els test de rendiment es faran en aquesta xarxa.</p>
+<h1 id="conclusions">Conclusions</h1>
+<p>“Este capítulo tiene que incluir:</p>
+<ul>
+<li><p>Una descripción de las conclusiones del trabajo: Qué lecciones se han aprendido del trabajo?.</p></li>
+<li><p>Una reflexión crítica sobre el logro de los objetivos planteados inicialmente: Hemos logrado todos los objetivos? Si la respuesta es negativa, por qué motivo?</p></li>
+<li><p>Un análisis crítico del seguimiento de la planificación y metodología a lo largo del producto: Se ha seguido la planificación? La metodología prevista ha sido la adecuada? Ha habido que introducir cambios para garantizar el éxito del trabajo? Por qué?</p></li>
+<li><p>Las líneas de trabajo futuro que no se han podido explorar en este trabajo y han quedado pendientes.”</p></li>
+</ul>
+<h1 id="glossari">Glossari</h1>
+<p>“Definición de los términos y acrónimos más relevantes utilizados dentro de la Memoria.”</p>
+<h1 id="bibliografia">Bibliografia</h1>
+<h1 id="annexos">Annexos</h1>
+<p>“Listado de apartados que son demasiado extensos para incluir dentro de la memoria y tienen un carácter autocontienido (por ejemplo, manuales de usuario, manuales de instalación, etc.)</p>
+<p>Dependiente del tipo de trabajo, es posible que no haya que añadir ningún anexo.”</p>
+<section class="footnotes" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1" role="doc-endnote"><p>Per exemple el “b-money” de W. Dai (1998) <span class="citation" data-cites="dai1998"></span>, el “Reusable Proofs of Work” de H. Finney (2005) <span class="citation" data-cites="finney2005"></span> o el “Bit gold” de N. Szabo (2008) <span class="citation" data-cites="szabo2008"></span>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2" role="doc-endnote"><p>No és l’objectiu del present treball explicar els sistemes de <em>blockchain</em>, però una gran explicació gràfica la realitza A. Brownworth <span class="citation" data-cites="brownworth1"></span><span class="citation" data-cites="brownworth2"></span>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3" role="doc-endnote"><p>S’han fet proves a la <em>testnet</em> amb pics de més de 260k TPS <span class="citation" data-cites="elrond2022"></span>.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4" role="doc-endnote"><p><a href="https://maiar.com/">https://maiar.com/</a><a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5" role="doc-endnote"><p><a href="https://wallet.elrond.com/">https://wallet.elrond.com/</a><a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6" role="doc-endnote"><p>Per aconseguir el <em>plugin</em> per al teu navegador: <a href="https://getmaiar.com/defi">https://getmaiar.com/defi</a><a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7" role="doc-endnote"><p><a href="https://maiar.exchange/">https://maiar.exchange/</a><a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8" role="doc-endnote"><p><a href="https://www.trailofbits.com/">https://www.trailofbits.com/</a><a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn9" role="doc-endnote"><p><a href="https://runtimeverification.com/">https://runtimeverification.com/</a><a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn10" role="doc-endnote"><p>Existeix el <em>plugin</em> “Elrond IDE”: <a href="https://marketplace.visualstudio.com/items?itemName=Elrond.vscode-elrond-ide">https://marketplace.visualstudio.com/items?itemName=Elrond.vscode-elrond-ide</a><a href="#fnref10" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn11" role="doc-endnote"><p>En el present treball empraré indistintament “<em>blockchain</em>” i “cadena de blocs” (traducció del terme proposada pel Termcat).<a href="#fnref11" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn12" role="doc-endnote"><p>No hi ha entrada al Termcat pel terme “shard”, jo l’he traduït per “fragment” (empraré ambdues paraules indistintament en el present treball).<a href="#fnref12" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn13" role="doc-endnote"><p>El Termcat encara no ha traduït el terme, és una traducció pròpia que penso que fa entendre el concepte.<a href="#fnref13" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn14" role="doc-endnote"><p><a href="https://webassembly.org/">https://webassembly.org/</a><a href="#fnref14" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn15" role="doc-endnote"><p>En el present treball empraré els termes “cartera” o “moneder” indistintament per referir-me al concepte de “<em>wallet</em>”.<a href="#fnref15" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn16" role="doc-endnote"><p>No es diu explícitament en la bibliografia però investigant pels grups de Telegram d’Elrond (concretament en <a href="https://t.me/ElrondValidators">https://t.me/ElrondValidators</a>) vaig descobrir que el concepte de “<em>fisherman</em>” encara no està implementat.<a href="#fnref16" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn17" role="doc-endnote"><p>El SPoS d’Elrond es basa en la premissa que un actor malèvol només té el temps que dura una ronda per adaptar-se i intentar influir en el bloc que es proposarà.<a href="#fnref17" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn18" role="doc-endnote"><p>Per aclarir del tot aquest punt, en la bibliografia emprada, líder de consens, líder de validació i proposador de bloc (<em>block proposer</em>) fan referència al mateix concepte.<a href="#fnref18" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn19" role="doc-endnote"><p>Aquest concepte es podria traduir al català com “fragmentació de la xarxa” però he preferit deixar el terme anglès. El mateix passa amb <em>transaction sharding</em> i <em>state sharding</em>, que es podrien traduir respectivament per “fragmentació de les transaccions” i “fragmentació de l’estat”.<a href="#fnref19" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn20" role="doc-endnote"><p>En <span class="citation" data-cites="elrond2019"></span> es pot trobar una funció en pseudocodi amb la que calcular el nombre òptim de <em>shards</em>.<a href="#fnref20" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn21" role="doc-endnote"><p>Aquest paràgraf és un resum molt breu. Per referències més detallades consultar <span class="citation" data-cites="elrond2019"></span>.<a href="#fnref21" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn22" role="doc-endnote"><p>“Donar fe” o “autenticar” són les traduccions al català que he trobat més adients pel verb anglès “to notarize”. El verb “notarizar” existeix en espanyol, però no existeix “notaritzar” en català. En qualsevol cas, empraré aquest darrer terme en algunes ocasions entre cometes per no generar confusions.<a href="#fnref22" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn23" role="doc-endnote"><p><a href="https://webassembly.org/">https://webassembly.org/</a><a href="#fnref23" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn24" role="doc-endnote"><p><a href="https://github.com/ElrondNetwork/elrond-wasm-rs">https://github.com/ElrondNetwork/elrond-wasm-rs</a><a href="#fnref24" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn25" role="doc-endnote"><p><a href="https://marketplace.visualstudio.com/items?itemName=Elrond.vscode-elrond-ide">https://marketplace.visualstudio.com/items?itemName=Elrond.vscode-elrond-ide</a><a href="#fnref25" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn26" role="doc-endnote"><p><a href="https://wasmer.io/">https://wasmer.io/</a><a href="#fnref26" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn27" role="doc-endnote"><p>Realitzada per l’empresa Wasmer Inc. que també ha creat un gestor de paquets que permet els desenvolupadors compartir mòduls empaquetats de codi Wasm.<a href="#fnref27" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn28" role="doc-endnote"><p>Disponible a: <a href="https://github.com/ElrondNetwork/elrond-go">https://github.com/ElrondNetwork/elrond-go</a>.<a href="#fnref28" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn29" role="doc-endnote"><p>Es recomana Ubuntu 20.04.<a href="#fnref29" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn30" role="doc-endnote"><p>Traducció del Termcat del terme “<em>howto</em>”.<a href="#fnref30" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn31" role="doc-endnote"><p>Aquesta secció torna a ser una síntesi de l’apartat “<em>Validarors</em>” de <span class="citation" data-cites="elrond2022"></span>.<a href="#fnref31" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn32" role="doc-endnote"><p>En el grup de Telegram “<em>Elrond Validators Announcements</em>” (<a href="https://t.me/ElrondValidatorsAnn">https://t.me/ElrondValidatorsAnn</a>) es va definir una ronda de gènisi per la <em>devnet</em> (reinici) per a dia 29 de març de 2022.<a href="#fnref32" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn33" role="doc-endnote"><p>Per a la <em>devnet</em> i la <em>testnet</em> es disposa d’una opció <em>Faucet</em> per obtenir xEGLD (que no té cap cost en moneda <em>fiat</em> i et permetrà poder relalitzar transaccions).<a href="#fnref33" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn34" role="doc-endnote"><p>Ha de tenir almenys nou caràcters, una lletra majúscula, un símbol i un nombre.<a href="#fnref34" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn35" role="doc-endnote"><p><a href="https://chrome.google.com/webstore/detail/maiar-defi-wallet/">https://chrome.google.com/webstore/detail/maiar-defi-wallet/</a><a href="#fnref35" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn36" role="doc-endnote"><p><a href="https://metamask.io/">https://metamask.io/</a><a href="#fnref36" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn37" role="doc-endnote"><p><a href="https://maiar.com/">https://maiar.com/</a><a href="#fnref37" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn38" role="doc-endnote"><p>En català balear fem ús del verb “cridar” en lloc del verb “trucar”. Així diem per exemple “cridar per telèfon” o “cridar el mètode d’un objecte”.<a href="#fnref38" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn39" role="doc-endnote"><p><a href="https://maiar.exchange/">https://maiar.exchange/</a><a href="#fnref39" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn40" role="doc-endnote"><p>No m’he atrevit a traduir aquest terme, però un mot que m’agrada del català és “conrear”.<a href="#fnref40" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn41" role="doc-endnote"><p><a href="https://www.elastic.co/">https://www.elastic.co/</a><a href="#fnref41" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn42" role="doc-endnote"><p>Aquesta operació deixa intuir que per mantenir el valor de <span class="math inline"><em>k</em></span> constant serà un problema, ja que l’arrodoniment provocarà que s’acumuli error.<a href="#fnref42" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn43" role="doc-endnote"><p><a href="https://uniswap.org/">https://uniswap.org/</a><a href="#fnref43" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn44" role="doc-endnote"><p><a href="https://pancakeswap.finance/">https://pancakeswap.finance/</a><a href="#fnref44" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn45" role="doc-endnote"><p>He imitat els diagrames explicatius de la documentació d’Elrond <span class="citation" data-cites="elrond2022"></span> i per això no he fet servir diagrames de casos d’ús d’UML. El contingut de les figures es troba en anglès ja que és l’idioma que he emprat en el codi font.<a href="#fnref45" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn46" role="doc-endnote"><p>Quan s’implementin les propietats i mètodes públics en el lleguatge Rust s’anotaran amb #[endpoint] o #[view].<a href="#fnref46" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn47" role="doc-endnote"><p>Estructura de dades que representa un nombre sencer molt gran sense signe.<a href="#fnref47" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn48" role="doc-endnote"><p>Sencer sense signe representat amb 32 bits.<a href="#fnref48" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn49" role="doc-endnote"><p><a href="https://github.com/sergiogrubio/TFM_latex">https://github.com/sergiogrubio/TFM_latex</a><a href="#fnref49" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn50" role="doc-endnote"><p><a href="https://github.com/sergiogrubio/TFM_smart_contract">https://github.com/sergiogrubio/TFM_smart_contract</a><a href="#fnref50" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn51" role="doc-endnote"><p><a href="https://github.com/sergiogrubio/TFM_dapp">https://github.com/sergiogrubio/TFM_dapp</a><a href="#fnref51" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn52" role="doc-endnote"><p><a href="https://github.com/ElrondNetwork/dapp-template">https://github.com/ElrondNetwork/dapp-template</a><a href="#fnref52" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn53" role="doc-endnote"><p><a href="https://github.com/sergiogrubio/TFM_stats">https://github.com/sergiogrubio/TFM_stats</a><a href="#fnref53" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn54" role="doc-endnote"><p>Com configurar l’entorn per desenvolupar en la xarxa Elrond es pot consultar en <span class="citation" data-cites="elrondnet2020"></span> i <span class="citation" data-cites="ton2021"></span>.<a href="#fnref54" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn55" role="doc-endnote"><p>S’ha de destacar que en el resultat del snipped apareixarà un enllaç cap a l’explorador de transaccions de la xarxa d’Elrond on es podrà comprovar si ha funcionat correctament o ha aparegut algun error (òbviament, es provaran situacions que haurien de generar error i en aquest cas el comportament anòmal és que funcioni correctament).<a href="#fnref55" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn56" role="doc-endnote"><p>Hi ha tres <em>snippeds</em> per coincidir amb la implementació que s’ha exposat en la secció XYZ.<a href="#fnref56" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn57" role="doc-endnote"><p>Hi ha tres <em>snippeds</em> per coincidir amb la implementació que s’ha exposat en la secció XYZ.<a href="#fnref57" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
