@@ -29,7 +29,21 @@
 \lstset{basicstyle=\ttfamily\small,literate={-}{{-\allowbreak}}{1}}
 \author{Sergio González Rubio}
 \title{testDEX: Un DEX simple en la xarxa Elrond}
-\date{31 maig 2022}
+\date{today}
+%idea: https://tex.stackexchange.com/questions/249415/set-font-size-for-footnotes
+\makeatletter
+\renewcommand\footnotesize{%
+   \@setfontsize\footnotesize\@ixpt{9}%
+   \abovedisplayskip 8\p@ \@plus2\p@ \@minus4\p@
+   \abovedisplayshortskip \z@ \@plus\p@
+   \belowdisplayshortskip 4\p@ \@plus2\p@ \@minus2\p@
+   \def\@listi{\leftmargin\leftmargini
+               \topsep 4\p@ \@plus2\p@ \@minus2\p@
+               \parsep 2\p@ \@plus\p@ \@minus\p@
+               \itemsep \parsep}%
+   \belowdisplayskip \abovedisplayskip
+}
+\makeatother
 
 \begin{document}
 
@@ -63,7 +77,6 @@ Reconeixement-NoComercial-SenseObraDerivada\\
 \href{http://creativecommons.org/licenses/by-nc-nd/3.0/es/}{3.0 Espanya de Creative Commons}
 \end{flushleft}
 \end{titlepage}
-
 
 \begin{center}
 \textbf{FITXA DEL TREBALL FINAL}
@@ -116,7 +129,7 @@ Reconeixement-NoComercial-SenseObraDerivada\\
 \label{sub:context}
 El \textit{white paper} de \textbf{Bitcoin} fou presentat l'any 2008 per una o diverses persones ocultes rere el pseudònim de Satoshi Nakamoto \cite{nakamoto2008}. Tot i que existien intents anteriors\footnote{Per exemple el ``\textit{b-money}'' de W. Dai (1998) \cite{dai1998}, el ``\textit{Reusable Proofs of Work}'' de H. Finney (2005) \cite{finney2005} o el ``\textit{Bit gold}'' de N. Szabo (2008) \cite{szabo2008}.}, fou la primera solució ``creïble'' \cite{vuterin2014} que va permetre transferir fons sense la intervenció de terceres parts (cosa que inclou a bancs centrals encarregats d'emetre la moneda). Gràcies a la implementació d'un programari client –lliure i de codi obert– s'estableix una xarxa d'igual a igual (\textit{peer-to-peer}) on es connecten nodes –no controlats– que verifiquen i emmagatzemen en una base de dades pública la comptabilitat dels moviments entre usuaris de la xarxa. Les operacions s'agrupen en blocs, que s'enllacen i xifren per assegurar que no hi hagi modificacions malicioses posteriors. Els càlculs per realitzar el xifratge tenen cert nivell de dificultat i comporten una despesa energètica considerable, per aquest motiu s'incentiva els nodes ``miners'' amb una recompensa quan aconsegueixen crear un nou bloc a la cadena. Per això es coneix aquesta tecnologia com a \textit{blockchain}\footnote{No és l'objectiu del present treball explicar els sistemes de \textit{blockchain}, però una gran exposició gràfica la realitza A. Brownworth \cite{brownworth1}\cite{brownworth2}.}. Així mateix, com afirma V. Buterin \cite{vuterin2014}, l'altra gran aportació és la manera com aplica el concepte de \textit{Proof-of-Work} (PoW) perquè els nodes arribin a un consens per validar les transaccions solucionant certs problemes (com, per exemple, el de la doble despesa). Amb PoW es pretén evitar que nodes de la xarxa tinguin comportaments indesitjats. Com ja s'ha remarcat, a Bitcoin els càlculs de xifratge per crear un nou bloc comporten molta feina computacional, però la validació d'un bloc ja creat requereix un esforç molt inferior. Si dos nodes distribueixen simultàniament diferents versions del següent bloc, el que tingui la cadena més llarga serà el que els nodes acceptin com a vàlid i descartaran la resta \cite{nakamoto2008}. Finalment, el protocol de Bitcoin també disposa d'un llenguatge de \textit{scripting}, encara que amb limitacions importants (per exemple, no és Turing complet i no té estat \cite{vuterin2014}). 
 
-El 2014 V. Buterin va presentar el \textit{white paper} d'\textbf{Ethereum} \cite{vuterin2014} (la xarxa es va posar en producció el 30 de juliol de 2015 \cite{tual2015}). Igual que passa amb Bitcoin, s'utilitza el concepte PoW com a mecanisme de consens entre nodes, però s'incorpora un llenguatge anomenat ``Solidity'' (que sí que és Touring complet) per a la creació de ``\textit{smart contracts}'' i d'aplicacions descentralitzades (o ``dApps''). Els contractes intel·ligents són programes desplegats (o guardats) a la cadena de blocs que s'executen automàticament quan es compleixen certes condicions. A més, una dApp és una aplicació que funciona sense la necessitat de servidors centrals (gràcies a la tecnologia descrita). En el moment en què redacto aquestes línies, la versió d'Ethereum 2.0 ``Serenity'' encara no està completament desenvolupada. Aquest nou \textit{fork} ha d'introduir millores com substituir el PoW per \textit{Proof-of-Stake} (PoS), per reduir el consum d'energia, o com aplicar tècniques de \textit{sharding} per augmentar l'eficiència (la versió actual de la xarxa no arriba a suportar les 20 transaccions per segon \cite{mech2018}).
+El 2014 V. Buterin va presentar el \textit{white paper} d'\textbf{Ethereum} \cite{vuterin2014} (la xarxa es va posar en producció el 30 de juliol de 2015 \cite{tual2015}). Igual que passa amb Bitcoin, s'utilitza el concepte PoW com a mecanisme de consens entre nodes, però s'incorpora un llenguatge anomenat ``Solidity'' (que sí que és Touring complet) per a la creació de ``\textit{smart contracts}'' i d'aplicacions descentralitzades (o ``DApps''). Els contractes intel·ligents són programes desplegats (o guardats) a la cadena de blocs que s'executen automàticament quan es compleixen certes condicions. A més, una DApp és una aplicació que funciona sense la necessitat de servidors centrals (gràcies a la tecnologia descrita). En el moment en què redacto aquestes línies, la versió d'Ethereum 2.0 ``Serenity'' encara no està completament desenvolupada. Aquest nou \textit{fork} ha d'introduir millores com substituir el PoW per \textit{Proof-of-Stake} (PoS), per reduir el consum d'energia, o com aplicar tècniques de \textit{sharding} per augmentar l'eficiència (la versió actual de la xarxa no arriba a suportar les 20 transaccions per segon \cite{mech2018}).
 
 Amb Bitcoin i Ethereum consolidats, ``The Elrond Team'' va publicar el 19 de juny de 2019 el \textit{white paper} d'una nova solució de cadena de blocs pública sota el títol ``\textit{\textbf{Elrond}: A Highly Scalable Public Blockchain via Adaptive State Sharding and Secure Proof of Stake}''. Entre els reptes que plantejaren \cite{elrond2022}\cite{elrond2019}:
 \begin{itemize}
@@ -145,7 +158,7 @@ Tot i que hi ha altres projectes prometedors com Solana, Avalanche, Tron o Tezos
 A nivell molt genèric, els quatre grans objectius que pretenc assolir són:
 \begin{itemize}
     \item L'anàlisi i estudi de la tecnologia de \textit{blockchain} d'Elrond des d'un punt de vista acadèmic.
-    \item La definició d'una proposta d'arquitectura per desenvolupar dApps en la xarxa d'Elrond.
+    \item La definició d'una proposta d'arquitectura per desenvolupar DApps en la xarxa d'Elrond.
     \item El desenvolupament d'un exemple pràctic usant l'arquitectura anterior.
     \item La definició de proves per comprovar característiques de la xarxa d'Elrond.
 \end{itemize}
@@ -162,7 +175,7 @@ Les \textbf{fases} que es desenvoluparan són les següents:
     \item \textbf{Revisió de la tecnologia d'Elrond}: Es descriurà a tall de resum la tecnologia i s'enumeraran els recursos que hi ha disponibles per desenvolupar en aquesta xarxa.
     \item \textbf{testDEX}:
     \begin{itemize}
-    	\item \textbf{Anàlisi}: Definició dels requeriments i dels models relacionats amb aquests. 
+    	\item \textbf{Anàlisi}: Definició dels requisits i dels models relacionats amb aquests. 
     	\item \textbf{Disseny}: Realització dels models que defineixen el disseny del sistema i l'arquitectura.
     	\item \textbf{Implementació}: Escriptura del codi font.
     	\item \textbf{Posada en producció}: Desplegament en producció del projecte.
@@ -190,11 +203,15 @@ La següent figura presenta la temporalització de les fases del projecte, s'ha 
 \end{figure} 
 
 \subsection{Breu sumari de productes obtinguts}
-``No hay que entrar en detalle: la descripción detallada se hará en el resto de capítulos.'' 
-\medskip 
+El present treball bàsicament aporta:
+\begin{itemize}
+\item Un \textbf{revisió teòrica de la tecnologia} d'Elrond.
+\item Un \textbf{exemple pràctic d'arquitectura} per a aplicacions descentralitzades emprant aquesta tecnologia amb testDEX.
+\item Un \textbf{\textit{script} en Python per testejar el rendiment} de la xarxa.
+\end{itemize}
 
 \subsection{Breu descripció dels altres capítols de la memòria}
-``Explicación de los contenidos de cada capítulo y su relación con el trabajo en global.''
+En la secció \ref{sec:revelrond} ``Revisió de la tecnologia d'Elrond'' es descriuen els conceptes generals d'Elrond, el funcionament bàsic de la seva tecnologia i els productes de l'empresa disponibles. La \ref{sec:testdex} ``testDEX'' presenta les fases del desenvolupament de l'aplicació de mostra que aplica els conceptes teòrics exposats. En la secció \ref{sec:con} ``Conclusions'' es revisa de forma crítica el resultat del present treball. La \ref{sec:glo} és un compendi d'acrònims i termes destacables d'aquesta memòria. El \ref{sec:bib} enumera la bibliografia emprada. Finalment, en el \ref{sec:ann} ``Annexos'' apareix un petit manual d'usuari de la DApp ``testDEX''.
 
 \clearpage
 
@@ -214,7 +231,7 @@ Elrond és una cadena de blocs\footnote{En el present treball empraré indistint
   \item \textbf{Contractes intel·ligents}: Que s'executaran emprant l'\textit{Adaptative State Sharding}. Elrond recomana que siguin escrits en Rust però, com s'ha dit en el punt anterior, es poden utilitzar altres llenguatges. Una característica única, comparant per exemple amb Ethereum, és que es poden modificar els \textit{smart contracts} després de ser desplegats \cite{cwirko01} (per exemple per corregir errors).
   \item \textbf{Execució ràpida de transaccions \textit{cross-shard}}: Gestionada de forma nadiua a nivell de protocol fent servir un algorisme d'expedició (\textit{dispatching}) i un algorisme d'encaminament.
    \item \textbf{\textit{Metachain}}: Cadena de blocs que s'executa en un \textit{shard} especial. El seu rol principal no és processar transaccions sinó que  és notificar i autenticar les capçaleres dels blocs processats.
-   \item \textbf{Elrond Gold (EGLD)}: Criptovalor (\textit{token}) nadiu de la xarxa Elrond que serveix de mitjà de pagament per a les transaccions. Ajuda en el desplegament de dApps, en l'execució de contractes intel·ligents i també s'empra com a mecanisme de pagament de recompenses per als validadors. 
+   \item \textbf{Elrond Gold (EGLD)}: Criptovalor (\textit{token}) nadiu de la xarxa Elrond que serveix de mitjà de pagament per a les transaccions. Ajuda en el desplegament de DApps, en l'execució de contractes intel·ligents i també s'empra com a mecanisme de pagament de recompenses per als validadors. 
 \end{enumerate}
 
 \subsection{Entitats}
@@ -265,9 +282,9 @@ Aquestes passes es poden veure resumides en la Fig. \ref{fig:SPoS}.
 El \textit{sharding} va sorgir originàriament en el camp de les bases de dades com un mètode per distribuir les dades entre múltiples màquines amb l'objectiu de suportar alt rendiment amb grans volums d'informació \cite{mongodb2021}. Elrond empra aquesta tècnica d'escalat horitzontal per particionar tant la xarxa com l'estat i processament de les transaccions amb la finalitat que diferents nodes desenvolupin la seva tasca en paral·lel (amb el consegüent augment de l'eficiència). S'ha de destacar també que s'empren els tres tipus principals de \textit{sharding} \cite{elrond2022}:
 
 \begin{itemize}
-	\item \textbf{\textit{Network sharding}}\footnote{Aquest concepte es podria traduir al català com ``fragmentació de la xarxa'' però he preferit deixar el terme anglès. El mateix passa amb \textit{transaction sharding} i \textit{state sharding}, que es podrien traduir respectivament per ``fragmentació de les transaccions'' i ``fragmentació de l'estat''.}: Gestiona com els nodes es distribueixen i agrupen entre els diferents \textit{shards}. S'ha de tenir en compte que les comunicacions dins del \textit{shard} són més ràpides que fer una propagació (\textit{broadcast}) dels missatges a tota la xarxa. Un punt molt important a destacar és que si un atacant arriba a controlar un \textit{shard} sencer suposaria un greu problema de seguretat. 
+	\item \textbf{\textit{Network sharding}}\footnote{Aquest concepte es podria traduir al català com ``fragmentació de la xarxa'' però he preferit deixar el terme anglès. El mateix passa amb \textit{transaction sharding} i \textit{state sharding}, que es podrien traduir respectivament per ``fragmentació de les transaccions'' i ``fragmentació de l'estat''.}: Gestiona com els nodes es distribueixen i agrupen entre els diferents \textit{shards}. S'ha de tenir en compte que les comunicacions dins del \textit{shard} són més ràpides que fer una propagació (\textit{broadcast}) dels missatges a tota la xarxa. Un punt molt important a destacar és que si un atacant arriba a controlar un \textit{shard} enter suposaria un greu problema de seguretat. 
 	\item \textbf{\textit{Transaction sharding}}: S'ocupa la forma en què les transaccions s'assignen als \textit{shards} encarregats del seu processament. Les transaccions són assignades a un \textit{shard} de forma determinista emprant les adreces de les transaccions.
-	\item \textbf{\textit{State sharding}}: Cada \textit{shard} només manté una part de l'estat. Els dos mètodes anteriors, si no es combinessin amb aquest, haurien d'emmagatzemar una còpia sencera de tot l'estat. Així, si els comptes implicats en una transacció resideixen en \textit{shards} diferents, l'execució de la transacció implicaria l'intercanvi de missatges entre nodes per modificar els respectius estats. Com ja s'ha dit, per augmentar la tolerància a atacs maliciosos, quan acaba una època es redistribueixen entre els diferents \textit{shards} un subconjunt dels nodes.
+	\item \textbf{\textit{State sharding}}: Cada \textit{shard} només manté una part de l'estat. Els dos mètodes anteriors, si no es combinessin amb aquest, haurien d'emmagatzemar una còpia entera de tot l'estat. Així, si els comptes implicats en una transacció resideixen en \textit{shards} diferents, l'execució de la transacció implicaria l'intercanvi de missatges entre nodes per modificar els respectius estats. Com ja s'ha dit, per augmentar la tolerància a atacs maliciosos, quan acaba una època es redistribueixen entre els diferents \textit{shards} un subconjunt dels nodes.
 \end{itemize}
 
 Com a resultat d'aquesta fusió s'aconsegueix \cite{elrond2022}:
@@ -361,7 +378,7 @@ El procés comença quan l'usuari crea una transacció per executar un contracte
 En Elrond tenim tres xarxes disponibles:
 \begin{itemize}
 \item \textbf{\textit{Mainnet}}: És la xarxa en producció d'Elrond. És a dir, es fan transaccions reals amb  el pertinent cost econòmic. En el moment de redactar la present secció, té més de 3000 nodes validadors distribuïts en 3 \textit{shards} i en una \textit{metachain}.
-\item \textbf{\textit{Devnet}}: És una xarxa pública de proves mantinguda per la comunitat d'Elrond on qualsevol desenvolupador pot provar els seus contractes intel·ligents i dApps en un entorn real. Té uns 300 nodes validadors distribuïts en 3 \textit{shards} i en una \textit{metachain}. \textbf{En el present treball empraré aquesta xarxa}, en detriment de \textit{testnet}, per tenir més estabilitat.
+\item \textbf{\textit{Devnet}}: És una xarxa pública de proves mantinguda per la comunitat d'Elrond on qualsevol desenvolupador pot provar els seus contractes intel·ligents i DApps en un entorn real. Té uns 300 nodes validadors distribuïts en 3 \textit{shards} i en una \textit{metachain}. \textbf{En el present treball empraré aquesta xarxa}, en detriment de \textit{testnet}, per tenir més estabilitat.
 \item \textbf{\textit{Testnet}}: També pública i mantinguda per la comunitat d'Elrond, però s'empra per fer proves de futures millores i rendiment \cite{mincub2019-2} (això implica que el \textit{blockchain} es pot reiniciar\footnote{En el grup de Telegram ``\textit{Elrond Validators Announcements}'' (\url{https://t.me/ElrondValidatorsAnn}) es va anunciar que es faria una ronda de gènisi per la \textit{devnet} (reinici) per a dia 29 de març de 2022.}). Té uns 2000 nodes repartits en 3 \textit{shards} i en una \textit{metachain}.
 \end{itemize}
 
@@ -388,7 +405,7 @@ Com ja s'ha deixat entreveure, la \textbf{xarxa d'Elrond} és composta pels seus
 
 Els nodes que estan autoritzats a prendre part en l'algorisme de consens s'anomenen \textbf{validadors}. Com que són els que veritablement produeixen i validen blocs, són els únics nodes recompensats amb EGLD per la seva contribució. Com ja vàrem dir en la secció \ref{sub:entitat}, per assegurar el bon comportament dels validadors han de tenir bloquejats 2500 EGLD (\textit{stake}). Els nodes sense \textit{stake} s'anomenen \textbf{observadors} (no participen en el consens i no guanyen recompenses). Si el validador no funciona correctament (desconnexions de la xarxa en mig del procés de consens, accions malicioses, etc.) serà ``multat'' perdent EGLD (\textit{stake slashing}) o fins i tot, en casos greus, se li llevarà l'estatus de validador (el node passarà a l'estat ``\textit{jailed}'' i no es triarà per al consens si no paga una multa de 2,5 EGLD).  Si això succeeix també davallarà la seva qualificació (\textit{rating score}). Com que aquesta puntuació defineix la fiabilitat del validador, serà considerada per l'algorisme de selecció de nodes per triar el grup de consens. Així, s'afavoreix l'elecció de nodes amb qualificacions altes, també se'ls hi premiarà amb més EGLD. 
 
-Els requeriments mínims del sistema són:
+Els requisits mínims del sistema són:
 \begin{itemize}
 \item 4 CPU dedicades (Intel/AMD amb \textit{flags} SSE4.1 i SSE4.2 activats).
 \item 8 GB de RAM.
@@ -432,7 +449,7 @@ Finalment, es pot iniciar sessió amb un moneder de maquinari (per exemple amb u
 \end{subfigure}\hfill
 \caption{Maiar DeFi Wallet.}\label{fig:maiarwallet}
 \end{figure}
-\item \textbf{\textit{Maiar}}\footnote{\url{https://maiar.com/}}. DApp que implementa una cartera digital per dispositius iOS i Android. Permet enviar o rebre diners emprant el número de telèfon mòbil o un \textit{herotag} (una espècie de nom d'usuari que es pot emprar en lloc de la teva adreça). És completament descentralitzada, sense custòdia i Elrond no té accés als fons de l'usuari en cap moment. Es pot treballar amb criptoactius com Elrond Gold (EGLD), Binance (BNB), Ethereum (ETH) o Bitcoin (BTC). Com no pot ser d'altra forma, es disposen de mecanismes de recuperació (una frase) per rescatar els fons en cas de pèrdua o robatori del nostre telèfon intel·ligent. No he trobat forma de connectar a la \textit{devnet} o \textit{testnet} des de Maiar, penso que déu ser així perquè és principalment dissenyada per treballar amb la \textit{mainnet}. Òbviament, aquesta dApp és pensada per comprar criptoactius a través de pagaments amb targeta bancària o transferències SEPA (s'han d'emprar passarel·les en ambdós casos). Curiosament, no permet fer \textit{swaps} entre criptoactius (només es poden fer des de Maiar Exchange).
+\item \textbf{\textit{Maiar}}\footnote{\url{https://maiar.com/}}. DApp que implementa una cartera digital per dispositius iOS i Android. Permet enviar o rebre diners emprant el número de telèfon mòbil o un \textit{herotag} (una espècie de nom d'usuari que es pot emprar en lloc de la teva adreça). És completament descentralitzada, sense custòdia i Elrond no té accés als fons de l'usuari en cap moment. Es pot treballar amb criptoactius com Elrond Gold (EGLD), Binance (BNB), Ethereum (ETH) o Bitcoin (BTC). Com no pot ser d'altra forma, es disposen de mecanismes de recuperació (una frase) per rescatar els fons en cas de pèrdua o robatori del nostre telèfon intel·ligent. No he trobat forma de connectar a la \textit{devnet} o \textit{testnet} des de Maiar, penso que déu ser així perquè és principalment dissenyada per treballar amb la \textit{mainnet}. Òbviament, aquesta DApp és pensada per comprar criptoactius a través de pagaments amb targeta bancària o transferències SEPA (s'han d'emprar passarel·les en ambdós casos). Curiosament, no permet fer \textit{swaps} entre criptoactius (només es poden fer des de Maiar Exchange).
 \begin{figure}[h]
 \includegraphics[width=0.3\textwidth]{maiarapp.png}
 \centering
@@ -525,12 +542,12 @@ contract_execution_price_per_unit =
 
 \clearpage
 
-\section{testDEX}
+\section{testDEX}\label{sec:testdex}
 
 \subsection{Anàlisi}
 \subsubsection{DEX i AMM}\label{subsub:dexamm}
 
-Un \textbf{\textit{Decentralized exchange} (DEX)} és un mercat on els negociants de criptomonedes fan transaccions directament entre ells –d'igual a igual (\textit{peer-to-peer})– sense haver de lliurar la gestió dels seus fons a un intermediari \cite{cointelegraph}. És a dir, són dissenyats per eliminar qualsevol autoritat de supervisió en els intercanvis (\textit{swaps}) de criptoactius, evitant que s'hagin d'enviar dades de caràcter personal (noms, adreces, etc.). Per executar les ordres d'intercanvi sense intermediaris s'empren contractes intel·ligents. Això xoca amb el concepte de \textit{\textbf{Centralized exchange}} on la gestió és responsabilitat d'una organització, com ara un banc o qualsevol altra corporació, que requerirà que els seus usuaris estiguin identificats i que custodiaran els actius dels usuaris (òbviament cercant un benefici econòmic).
+Un \textbf{\textit{Decentralized exchange} (DEX)} és un mercat on els negociants de criptomonedes fan transaccions directament entre ells –d'igual a igual (\textit{peer-to-peer})– sense haver de lliurar la gestió dels seus fons a un intermediari \cite{cointelegraph}. És a dir, són dissenyats per eliminar qualsevol autoritat de supervisió en els intercanvis (\textit{swaps}) de criptoactius, evitant que s'hagin d'enviar dades de caràcter personal (noms, adreces, etc.). Per executar les ordres d'intercanvi sense intermediaris s'empren contractes intel·ligents. Això xoca amb el concepte de \textit{\textbf{Centralized exchange}} on la gestió és responsabilitat d'una organització, com ara un banc o qualsevol altra corporació, que requerirà que els seus usuaris estiguin identificats i que custodiaran els actius d'aquests (òbviament cercant un benefici econòmic).
  
 En el present treball ens centrarem en una versió simplificada de DEX fent servir \textit{Automated Market Makers} (AMM). Els diferents tipus de DEX es poden observar en la figura \ref{fig:dextypes}.
 \begin{figure}[h]
@@ -539,7 +556,7 @@ En el present treball ens centrarem en una versió simplificada de DEX fent serv
 \caption{Tipus de DEX. (Font: \cite{cointelegraph}).}\label{fig:dextypes}
 \end{figure} 
 
-En \cite{delarosa} es descriu que una de les formes de prescindir del llibre d'ordres d'un \textit{Exchange} tradicional és emprant AMM. Aquests protocols fan servir una fórmula matemàtica per calcular el preu de l'actiu i un fons de liquiditat per a cada parell de criptoactius (tal qual hem vist en la secció \ref{subsec:maiarexchange}). Quan es vulgui fer un intercanvi entre criptoactius s'interactuarà directament amb un contracte intel·ligent que determinarà el preu de compra de l'actiu destí segons l'estat del fons de liquiditat. La fórmula per calcular això, també vista en la secció \ref{subsec:maiarexchange}, és:
+En \cite{delarosa} es descriu que una de les formes de prescindir del llibre d'ordres d'un \textit{Exchange} tradicional és emprant AMM. Aquests protocols fan servir una fórmula matemàtica per calcular el preu dels actius d'un fons de liquiditat segons l'estat d'aquest (tal qual hem vist en la secció \ref{subsec:maiarexchange}). Quan es vulgui fer un intercanvi entre criptoactius s'interactuarà directament amb un contracte intel·ligent que determinarà el preu de compra de l'actiu destí segons l'estat del fons de liquiditat. La fórmula per calcular això, també vista en la secció \ref{subsec:maiarexchange}, és:
 \[x * y = k\]
 Amb \(x\) la quantitat d'un token al fons de liquiditat, \(y\) la quantitat de l'altre i \(k\) una constant fixa per mantenir la proporcionalitat entre el parell de \textit{tokens}.
 
@@ -557,7 +574,7 @@ Si per contra volem donar \(t_y\) i rebre \(t_x\):
 \[t_x = \frac{x * y + x * t_y - k}{y + t_y}\]
 \[t_x = \frac{x * t_y}{y + t_y}\]
 
-Aquesta situació seria utòpica on no se pagaria cap taxa (\textit{fee}). Si afegim aquesta comissió, les fórmules d'abans quedarien de la següent forma:
+Aquesta situació seria utòpica ja que no se pagaria cap taxa (\textit{fee}). Si afegim una comissió, les fórmules d'abans quedarien de la següent forma:
 \[t'_x = x - \frac{k}{y + t_y * (1 - fee)} = \frac{x * y + x * t_y *(1 - fee) - k}{y + t_y * (1 - fee)}\]
 \[t'_x = \frac{x * t_y *(1 - fee)}{y + t_y * (1 - fee)}\]
 \[t'_y = y - \frac{k}{x + t_x * (1 - fee)} = \frac{y * x + y * t_x * (1 - fee) - k}{x + t_x * (1 - fee)}\]
@@ -567,11 +584,11 @@ Així, si es realitzes el \textit{swap}, el que quedaria acumulat en el contract
 \[acumulat_x = t_x - t'_x\]
 \[acumulat_y = t_y - t'_y\]
 
-Per exemple, imaginem que tenim un fons de liquiditat amb el parell xEGLD-UOC –``UOC'' és un ESDT creat per mi– amb 10 xEGLD (\(x\)) i 10000 UOC (\(y\)). Així tenim que la constant \(k\) queda com:
+Per exemple, imaginem que tenim un fons de liquiditat amb el parell xEGLD-UOC –``UOC'' és un ESDT creat per mi– amb 10 xEGLD\footnote{En el present treball empraré indistintament els termes EGLD i xEGLD. En qualsevol cas, ha de quedar clar que EGLD es fa servir en la mainet (té un cost econòmic) i xEGLD es fa servir en la devnet/testnet.}  (\(x\)) i 10000 UOC (\(y\)). Així tenim que la constant \(k\) queda com:
 \[k = x * y = 10 * 10000 = 100000\]
 
 
-Imaginem que volem canviar 1 xEGLD (\(t_x\)) per UOC (\(t_y\)) i que hi ha una comissió del 0,5\%:
+Suposem també que volem canviar 1 xEGLD (\(t_x\)) per UOC (\(t_y\)) i que hi ha una comissió del 0,5\%:
 \[t_y = \frac{y * t_x}{x + t_x} = \frac{10000 * 1}{10 + 1} = 909,090909091\]
 
 \[t'_y = \frac{y * t_x * (1 - fee)}{x + t_x * (1 - fee)} = \frac{10000 * 1 * (1 - 0,005)}{10 + 1 * (1 - 0,005)} = 904,956798545\]
@@ -582,34 +599,33 @@ Imaginem que volem canviar 1 xEGLD (\(t_x\)) per UOC (\(t_y\)) i que hi ha una c
 \[= 11 * 9090,909090909 = 99999,999999999\]
 
 Si seguim i ara canviem 1000 UOC (\(t_y\)) per xEGLD (\(t_x\)):
-\[t_x = \frac{x * t_y}{y + t_y} = \frac{11 * 1000}{9090,909090909 + 1000} = 1,09009009 =\]
-\[= \frac{x * t_y *(1 - fee)}{y + t_y * (1 - fee)} = \frac{11 * 1000 *(1 - 0,0005)}{9090,909090909 + 1000 * (1 - 0,0005)} =\]
+\[t_x = \frac{x * t_y}{y + t_y} = \frac{11 * 1000}{9090,909090909 + 1000} = 1,09009009 \]
+\[t'_x = \frac{x * t_y *(1 - fee)}{y + t_y * (1 - fee)} = \frac{11 * 1000 *(1 - 0,0005)}{9090,909090909 + 1000 * (1 - 0,0005)} =\]
 \[= 1,089599034\]
 \[acumulat_x = t_x - t'_x = 1,09009009 - 1,089599034 = 0,000491056\]
 
-I la constant \(k\) queda com:
 \[k = (x - t_x) * (y + t_y) = (11 - 1,09009009) * (9090,909090909  + 1000) =\]
 \[= 9,90990991 * 10090,909090909 = 100000,000000908\]
 
-A tot això se li ha d'afegir una cosa més: \textbf{la comissió que pagarà l'usuari a la xarxa Elrond}. En la secció \ref{sub:altres} s'ha vist que emprar la xarxa Elrond duu associat uns costos pel moviment de valors i tractament de dades (transferim una quantitat de tokens al contracte intel·ligent) i per execució de contracte intel·ligent (el \textit{smart contract} que implementa l'AMM). Això encarirà l'operació a l'usuari i les operacions que es realitzen dins aquest contracte influiran en el cost.
+A tot això se li ha d'afegir una cosa més: \textbf{la comissió que pagarà l'usuari a la xarxa Elrond}. En la secció \ref{sub:altres} s'ha vist que emprar la xarxa Elrond duu associat uns costos pel moviment de valors i tractament de dades (transferim una quantitat de tokens al contracte intel·ligent) i per execució de contracte intel·ligent (el \textit{smart contract} que implementa l'AMM). Això encarirà l'operació a l'usuari, ja que el codi que s'executa dins aquest contracte influirà en el cost.
 
-Finalment, es pot observar que \textbf{el redondeig provoca que la constant \(k\) es vagi desviant del seu valor original}. El codi del contracte intel·ligent haurà de corregir aquest problema.
+Finalment, es pot observar que \textbf{l'arrodoniment provoca que la constant \(k\) es vagi desviant del seu valor original}. El codi del contracte intel·ligent hauria de corregir aquest problema.
 
 \subsubsection{Les variants de DEX i AMM a testDEX}
-Per assolir els objectius del projecte no fa falta arribar a desenvolupar un DEX de l'estil de Maiar Exchange, Uniswap\footnote{\url{https://uniswap.org/}} o PancakeSwap\footnote{\url{https://pancakeswap.finance/}}. Òbviament, un projecte d'aquesta envergagura seria poc realista per una limitació clara de temps. Per exemple, el protocol AMM no és exempt de problemes que s'haurien de tractar \cite{vuterin2018}. Així en aquesta versió inicial faré una sèrie d'adaptacions per ajustar-me al temps disponible:
+Per assolir els objectius del projecte no fa falta arribar a desenvolupar un DEX de l'estil de Maiar Exchange, Uniswap\footnote{\url{https://uniswap.org/}} o PancakeSwap\footnote{\url{https://pancakeswap.finance/}}. Òbviament, un projecte d'aquesta envergadura seria poc realista per una limitació clara de temps. Per exemple, el protocol AMM no és exempt de problemes que s'haurien de tractar \cite{vuterin2018}. Així, en aquesta versió inicial faré una sèrie d'adaptacions per ajustar-me al temps disponible:
 \begin{itemize}
 \item El propietari del contracte intel·ligent serà l'únic que pot definir \textit{liquidity pools}.
 \item El propietari del contracte serà, per tant, l'únic que rebi les comissions pels \textit{swaps}.
 \item Tots els parells tindran com a un dels seus components xEGLD.
 \end{itemize}
 
-\subsubsection{Requeriments funcionals}\label{subsub:rfun}
-Els requeriments funcionals responen a la pregunta ``què ha de fer un sistema''. Pel present projecte s'especifiquen els següents:
+\subsubsection{Requisits funcionals}\label{subsub:rfun}
+Els requisits funcionals responen a la pregunta ``què ha de fer un sistema''. Pel present projecte s'especifiquen els següents:
 \begin{itemize}
 \item RF 1: El sistema permetrà el propietari del contracte intel·ligent dipositar un parell xEGLD-ESDT en el fons de liquiditat des del seu \textit{wallet}.
 \item RF 2: El sistema permetrà el propietari del contracte intel·ligent recuperar un parell xEGLD-ESDT del fons de liquiditat cap al seu \textit{wallet}, que prèviament haurà dipositat.
 \item RF 3: El sistema permetrà el propietari del contracte definir una taxa (``\textit{fee}'') que serà gravada als usuaris quan intercanviïn \textit{tokens}.
-\item RF 4: El sistema permetrà el propietari recuperar els guanys acumulats al seu contracte intel·ligent resultant del pagament de l'anterior taxa cap al seu \textit{wallet}.
+\item RF 4: El sistema permetrà el propietari recuperar els guanys acumulats al seu contracte intel·ligent resultants del pagament de l'anterior taxa cap al seu \textit{wallet}.
 \item RF 5: El sistema permetrà els usuaris fer intercanvis (\textit{swaps}) entre \textit{tokens} de la seva cartera amb altres del fons de liquiditat (si existeix el parell adient).
 \item RF 6: El sistema permetrà els usuaris conèixer els parells donats d'alta al DEX.
 \item RF 7: El sistema permetrà els usuaris consultar si un parell és disponible per fer \textit{swaps} (cap dels dos components pot tenir valor 0).
@@ -618,12 +634,12 @@ Els requeriments funcionals responen a la pregunta ``què ha de fer un sistema''
 \item RF 10: El sistema enregistrarà les transaccions.
 \end{itemize}
 
-\subsubsection{Requeriments no funcionals}\label{subsub:rnofun}
-Els requeriments no funcionals responen a la pregunta ``com ha de fer un sistema''. Pel present projecte s'especifiquen els següents:
+\subsubsection{Requisits no funcionals}\label{subsub:rnofun}
+Els requisits no funcionals responen a la pregunta ``com ha de fer un sistema''. Pel present projecte s'especifiquen els següents:
 \begin{itemize}
 \item RNF 1: La informació emprada en el sistema viatjarà per la xarxa emprant protocols segurs.
 \item RNF 2: El sistema serà accessible des de qualsevol ubicació a través d'Internet.
-\item RNF 3: Els usuaris del sistema el podran emprar utilitzant qualsevol moneder vàlid de la xarxa Elrond.
+\item RNF 3: Els usuaris del sistema el podran utilitzar amb qualsevol moneder vàlid de la xarxa Elrond.
 \end{itemize}
 
 \subsection{Disseny}
@@ -639,19 +655,19 @@ Tindrem un usuari privilegiat (el propietari del contracte intel·ligent) i usua
 \end{subfigure}\hfill
 \begin{subfigure}[b]{0.49\textwidth}
   \includegraphics[width=\linewidth]{cu_set_fee_claim_earnings.png}
-  \caption{Requeriments funcionals 3 i 4.}\label{fig:setfeeclaim}
+  \caption{Requisits funcionals 3 i 4.}\label{fig:setfeeclaim}
 \end{subfigure}\hfill
 \caption{Interaccions del propietari amb el contracte intel·ligent.}
 \end{figure}
 
-Amb les interaccions anteriors es podran \textbf{definir \textit{liquity pools}} i una \textbf{taxa (\textit{fee})} que es cobrarà per les operacions de \textit{swap}. Allò següent a definir seran els intercanvis en si mateixos. El criptoactiu de referència serà xEGLD (tots els parells el tindran). Així es podrà passar una determinada quantitat d'un token ESDT a xEGLD. Això també es pot anomenar ``\textbf{comprar ESDT amb EGLD}''. A la inversa, podrem passar xEGLD a ESDT, que dit d'altra forma seria ``\textbf{vendre ESDT per EGLD}''. La següent figura ho mostra:
+Amb les interaccions anteriors es podran \textbf{definir \textit{liquity pools}} i una \textbf{taxa (\textit{fee})} que es cobrarà per les operacions de \textit{swap}. El següent a definir seran els intercanvis en si mateixos. El criptoactiu de referència serà xEGLD (tots els parells el tindran). Així es podrà passar una determinada quantitat d'un token ESDT a xEGLD. Això també es pot anomenar ``\textbf{comprar ESDT amb EGLD}''. A la inversa, podrem passar xEGLD a ESDT, que dit d'altra forma seria ``\textbf{vendre ESDT per EGLD}''. La següent figura ho mostra:
 \begin{figure}[h]
 \includegraphics[width=0.5\textwidth]{cu_buy_sell1.png}
 \centering
 \caption{RF 5. Operacions de compra i venda de \textit{tokens} (\textit{swaps}).}\label{fig:cu_buy_sell1}
 \end{figure} 
 
-Per altra banda, serà necessari que el sistema mostri als usuaris els \textbf{parells disponibles per fer intercanvis i si es pot operar amb ells en un moment donat} (requeriments funcionals 6 i 7).
+Per altra banda, serà necessari que el sistema mostri als usuaris els \textbf{parells disponibles per fer intercanvis i si es pot operar amb ells en un moment donat} (requisits funcionals 6 i 7).
 
 \begin{figure}[!htb]
 \begin{subfigure}[b]{0.49\textwidth}
@@ -665,7 +681,7 @@ Per altra banda, serà necessari que el sistema mostri als usuaris els \textbf{p
 \caption{Parells donats d'alta preparats per a intercanvis.}
 \end{figure}
 
-A més, el sistema mostrarà la \textbf{constant \(k\) del protocol AMM} (que s'ha de mantenir constant) i el \textbf{preu dels actius en el moment actual}. Internament es treballa amb nombres sencers on es destinen les 18 posicions a la dreta per decimals, però realment són nombres sencers. Això farà que la constant \(k\) pugui fluctuar i que estigui sotmesa a correccions per mantenir-la en el seu valor inicial. Així mateix, els usuaris hauran de conèixer en temps real els preus de les parelles de tokens. Els casos d'ús sobre aquests punts es mostren en la Fig. \ref{fig:RRFF8-9}.
+A més, el sistema mostrarà la \textbf{constant \(k\) del protocol AMM} (que s'ha de mantenir constant) i el \textbf{preu dels actius en el moment actual}. Internament es treballa amb nombres enters on es destinen les 18 posicions a la dreta per a decimals, però realment són nombres enters. Això farà que la constant \(k\) pugui fluctuar i que estigui sotmesa a correccions per mantenir-la en el seu valor inicial. Així mateix, els usuaris hauran de conèixer en temps real els preus de les parelles de tokens. Els casos d'ús sobre aquests punts es mostren en la Fig. \ref{fig:RRFF8-9}.
 
 \begin{figure}[!htb]
 \begin{subfigure}[b]{0.33\textwidth}
@@ -687,10 +703,10 @@ A més, el sistema mostrarà la \textbf{constant \(k\) del protocol AMM} (que s'
 \begin{figure}[h]
 \includegraphics[width=0.55\textwidth]{cu_trans_results.png}
 \centering
-\caption{Requeriment funcional 10.}\label{fig:transresults}
+\caption{Requisit funcional 10.}\label{fig:transresults}
 \end{figure} 
 
-Finalment, pel que fa al RF 10 i als \textbf{requeriments no funcionals}, no cal afegir res ja que formen part de les característiques intrínseques de les tecnologies d'Internet i de la xarxa Elrond.
+Finalment, pel que fa al RF 10 i als \textbf{requisits no funcionals}, no cal afegir res ja que formen part de les característiques intrínseques de les tecnologies d'Internet i de la xarxa Elrond.
 
 \subsubsection{\textit{Smart contract}}\label{subsub:sc}
 Totes les dades dels \textit{smart contracts} de la xarxa Elrond són disponibles públicament, tot i que pot ser complicat cercar manualment l'emmagatzematge del contracte i per això es solen definir \textit{getters} públics\footnote{Quan s'implementin les propietats i mètodes públics en el lleguatge Rust s'anotaran amb \#[endpoint] o \#[view].}. Quan es desplegui a la xarxa se li assignarà automàticament una adreça amb el format que s'ha descrit en seccions anteriors.
@@ -705,43 +721,42 @@ En la Fig. \ref{fig:testdex} es mostren les propietats i mètodes del contracte 
 
 La descripció dels ``emmagatzematges'' és la següent:
 \begin{itemize}
-\item \textbf{liquidity\_token(TokenIdentifier)}: Emmagatzema la liquiditat dels \textit{tokens} (la meitat del parell). Per als identificadors del token dels que volguem guardar la informació, tindrem un valor del tipus BigUint\footnote{Estructura de dades que representa un nombre sencer molt gran sense signe.} associat que defineix la seva quantitat acumulada en el contracte intel·ligent. Disposa d'un \textit{getter} \textbf{getLiquidityToken} (amb el mateixos paràmetres).
-\item \textbf{liquidity\_egld(TokenIdentifier)}: Guarda la liquiditat en EGLD dels \textit{token} (l'altra part del parell). Per als identificadors del token dels que volguem guardar la informació, tindrem un valor del tipus BigUint associat que defineix la quantitat d'EGLD. Disposa d'un \textit{getter} \textbf{getLiquidityEgld} (amb el mateixos paràmetres).
-\item \textbf{initial\_k(TokenIdentifier)}: Per a cada parell \textit{token}-EGLD emmagatzema un BigUint amb la seva constant \(k\) del moment en què es va donar d'alta.  Disposa d'un \textit{getter} \textbf{getInitialK} (amb el mateixos paràmetres).
-\item \textbf{fee}: Guarda la taxa –amb un valor del tipus u32\footnote{Sencer sense signe representat amb 32 bits.}– que s'aplicarà quan es faci un intercanvi. S'inicialitza quan es creï el contracte intel·ligent. Disposa d'un \textit{getter} \textbf{getFee} (amb el mateixos paràmetres).
-\item \textbf{earnings\_egld(TokenIdentifier)}: Emmagatzema les taxes (\textit{fees}) –BigUint– cobrades pels diferents \textit{tokens}. Disposa d'un \textit{getter} \textbf{getEarnings} (amb el mateixos paràmetres).
+\item \textbf{liquidity\_token(TokenIdentifier)}: Emmagatzema la liquiditat dels \textit{tokens} (la meitat del parell). Per als identificadors del token de què vulguem guardar la informació, tindrem un valor del tipus BigUint\footnote{Estructura de dades que representa un nombre enter molt gran sense signe.} associat que definirà la seva quantitat acumulada en el contracte intel·ligent. Disposa d'un \textit{getter} \textbf{getLiquidityToken} (amb el mateix paràmetre).
+\item \textbf{liquidity\_egld(TokenIdentifier)}: Guarda la liquiditat en EGLD dels \textit{tokens} (l'altra part del parell). Per als identificadors dels tokens dels que vulguem guardar la informació, tindrem un valor del tipus BigUint associat que definirà la quantitat d'EGLD. Disposa d'un \textit{getter} \textbf{getLiquidityEgld} (amb el mateix paràmetre).
+\item \textbf{initial\_k(TokenIdentifier)}: Per a cada parell \textit{token}-EGLD emmagatzema un BigUint amb la seva constant \(k\) del moment en què es va donar d'alta.  Disposa d'un \textit{getter} \textbf{getInitialK} (amb el mateix paràmetre).
+\item \textbf{fee}: Guarda la taxa –amb un valor del tipus u32\footnote{Sencer sense signe representat amb 32 bits.}– que s'aplicarà quan es faci un intercanvi. S'inicialitza quan es creï el contracte intel·ligent. Disposa d'un \textit{getter} \textbf{getFee}.
+\item \textbf{earnings\_egld(TokenIdentifier)}: Emmagatzema les taxes (\textit{fees}) –BigUint– cobrades pels diferents \textit{tokens}. Disposa d'un \textit{getter} \textbf{getEarnings} (amb el mateix paràmetre).
 \end{itemize}
 Pel que fa als mètodes:
 \begin{itemize}
 \item \textbf{init(u32)}: Mètode que realitza la tasca de constructor del contracte intel·ligent. Se li passa la taxa que es cobrarà en els intercanvis.
-\item \textbf{addLiquidityToken() -\textgreater SCResult}: Afegeix liquiditat a la part ``\textit{token}'' del parell. Retorna un \(enum\) anomenat SCResult, forma predeterminada de retornar opcionalment un error (\(Err(SCError)\)) o una confirmació de resultat satisfactori (\(Ok(T)\)). El token i la quantitat les agafarà de la mateixa transacció dins de la xarxa Elrond. Mètode que només pot ser cridat pel propietari del contracte.
-\item \textbf{claimLiquidityToken(TokenIdentifier)  -\textgreater SCResult}: Envia els fons de liquiditat d'un \textit{token} determinat aportats pel propietari del contracte intel·ligent a l'adreça del seu moneder. Se li ha de passar com a paràmetre l'identificador del \textit{token} del qual volem reclamar la liquiditat. Mètode que només pot ser cridat pel propietari del contracte. Retorna un BigUint equivalent a la quantitat transferida. Només es torna la part ``token''. El parell quedarà en estat ``Funding''.
+\item \textbf{addLiquidityToken() -\textgreater SCResult}: Afegeix liquiditat a la part ``\textit{token}'' del parell. Retorna un valor del tipus SCResult, forma predeterminada de retornar opcionalment un error (\(Err(SCError)\)) o una confirmació de resultat satisfactori (\(Ok(T)\)). El token i la quantitat les agafarà de la mateixa transacció dins de la xarxa Elrond. Mètode que només pot ser cridat pel propietari del contracte.
+\item \textbf{claimLiquidityToken(TokenIdentifier)  -\textgreater SCResult}: Envia els fons de liquiditat d'un \textit{token} determinat aportats pel propietari del contracte intel·ligent a l'adreça del seu moneder. Se li ha de passar com a paràmetre l'identificador del \textit{token} de què volem reclamar la liquiditat. Mètode que només pot ser cridat pel propietari del contracte. Retorna un BigUint equivalent a la quantitat transferida. Només es torna la part ``token''. El parell quedarà en estat ``Funding''.
 \item \textbf{addLiquidityEgld(TokenIdentifier)  -\textgreater SCResult}: Afegeix liquiditat a la part EGLD del parell. Se li ha de passar com a paràmetre l'identificador d'EGLD. La quantitat l'agafarà de la mateixa transacció dins de la xarxa Elrond. Mètode que només pot ser cridat pel propietari del contracte.
-\item \textbf{claimLiquidityEgld(TokenIdentifier)  -\textgreater SCResult}: Envia els fons de liquiditat en EGLD del parell d'un determinat \textit{token} aportats pel propietari del contracte intel·ligent a l'adreça del seu moneder. Se li ha de passar com a paràmetre l'identificador del token del que volem guardar la informació. Mètode que només pot ser cridat pel propietari del contracte. Retorna un BigUint equivalent a la quantitat transferida. El parell quedarà en estat ``Funding''.
-\item \textbf{status(TokenIdentifier) -\textgreater Status}: Mostra l'estat d'un parell. Tindrà dos possibles estats: ``Successful'' i ``Funding''. El primer significa que està preparat per fer intercanvis i el segon indica que encara s'han d'afegir fons a algun dels components del parell. Se li ha de passar com a paràmetre l'identificador del \textit{token} del que volem retornar aquesta informació. Retorna o bé ``Successful'' o bé ``Funding''.
-\item \textbf{calculateK(TokenIdentifier) -\textgreater BigUint}: Calcula la constant \(k\) per a un parell en un moment donat de temps. Se li ha de passar com a paràmetre l'identificador del token que identifica el parell del que volem retornar aquesta informació (el que no sigui EGLD). Retorna la citada constant.
-\item \textbf{claimEarnings(TokenIdentifier) -\textgreater BigUint}: Envia els beneficis acumulats, resultants d'aplicar la taxa als intercanvis d'un \textit{token} determinat, al contracte . Se li ha de passar com a paràmetre l'identificador del \textit{token} del que volem transferir els beneficis. Mètode que només pot ser cridat pel propietari del contracte. Retorna un BigUint equivalent a la quantitat transferida.
-\item \textbf{priceEgldToken(TokenIdentifier, BigUint) -\textgreater BigUint}: Calcula el preu d'una certa quantitat d'un \textit{token} determinat en EGLD aplicant la taxa (\textit{fee}). Se li ha de passar com a arguments l'identificador del \textit{token} del que volen calcular el preu i la citada quantitat. Retorna el preu com a nombre sencer.
-\item \textbf{priceEgldTokenNoFee(TokenIdentifier, BigUint)-\textgreater BigUint}: Igual que l'anterior però al preu retornat no se li aplica la taxa.
-\item \textbf{feeEgldToken(TokenIdentifier, BigUint) -\textgreater BigUint}:  Calcula la taxa que es pagarà per una certa quantitat d'un \textit{token} determinat en EGLD. Se li ha de passar com a arguments l'identificador del \textit{token} del que volen calcular el preu i la citada quantitat. Retorna aquest cost com a nombre sencer.
-\item \textbf{priceTokenEgld(TokenIdentifier, BigUint) -\textgreater BigUint}: Calcula el preu d'una certa quantitat d'EGLD en un \textit{token} determinat. Se li ha de passar com a arguments l'identificador del \textit{token} amb el que volem pagar i la quantitat d'EGLD que volem obtenir. Retorna el preu com a nombre sencer. S'aplica la taxa (\textit{fee}).
+\item \textbf{claimLiquidityEgld(TokenIdentifier)  -\textgreater SCResult}: Envia els fons de liquiditat en EGLD del parell d'un determinat \textit{token} aportats pel propietari del contracte intel·ligent a l'adreça del seu moneder. Se li ha de passar com a paràmetre l'identificador del \textit{token} de què volem guardar la informació. Mètode que només pot ser cridat pel propietari del contracte. Retorna un BigUint equivalent a la quantitat transferida. El parell quedarà en estat ``Funding''.
+\item \textbf{status(TokenIdentifier) -\textgreater Status}: Mostra l'estat d'un parell. Tindrà dos possibles estats: ``Successful'' i ``Funding''. El primer significa que està preparat per fer intercanvis i el segon indica que encara s'han d'afegir fons a algun dels components del parell. Se li ha de passar com a paràmetre l'identificador del \textit{token} de què volem retornar aquesta informació. Retorna o bé ``Successful'' o bé ``Funding''.
+\item \textbf{calculateK(TokenIdentifier) -\textgreater BigUint}: Calcula la constant \(k\) per a un parell en un moment donat de temps. Se li ha de passar com a paràmetre l'identificador del \textit{token} que identifica el parell de què volem retornar aquesta informació (el que no sigui EGLD). Retorna la citada constant.
+\item \textbf{claimEarnings(TokenIdentifier) -\textgreater BigUint}: Envia els beneficis acumulats resultants d'aplicar la taxa als intercanvis d'un \textit{token} determinat al contracte. Se li ha de passar com a paràmetre l'identificador del \textit{token} de què volem transferir els beneficis. Mètode que només pot ser cridat pel propietari del contracte. Retorna un BigUint equivalent a la quantitat transferida.
+\item \textbf{priceEgldToken(TokenIdentifier, BigUint) -\textgreater BigUint}: Calcula el preu d'una certa quantitat d'un \textit{token} determinat en EGLD aplicant la taxa (\textit{fee}). Se li ha de passar com a arguments l'identificador del \textit{token} de què volen calcular el preu i la citada quantitat. Retorna el preu com a nombre enter.
+\item \textbf{priceEgldTokenNoFee(TokenIdentifier, BigUint)-\textgreater BigUint}: És igual que l'anterior però al preu retornat no se li aplica la taxa.
+\item \textbf{feeEgldToken(TokenIdentifier, BigUint) -\textgreater BigUint}:  Calcula la taxa que es pagarà per una certa quantitat d'un \textit{token} en EGLD. Se li han de passar com a arguments l'identificador del \textit{token} de què volen calcular el preu i la citada quantitat. Retorna aquest cost com a nombre enter.
+\item \textbf{priceTokenEgld(TokenIdentifier, BigUint) -\textgreater BigUint}: Calcula el preu d'una certa quantitat d'EGLD en un \textit{token} determinat. Se li han de passar com a arguments l'identificador del \textit{token} amb què volem pagar i la quantitat d'EGLD que volem obtenir. Retorna el preu com a nombre enter. S'aplica la taxa (\textit{fee}).
 \item \textbf{priceTokenEgldNoFee(TokenIdentifier, BigUint) -\textgreater BigUint}: Igual que l'anterior però al preu retornat no se li aplica la taxa.
-\item \textbf{feeTokenEgld(TokenIdentifier, BigUint) -\textgreater BigUint}: Calcula la taxa que es pagarà per una certa quantitat d'EGLD en un \textit{token} determinat. Se li ha de passar com a arguments l'identificador del \textit{token} i la citada quantitat. Retorna aquest cost com a nombre sencer.
-\item \textbf{ratio(TokenIdentifier) -\textgreater BigUint}: Retorna un nombre sencer amb la relació que hi ha entre els \textit{tokens} que formen el parell. Si la relació és 0, perquè el primer és més petit que l'altre, es retornarà 1. S'emprarà per corregir la constant \(k\) per evitar l'error introduit pel redondeig de nombres sencers. Se li ha de passar com a argument el \textit{token} que identifica el parell.
-\item \textbf{swapEgldForToken(TokenIdentifier) -\textgreater SCResult}: Per intercanviar \textit{token} per EGLD. La quantitat d'EGLD s'agafarà de la transacció. S'enviarà la quantitat del \textit{token} al moneder de l'usuari que faci la compra. Les taxes pagades s'acumularan al contracte intel·ligent. S'haurà de passar com a argument l'identificador del \textit{token} que es vol comprar. Les taxes es llevaran de la quantitat que ha de rebre l'usuari com a resultat de l'intercanvi
-\item \textbf{swapTokenForEgld(TokenIdentifier) -\textgreater SCResult}: Compra d'EGLD amb \textit{token}. El \textit{token} i la quantitat d'EGLD s'agafaran de la transacció. S'enviarà la quantitat d'EGLD al moneder de l'usuari que faci la compra. Les taxes pagades s'acumularan al contracte intel·ligent (es llevaran de la quantitat que ha de rebre l'usuari com a resultat de l'intercanvi).
+\item \textbf{feeTokenEgld(TokenIdentifier, BigUint) -\textgreater BigUint}: Calcula la taxa que es pagarà per una certa quantitat d'EGLD en un \textit{token} determinat. Se li han de passar com a arguments l'identificador del \textit{token} i la citada quantitat. Retorna aquest cost com a nombre enter.
+\item \textbf{swapEgldForToken(TokenIdentifier) -\textgreater SCResult}: Per intercanviar \textit{tokens} per EGLD. La quantitat d'EGLD s'agafarà de la transacció. S'enviarà la quantitat del \textit{token} al moneder de l'usuari que faci la compra. Les taxes pagades s'acumularan al contracte intel·ligent. S'haurà de passar com a argument l'identificador del \textit{token} que es vol comprar. Les taxes es llevaran de la quantitat que ha de rebre l'usuari com a resultat de l'intercanvi.
+\item \textbf{swapTokenForEgld(TokenIdentifier) -\textgreater SCResult}: El sentit invers de l'anterior, comprar EGLD amb \textit{token}. El \textit{token} i la quantitat d'EGLD s'agafaran de la transacció. S'enviarà la quantitat d'EGLD al moneder de l'usuari que faci la compra. Les taxes pagades s'acumularan al contracte intel·ligent (es llevaran de la quantitat que ha de rebre l'usuari com a resultat de l'intercanvi).
 \end{itemize}
  
-Com ja s'ha dit, Elrond VM es basa en WebAssembly (WASM). A l'especificació se li \textbf{ha llevat el suport a les operacions de coma flotant} \cite{mincub2020}. Això ha provocat que s'haguin d'haver adaptat les fórmules que desenvolupades en la secció \ref{subsub:dexamm}. D'aquesta forma, els corresponents mètodes del contracte intel·ligent en generaran dos de nous: un mètode que retorni el numerador i un altre que retorni el denominator. La idea de fer aquesta separació és fer les operacions de divisió a la dApp (que sí que permet operar amb decimals). Això té certa importància a nivell visual per a l'usuari, ja que es més comprensible llegir ``1.21 xEGLD'' que no pas ``1210000000000000000 wei''. A part d'això, es generava també el problema de què la taxa (\textit{fee}) no podia ser un nombre decimal. Això ha implicat que, a part de separar en numerador i denominador, que transformin les citades equacions de la següent forma per a què aquesta comissió sigui un nombre enter:\footnote{Idea extreta dels exercicis que desenvolupen el material didàctic descrit a \cite{delarosa}.}
+Com ja s'ha dit, Elrond VM es basa en WebAssembly (WASM). A l'especificació \textbf{se li ha llevat el suport a les operacions de coma flotant} \cite{mincub2020}. Això ha provocat que s'hagin d'haver adaptat les fórmules desenvolupades en la secció \ref{subsub:dexamm}. D'aquesta forma, per a certs mètodes del contracte intel·ligent en generaran dos de nous: un mètode que retorni el numerador i un altre que retorni el denominador. La idea de fer aquesta separació és fer les operacions de divisió a la DApp (que sí que permet operar amb decimals). Això té certa importància a nivell visual per a l'usuari, ja que és més comprensible llegir ``1.21 xEGLD'' que no pas ``1210000000000000000 wei''. A part d'això, es generava també el problema de què la taxa (\textit{fee}) no podia ser un nombre decimal. Això ha implicat que, a part de separar en numerador i denominador, es transformin les citades equacions de la següent forma perquè aquesta comissió sigui un nombre enter:\footnote{Idea extreta dels exercicis que desenvolupen el material didàctic descrit a \cite{delarosa}.}
 \[t'_x = \frac{x * t_y *(1000 - fee)}{1000 * y + t_y * (1000 - fee)}\]
 \[t'_{x_{numerador}} = x * t_y *(1000 - fee)\]
 \[t'_{x_{denominador}} = 1000 * y + t_y * (1000 - fee)\]
 \[t'_y = \frac{y * t_x * (1000 - fee)}{1000 * x + t_x * (1000 - fee)} \]
 \[t'_{y_{numerador}} = y * t_x * (1000 - fee)\]
 \[t'_{y_{denominador}} = 1000 * x + t_x * (1000 - fee)\]
-Amb aquests canvis, \textit{fee} podrà ser un nombre enter. Com ja hem vist, un valor de 5 aplicarà una taxa del 0,05\% o un valor de 30 aplicarà una comissió  del 0,3\%.
+Amb aquests canvis, \textit{fee} podrà ser un nombre enter. Com ja hem vist, un valor de 5 aplicarà una taxa del 0,5\%.
 
-En resum, per separar el numerador i el denominador i aplicant el citat canvi per a què la taxa sigui un nombre enter, s'han hagut d'afegir al contracte intel·ligent:
+En resum, per separar el numerador i el denominador i aplicant el citat canvi perquè la taxa sigui un nombre enter, s'han hagut d'afegir al contracte intel·ligent:
 \begin{itemize}
 \item Pel mètode priceEgldTokenNumerator apareixen els nous:
 	\begin{itemize}
@@ -767,7 +782,7 @@ En resum, per separar el numerador i el denominador i aplicant el citat canvi pe
 
 \subsubsection{Arquitectura}\label{subsub:arq}
 
-Una \textbf{dApp} ens permetrà escriure en la blockchain i llegir l'emmagatzematge –o estat– del contracte intel·ligent descrit en l'apartat anterior. Com es pot comprovar en la Fig. \ref{fig:architecture} \textbf{per escriure en la cadena de blocs} la dApp haurà de llençar una \textbf{transacció} que invoqui a un mètode del contracte. Si per contra només necessitem \textbf{llegir l'estat} del contracte intel·ligent, emprarem una \textbf{API} aportada per Elrond per invocar certs mètodes del contracte, cosa que no farà pas cap canvi en la cadena de blocs.
+Una \textbf{DApp} ens permetrà escriure en la blockchain i llegir l'emmagatzematge –o estat– del contracte intel·ligent descrit en l'apartat anterior. Com es pot comprovar en la Fig. \ref{fig:architecture}, \textbf{per escriure en la cadena de blocs} la DApp haurà de llençar una \textbf{transacció} que invoqui a un mètode del contracte. Si per contra només necessitem \textbf{llegir l'estat} del contracte intel·ligent, emprarem una \textbf{API} aportada per Elrond per invocar certs mètodes del contracte, cosa que no farà pas cap canvi en la cadena de blocs.
 
 \begin{figure}[h]
 \includegraphics[width=0.75\textwidth]{architecture.png}
@@ -779,7 +794,7 @@ Pot parèixer una descripció molt breu, però és que és veritablement una arq
 
 \subsubsection{Pantalles}
 
-Per \textbf{accedir a la dApp} s'haurà de triar un dels mètodes habilitats per fer-ho a la xarxa Elrond (Fig. \ref{fig:screenlogin}).
+Per \textbf{accedir a la DApp} s'haurà de triar un dels mètodes habilitats per fer-ho a la xarxa Elrond (Fig. \ref{fig:screenlogin}).
 
 \begin{figure}[!htb]
 \begin{subfigure}[b]{0.39\textwidth}
@@ -793,12 +808,12 @@ Per \textbf{accedir a la dApp} s'haurà de triar un dels mètodes habilitats per
 \caption{Finestres ``Login'' i ``Claim''.}
 \end{figure}
 
-Només per a l'\textbf{usuari que sigui el propietari del contracte}, li apareixerà en el menú d'adalt a la dreta les \textbf{opcions ``Claim'' i ``Fund''}. En la pantalla ``Fund'' podran \textbf{crear els diferents fons de liquidesa del contracte intel·ligent} (Fig. \ref{fig:screenfund}) i en la finestra ``Claim'' es podran reclamar els fons i els beneficis obtinguts (Fig. \ref{fig:screenclaim}). S'ha de destacar que els fons una vegada creats, ja no es poden modificar a no ser que es realitzin \textit{swaps} en la finestra de ``Trade''. També es poden reclamar a la finestra ``Claim'' i a partir d'aquí es poden tonar a crear.
+Només per a l'\textbf{usuari que sigui el propietari del contracte}, li apareixerà en el menú d'adalt a la dreta les \textbf{opcions ``Claim'' i ``Fund''}. En la pantalla ``Fund'' es podran \textbf{crear els diferents fons de liquiditat del contracte intel·ligent} (Fig. \ref{fig:screenfund}) i en la finestra ``Claim'' es podran reclamar els fons i els beneficis obtinguts (Fig. \ref{fig:screenclaim}). S'ha de destacar que els fons una vegada creats, ja no es poden modificar a no ser que es realitzin \textit{swaps} en la finestra de ``Trade''. També es poden reclamar a la finestra ``Claim'' i a partir d'aquí es poden tonar a crear.
 
 \begin{figure}[!htb]
 \begin{subfigure}[b]{0.47\textwidth}
   \includegraphics[width=\linewidth]{screen_fund.png}
-  \caption{Finestra on es provisionen els \textit{liquidity pools}.}\label{fig:screenfund}
+  \caption{Finestra on s'aprovisionen els \textit{liquidity pools}.}\label{fig:screenfund}
 \end{subfigure}\hfill
 \begin{subfigure}[b]{0.47\textwidth}
   \includegraphics[width=\linewidth]{screen_trade.png}
@@ -807,7 +822,7 @@ Només per a l'\textbf{usuari que sigui el propietari del contracte}, li apareix
 \caption{Finestres ``Fund'' i ``Trade''.}
 \end{figure}
 
-En l'\textbf{opció del menú ``Trade''} trobem la finestra amb el cor de l'aplicació (Fig. \ref{fig:screentrade}). Es podran \textbf{seleccionar el parells dels quals s'han donat d'alta fons de liquidesa i realitzar compres o vendes}. Es mostrarà les dades referents a les operacions que es faran (quantitat de \textit{tokens} que rebrem si els comprem amb xEGLD pitjan el botó ``\textit{Buy}'' o quantitat de xEGLD que rebrem si venem el citat \textit{token} prement el botó ``\textit{Sell}''). També apareixeran les quantitats disponibles del parell dins del \textit{pool} i dins de la \textit{wallet} de l'usuari. Abaix a la dreta es pot observar que es veurà l'estat de la constant \(k\) en el moment actual (``\textit{Current k}'') i quan es va inicialitzar el fons (``\textit{Initial k}'')
+En l'\textbf{opció del menú ``Trade''} trobem la finestra amb el cor de l'aplicació (Fig. \ref{fig:screentrade}). Es podran \textbf{seleccionar els parells dels quals s'han donat d'alta fons de liquiditat i realitzar compres o vendes}. Es mostraran les dades referents a les operacions que es faran (quantitat de \textit{tokens} que rebrem si els comprem amb xEGLD prement el botó ``\textit{Buy}'' o quantitat de xEGLD que rebrem si venem el citat \textit{token} prement el botó ``\textit{Sell}''). També apareixeran les quantitats disponibles del parell dins del \textit{pool} i dins de la \textit{wallet} de l'usuari. Abaix a la dreta es pot observar que es veurà l'estat de la constant \(k\) en el moment actual (``\textit{Current k}'') i quan es va inicialitzar el fons (``\textit{Initial k}'')
 
 \subsection{Implementació}\label{sec:imp}
 \subsubsection{Repositoris disponibles}
@@ -815,17 +830,17 @@ He dividit el projecte en quatre repositoris a Github:
 \begin{itemize}
 \item \textbf{TFM\_latex}\footnote{\url{https://github.com/sergiogrubio/TFM_latex}}: El present document amb tots els recursos necessaris per generar-lo.
 \item \textbf{TFM\_smart\_contract}\footnote{\url{https://github.com/sergiogrubio/TFM_smart_contract}}: Contracte intel·ligent del projecte escrit en Rust (es pot consultar en l'arxiu ``testdex.rs''). Es troben també altres recursos necessaris per compilar-lo, així com d'altres per fer-ne proves.
-\item \textbf{TFM\_dapp}\footnote{\url{https://github.com/sergiogrubio/TFM_dapp}}: Aquí es troba la dApp que interacciona amb el contracte intel·ligent del punt anterior. Es basa en la plantilla ``dapp-template'' aportada per Elrond\footnote{\url{https://github.com/ElrondNetwork/dapp-template}}.
-\item \textbf{TFM\_stats}\footnote{\url{https://github.com/sergiogrubio/TFM_stats}}: Es tracta d'un \textit{script} escrit en Python per comprovar el rendiment de la xarda d'elrond. Es llançaran peticions emprant \textit{erdpy} al contracte intel·ligent descrit.  
+\item \textbf{TFM\_DApp}\footnote{\url{https://github.com/sergiogrubio/TFM_DApp}}: Aquí es troba la DApp que interacciona amb el contracte intel·ligent del punt anterior. Es basa en la plantilla ``DApp-template'' aportada per Elrond\footnote{\url{https://github.com/ElrondNetwork/DApp-template}}.
+\item \textbf{TFM\_stats}\footnote{\url{https://github.com/sergiogrubio/TFM_stats}}: Es tracta d'un \textit{script} escrit en Python per comprovar el rendiment de la xarxa d'Elrond. Es llançaran peticions emprant \textit{erdpy} al contracte intel·ligent descrit.  
 \end{itemize}
 
 \subsubsection{Aspectes a destacar de la implementació}\label{imp:aspectes}
-En primer lloc, vull destacar les diferents formes en què s'ha interactuat des de la dApp amb la \textit{blockchain}:
+En primer lloc, vull destacar les diferents formes en què s'ha interactuat des de la DApp amb la \textit{blockchain}:
 \begin{itemize}
-\item \textbf{Transferències ESDT}: Són transaccions signades. Tenen la característica de què el valor de la transacció (camp ``\(value\)'') serà de 0 xEGLD. El token, la quantitat del mateix el mètode que es trucarà del \textit{smart contract} i els respectius paràmetres aniran dins del camp ``\(data\)'' (al principi d'aquest camp s'indicarà que és aquest tipus de transferència amb el text ``\(ESDTTransfer\)''). Es pot observar en la Fig. \label{fig:impesdttransfer}.
+\item \textbf{Transferències ESDT}: Són transaccions signades. Tenen la característica de què el valor de la transacció (camp ``\(value\)'') serà de 0 xEGLD. El token, la quantitat del mateix, el mètode que es trucarà del \textit{smart contract} i els respectius paràmetres aniran dins del camp ``\(data\)'' (al principi d'aquest camp s'indicarà que és aquest tipus de transferència amb el text ``\(ESDTTransfer\)''). Es pot observar en la Fig. \ref{fig:impesdttransfer}.
 \item \textbf{Transferències de xEGLD}: També són transaccions signades. En el camp ``\(value\)'' anirà el valor de la transacció expressat en ``wei'' d'EGLD. En el camp ``\(data\)'' es posarà el mètode que es trucarà del \textit{smart contract} i els respectius paràmetres.
-\item \textbf{\textit{Queries} al smart \textit{contract}}: No duen assiat una transacció signada. Es demana l'execució d'un mètode del contracte intel·ligent que no duu associat cap transferència d'actius, simplement consulta l'estat del mateix. En la Fig. \ref{} es pot observar un exemple.
-\item \textbf{Consulta a l'API REST de la devnet d'Elrond}\footnote{\url{https://devnet-api.elrond.com/}}: S'ha comentat de passada la seva existència a la secció \ref{sub:altres}. Permet consultar dades sobre l'estat dels diferents elements de la devnet d'Elrond (òbviament, existeixen les respectives versions per a les altres xarxes). La seva utilitat m'ha semblant determinant. Per exemple, l'empro per consultar els actius del monedor d'un client o els actius disponibles en el contracte intel·ligent. Un exemple d'ús es pot consultar en la Fig. \ref{fig:imp-queryapirest}. 
+\item \textbf{\textit{Queries} al smart \textit{contract}}: No duen associada una transacció signada. Es demana l'execució d'un mètode del contracte intel·ligent que no duu associat cap transferència d'actius, simplement consulta l'estat d'aquest. En la Fig. \ref{fig:imp-queryapirest} es pot observar un exemple.
+\item \textbf{Consulta a l'API REST de la devnet d'Elrond}\footnote{\url{https://devnet-api.elrond.com/}}: S'ha comentat de passada la seva existència a la secció \ref{sub:altres}. Permet consultar dades sobre l'estat dels diferents elements de la devnet d'Elrond (òbviament, existeixen les respectives versions per a les altres xarxes). La seva utilitat m'ha semblat determinant. Per exemple, l'empro per consultar els actius del moneder d'un client o els actius disponibles en el contracte intel·ligent. Un exemple d'ús es pot consultar en la Fig. \ref{fig:imp-queryapirest}. 
 \end{itemize}
 
 \begin{figure}[!htb]
@@ -835,9 +850,9 @@ En primer lloc, vull destacar les diferents formes en què s'ha interactuat des 
 \end{subfigure}\hfill
 \begin{subfigure}[b]{0.47\textwidth}
   \includegraphics[width=\linewidth]{imp-egldtransfer.png}
-  \caption{Exemple de transferència xEgld.}\label{fig:screentrade}
+  \caption{Exemple de transferència xEGLD.}\label{fig:screentrade}
 \end{subfigure}\hfill
-\caption{Els dos tipus de transferències d'actius en el codi font de la dApp.}
+\caption{Els dos tipus de transferències d'actius en el codi font de la DApp.}
 \label{fig:tipustransfer}
 \end{figure}
 
@@ -853,8 +868,8 @@ En primer lloc, vull destacar les diferents formes en què s'ha interactuat des 
 \caption{Consultes a l'API REST de la devnet d'Elrond.}\label{fig:imp-queryapirest}
 \end{figure} 
 
-\subsubsection{\textit{Correcció de la constant \(k\) per l'error introduït pel redondeig}}
-Com s'ha comentat en la part de disseny, a la màquina virtual d'Elrond se li ha llevat el suport a les operacions de coma flotant. Com s'ha dit també, això provocarà que es vagi acumulant un error en la constant \(k\) que podria desvirtuar la natura del protocol AMM. Així com està implementat el \textit{smart contract}, aquest error es va acumulant en el fons del cotnracte intel·ligent. Òbviament, és un error lleu que farà que el propietari del pool tingui més benefici. Mostra d'aquest error que es va acumulant es pot veure en la Fig. \ref{fig:imperrork}
+\subsubsection{\textit{Correcció de la constant \(k\) per l'error introduït per l'arrodoniment}}
+Com s'ha comentat en la part de disseny, a la màquina virtual d'Elrond se li ha llevat el suport a les operacions de coma flotant. Com s'ha dit també, això provocarà que es vagi acumulant un error en la constant \(k\) que podria desvirtuar la natura del protocol AMM. Així com està implementat el \textit{smart contract}, aquest error es va acumulant en el fons del contracte intel·ligent. Òbviament, és un error lleu que farà que el propietari del \textit{pool} tingui més benefici. Mostra d'aquest error que es va acumulant es pot veure en la Fig. \ref{fig:imperrork}. Animo al lector que revisi la referència bibliogràfica \cite{zhang2018}.
 
 \begin{figure}[h]
 \includegraphics[width=0.75\textwidth]{imp-errork.png}
@@ -862,7 +877,7 @@ Com s'ha comentat en la part de disseny, a la màquina virtual d'Elrond se li ha
 \caption{Error acumulat en la constant \(k\).}\label{fig:imperrork}
 \end{figure} 
 
-He perdut temps intentant solucionar el problema i he arribat a diverses solucions on la \(k\) es va ajustant quan passa per sopa o per sobre del valor original. El problema d'aquestes solucions és que no les he pogudes demostrar matemàticament (cosa no apropiada per a un treball acadèmic). En la Fig. \ref{fig:impcorrectk} es pot veure comentat un exemple d'aquestes proves (n'hi ha més al repositori de Github corresponent).
+He dedicat temps a intentar solucionar el problema i he arribat a diverses solucions on la \(k\) es va ajustant quan passa per sota o per sobre del valor original. El problema d'aquestes solucions és que no les he pogut demostrar matemàticament (cosa no apropiada per a un treball acadèmic). En la Fig. \ref{fig:impcorrectk} es pot veure comentat un exemple d'aquestes proves (n'hi ha més al repositori de Github corresponent).
 
 \begin{figure}[!htb]
 \begin{subfigure}[b]{0.47\textwidth}
@@ -879,7 +894,7 @@ He perdut temps intentant solucionar el problema i he arribat a diverses solucio
 
 \subsection{Posada en producció}
 \subsubsection{Desplegament del contracte intel·ligent}
-Començarem compilant el contracte intel·ligent. Executarem dins el directori on es trobi el codi font del contracte intel·ligent:\footnote{També es pot fer amb els \textit{snippets}, que seran explicats en la secció \ref{subsub:sc}.}.
+Començarem compilant el \textit{smart contract}. Executarem dins el directori on es trobi el codi font del contracte intel·ligent:\footnote{També es pot fer amb els \textit{snippets}, que seran explicats en la secció \ref{subsub:sc}.}.
 \begin{lstlisting}[
     basicstyle=\footnotesize,
 ]
@@ -890,25 +905,25 @@ Amb això generarem el fitxer ``testdex.wasm'' que desplegarem a la \textit{devn
 \begin{lstlisting}[
     basicstyle=\footnotesize,
 ]
-erdpy contract deploy --pem="~/wallet/wallet1.pem" \
+erdpy contract deploy --pem="~/wallet/wallet3.pem" \
   --recall-nonce --gas-limit=100000000 --project=. \
   --proxy="https://devnet-gateway.elrond.com" \
   --chain="D" --arguments 0x05 --send
 \end{lstlisting}
 
-D'entre els paràmetres, s'ha de destacar que dins de ``~/wallet/wallet3.pem'' es troba la clau privada de l'usuari de la devnet d'Elrond que desplegarà el contracte intel·ligent a la xarxa (que serà el propietari) i amb ``--arguments 0x05'' li passem en hexadecimal l'argument necessari pel mètode que fa de constructor (un valor de 5 implica una comissió del 0.05\%). Aquest comanda mostrarà per la consola l'adreça del contracte intel·ligent dins de la \textit{devnet} d'Elrond, en el nostre cas:
+D'entre els paràmetres, s'ha de destacar que dins de ``{\texttildelow/wallet/wallet3.pem}'' es troba la clau privada de l'usuari de la devnet d'Elrond que desplegarà el contracte intel·ligent a la xarxa (que serà el propietari) i amb ``-{}-arguments 0x05'' li passem en hexadecimal l'argument necessari per al mètode que fa de constructor (un valor de 5 implica una comissió del 0.5\%). Aquesta comanda mostrarà per la consola, entre altres coses, l'adreça del contracte intel·ligent dins de la \textit{devnet} d'Elrond. En el nostre cas:
 \begin{lstlisting}[
     basicstyle=\footnotesize,
 ]
 erd1qqqqqqqqqqqqqpgq578zh88hskf9efwzyhkf64el7d6ve3lrsn2qwkvmt2
 \end{lstlisting}
 
-\subsubsection{Desplegament de la dApp}
-He donat d'alta dins del servei \url{noip.com} el nom testdex.ddns.net per a què apunti a un VPS (\textit{Virtual Private Server}) a OVH\footnote{\url{https://www.ovhcloud.com/}}. Al servidor en clonat el repositori amb l'ordre:
+\subsubsection{Desplegament de la DApp}
+He donat d'alta dins del servei \url{noip.com} el nom testdex.ddns.net perquè apunti a un VPS (\textit{Virtual Private Server}) a OVH\footnote{\url{https://www.ovhcloud.com/}}. Al servidor he clonat el repositori amb l'ordre:
 \begin{lstlisting}[
     basicstyle=\footnotesize,
 ]
-git clone git@github.com:sergiogrubio/TFM_dapp.git
+git clone git@github.com:sergiogrubio/TFM_DApp.git
 \end{lstlisting}
 Dins del directori clonat he executat:
 \begin{lstlisting}[
@@ -917,12 +932,24 @@ Dins del directori clonat he executat:
 npm run build
 serve -s build
 \end{lstlisting}
-La dApp estarà disponible durant els temps d'avaluació d'aquest TFM al URL:
-\url{http://testdex.ddns.net/}.
+Després he fet una redirecció de ports amb:
+\begin{lstlisting}[
+    basicstyle=\footnotesize,
+]
+# localhost/loopback
+sudo iptables -t nat -I OUTPUT -p tcp -d 127.0.0.1 --dport 80 \
+	-j REDIRECT --to-ports 3000
+
+# external
+sudo iptables -t nat -I PREROUTING -p tcp --dport 80 -j REDIRECT \
+	--to-ports 3000
+\end{lstlisting}
+La DApp estarà disponible durant el temps d'avaluació d'aquest TFM a l'URL:
+\url{http://testdex.ddns.net/}. La única intenció és facilitar la revisió del treball (i no haver de clonar el repositori i executar-lo en local).
 
 \subsection{Proves}
 \subsubsection{Sobre el contracte intel·ligent}\label{subsub:sc}
-Les proves sobre el contracte intel·ligent tenen una especial importància, ja que errades en el seu disseny i/o implementació poden provocar pèrdues econòmiques. Per testejar el contracte intel·ligent allò primer que he fet és definir \textbf{``interaccions'' mitjançant \textit{snippets}} que empren l'eina \textit{erdpy}. En gerga d'Elrond, es crea un fitxer d'interacciones (en el nostre cas anomenat ``devnet.snippets.sh''). Després fent clic amb el botó dret al \textit{plugin}\footnote{Com configurar l'entorn per desenvolupar en la xarxa Elrond es pot consultar en \cite{elrondnet2020} i \cite{ton2021}.} d'Elrond a Visual Studio Code podrem accedir als \textit{snippets} (Fig. \ref{fig:test-snippets}).
+Les proves sobre el contracte intel·ligent tenen una especial importància, ja que errades en el seu disseny i/o implementació poden provocar pèrdues econòmiques. Per testejar el contracte intel·ligent el primer que he fet és definir \textbf{``interaccions'' mitjançant \textit{snippets}} que empren l'eina \textit{erdpy}. En gerga d'Elrond, això seria ``crear un fitxer d'interaccions'' (en aquest cas anomenat ``devnet.snippets.sh''). Després fent clic amb el botó dret al \textit{plugin}\footnote{Com configurar l'entorn per desenvolupar en la xarxa Elrond es pot consultar en \cite{elrondnet2020} i \cite{ton2021}.} d'Elrond a Visual Studio Code podrem accedir als \textit{snippets} (Fig. \ref{fig:test-snippets}).
 
 \begin{figure}[h]
 \includegraphics[width=1\textwidth]{test-snippets.png}
@@ -930,11 +957,11 @@ Les proves sobre el contracte intel·ligent tenen una especial importància, ja 
 \caption{\textit{Snippets} en l'IDE Visual Studio Code.}\label{fig:test-snippets}
 \end{figure} 
 
-Hi ha definit un \textit{snippet} per a cada mètode del contracte intel·ligent, a més de dos addicionals per compilar-lo i desplogar-lo a la xarxa d'Elrond. Ja s'han comentat anteriorment els mètodes del contracte intel·ligent i els respectius snippets permeten executar-los (i així comprovar si el comportamet és l'esperar). Vull parar l'atenció en els que penso que són il·lustratius del fundionament d'\textit{erdpy}:
+Hi ha definit un \textit{snippet} per a cada mètode del contracte intel·ligent, a més de dos addicionals per compilar-lo i desplegar-lo a la xarxa d'Elrond. Ja s'han comentat anteriorment els mètodes del contracte intel·ligent i els respectius \textit{snippets} permeten executar-los (i així comprovar si el comportament és l'esperat). Vull parar l'atenció en els que penso que són il·lustratius del funcionament d'\textit{erdpy}:
 \begin{itemize}
-\item \textbf{Trucades a mètodes del contracte intel·ligent que impliquen transferència d'actius} (\(erdpy contract call\)):
+\item \textbf{Trucades a mètodes del contracte intel·ligent que impliquen transferència d'actius} (\textit{erdpy contract call}):
 	\begin{itemize}
-	\item \textbf{Transferència d'EGLD del client cap al contracte} (\textit{snippet} ``addLiquidityEgld''): En la Fig. \ref{fig:test-addegld} es pot veure un exemple de com transferir EGLD al contracte intel·ligent. S'ha de destacar que l'opció ``-{}-value'' inclourà la quantitat d'EGLD a traspassar en wei i l'opció ``-{}-function'' especificarà el mètode del contracte amb la lògica que tractarà el citat moviment (els argument que se li passen es definiran en ``-{}-arguments'' i estaran codificats en hexadecimal). Dins el mètode del contracte intel·ligent es podrà recuperar la quantitat d'EGLD amb:
+	\item \textbf{Transferència d'EGLD del client cap al contracte} (\textit{snippet} ``addLiquidityEgld''): En la Fig. \ref{fig:test-addegld} es pot veure un exemple de com transferir EGLD al contracte intel·ligent. S'ha de destacar que l'opció ``-{}-value'' inclourà la quantitat d'EGLD a traspassar en wei i l'opció ``-{}-function'' especificarà el mètode del contracte amb la lògica que tractarà el citat moviment (els arguments que se li passen es definiran en ``-{}-arguments'' i estaran codificats en hexadecimal). Dins el mètode del contracte intel·ligent es podrà recuperar la quantitat d'EGLD amb:
 \begin{lstlisting}
 let payment = self.call\_value().egld\_value();
 \end{lstlisting}
@@ -943,9 +970,9 @@ let payment = self.call\_value().egld\_value();
 let (payment, token) =
 	self.call_value().payment_token_pair();
 \end{lstlisting}
-		\item \textbf{Transferència d'EGLD/token del contracte cap al client} (\textit{snippet} ``claimLiquidityToken''): Aquí es cridarà un mètode que generarà una transferència –tant d'EGLD com de tokens ESDT– cap a algun \textit{wallet} (Fig. \ref{fig:test-liquiditytoken}). . L'opció ``-{}-value'' s'especificarà amb valor 0 i en l'opció ``-{}-function'' es posarà el mètode del contracte amb la lògica que tractarà el citat moviment els argument que se li passen es definiran en ``-{}-arguments'' i estaran codificats en hexadecimal).
+		\item \textbf{Transferència d'EGLD/token del contracte cap al client} (\textit{snippet} ``claimLiquidityToken''): Aquí es cridarà un mètode que generarà una transferència –tant d'EGLD com de tokens ESDT– cap a algun \textit{wallet} (Fig. \ref{fig:test-liquiditytoken}). L'opció ``-{}-value'' s'especificarà amb valor 0 i en l'opció ``-{}-function'' es posarà el mètode del contracte amb la lògica que tractarà el citat moviment (els arguments que se li passen es definiran en ``-{}-arguments'' i estaran codificats en hexadecimal).
 	\end{itemize}
-	\item \textbf{Trucades a mètodes del contracte intel·ligent sense transferència d'actius} (\textit{erdpy contract query}): En la Fig. \ref{fig:test-getearnings} es pot vure aquest cas. Serà suficient amb especificar el mètode que es crida i els arguments codificats en hexadecimal. Com que no es tracta d'una trasacció que modifiqui la \textit{blokchain}, és molt més ràpida.
+	\item \textbf{Trucades a mètodes del contracte intel·ligent sense transferència d'actius} (\textit{erdpy contract query}): En la Fig. \ref{fig:test-getearnings} es pot veure aquest cas. Serà suficient amb especificar el mètode que es crida i els arguments codificats en hexadecimal. Com que no es tracta d'una transacció que modifiqui la \textit{blokchain}, és molt més ràpida.
 \end{itemize}
 
 \begin{figure}[!htb]
@@ -963,31 +990,31 @@ let (payment, token) =
 	\end{subfigure}\hfill
 	\begin{subfigure}[b]{0.39\textwidth}
 	  \includegraphics[width=\linewidth]{test-getearnings.png}
-	  \caption{``getFee''.}\label{fig:test-getearnings}
+	  \caption{``claimEarningsToken''.}\label{fig:test-getearnings}
 	\end{subfigure}\hfill
 	\caption{\textit{Snippets} amb trucades a mètodes emprant \textit{erdpy}.}
 \end{figure}
 
-S'han executat els següents \textbf{snippets} per validar el contracte intel·ligent\footnote{S'ha de destacar que en el resultat del \textit{snippet} apareixarà un enllaç cap a l'explorador de transaccions de la xarxa d'Elrond on es podrà comprovar si ha funcionat correctament o ha aparegut algun error (òbviament, es provaran situacions que haurien de generar error i en aquest cas el comportament anòmal és que funcioni correctament).}:
+S'han executat els següents \textbf{\textit{snippets}} per validar el contracte intel·ligent\footnote{S'ha de destacar que en el resultat del \textit{snippet} apareixarà un enllaç cap a l'explorador de transaccions de la xarxa d'Elrond on es podrà comprovar si ha funcionat correctament o ha aparegut algun error (òbviament, es provaran situacions que haurien de generar error i en aquest cas el comportament anòmal és que funcioni correctament).}:
 
 \begin{itemize}
-\item Compilar el contracte intel·ligent: \textit{Snippet} ``build''.
-\item Desplegar el contracte intel·ligent: \textit{Snippet} ``deploy''. Com a paràmetre si li passa la taxa (\textit{fee}) que es cobrarà en els \textit{swaps}.
-\item Comprovar que el contracte s'ha desplegat correctament: \textit{Snippet} ``checkDeployment''.
-\item Afegir un fons de liquiditat: \textit{Snippets} ``addLiquidityToken'' (Fig. \ref{fig:test-addegld}) i ``addLiquidityEgld'' (Fig. \ref{fig:test-addtoken}). Es torna a afegir fons al parell per comprovar que no deixa. Finalment, s'intenta crear un fons des d'una cartera que no és la propietaria del contracte intel·ligent per comprovar que dona error (dins del fitxer \textit{devenet.snippets.sh} s'ha de canviar la constant \textit{OWNER\_PEM=``./wallet/wallet1.pem''} per \textit{OWNER\_PEM=``./wallet/wallet2.pem''}).
-\item Obtenir la liquiditat del \textit{pool}: \textit{Snippets} ``getLiquidityToken'' i ``getLiquidityEgld''. Òbviament, els valors obtinguts hauran de coincidir amb les quantitats que s'han especificar en la creació del fons en el punt anterior.
-\item Obtenir l'estat del fons de liquiditat: \textit{Snippet} ``getLiquidityStatus''. Executat abans de constituir el fons i després de constituir-lo (ha de donar valors diferents).
-\item Calcular la constant K actual: \textit{Snippets} ``calculateK'' i ``getRatio''. Per l'error de rendodeig en la divisió entre nombres sencers que s'ha comentat abans, anirà fluctuant un poc per sobre i per sota del valor de la constant del moment de constituir el fons. S'ha comprovat fent \textit{swaps} que així és.
-\item Comprovar que la taxa (\textit{fee}): \textit{Snippet} ``getFee''. La taxa ha de ser la mateixa que es va definir en el moment de desplegar el contracte intel·ligent. 
-\item Calcular el preu en token de l'EGLD (amb i sense taxa): \textit{Snippets} ``getPriceEgldToken'', ``getPriceEgldTokenNumerator'', ``getPriceEgldTokenDenominator'', ``getPriceEgldTokenNoFee'' i ``getFeeEgldToken''\footnote{Hi ha tres \textit{snippets} per coincidir amb la implementació que s'ha exposat en la secció \ref{subsub:sc}.}. S'ha comprovat que es generen els mateixos preus que en l'exemple descrit en la secció \ref{subsub:dexamm}.
-\item Calcular el preu en EGLD del token (amb i sense taxa): \textit{Snippets} ``getPriceTokenEgld'', ``getPriceTokenEgldNumerator'', ``getPriceTokenEgldDenominator'', ``getPriceTokenEgldNoFee'' i ``getFeeTokenEgld''\footnote{Hi ha tres \textit{snippets} per coincidir amb la implementació que s'ha exposat en la secció \ref{subsub:sc}.}. S'ha comprovat que es generen els mateixos preus que en l'exemple descrit en la secció \ref{subsub:dexamm}.
-\item Comprovar els beneficis obtinguts pels swaps realitzats: \textit{Snippets} ``getEarningsEgld'' i ``getEarningsToken''. També s'han comprovat que complien amb l'estudi teòric fet a la secció \ref{subsub:dexamm}.
-\item Comprovar que el propietari del contracte rep els beneficis d'un token concret quan els reclama: \textit{Snippet} ``claimEarningsToken()''. S'ha d'emprar també el \textit{snippet} ``getEarningsToken'' per esbrinar la quantitat a rebre i després d'executar-lo \textit{snippet} ha d'aparèixer a la cartera del propietari del \textit{smart contract}.
-\item  Comprovar que el propietari del contracte rep els beneficis en EGLD quan els reclama: {Snippet} ``claimEarningsEgld()''. S'ha d'emprar també el \textit{snippet} ``getEarningsEgld'' per esbrinar la quantitat a rebre i després d'executar-lo ha d'aparèixer a la cartera del propietari del \textit{smart contract}. Per disseny, l'EGLD que es recuperarà serà el generat amb tots els \textit{swaps} (independentment del parell).
-\item  Comprovar que el propietari del contracte rep la part d'EGLD d'un fons de liquiditat quan la reclama: {Snippet} ``claimLiquidityEgld()''. S'ha d'emprar també el \textit{snippet} ``getLiquidityEgld'' per esbrinar la quantitat a rebre i després d'executar-lo ha d'aparèixer a la cartera del propietari del \textit{smart contract}. A diferència del que passa amb ``claimEarningsEgld()'', aquí només es rebrà l'EGLDd'un parell en concret. 
-\item  Comprovar que el propietari del contracte rep la part del token d'un fons de liquiditat quan la reclama: {Snippet} ``claimLiquidityToken()''. S'ha d'emprar també el \textit{snippet} ``getLiquidityToken'' per esbrinar la quantitat a rebre i després d'executar-lo ha d'aparèixer a la cartera del propietari del \textit{smart contract}.
-\item Comprovar que es poden intercanviar EGLD per token: {Snippet} ``swapEgldForToken()''. S'ha comprovat que es generen els mateixos resultats que els descrits en l'exemple de la secció \ref{subsub:dexamm}. Així mateix, s'emprarà el \textit{snippet} ``getPriceEgldToken'' per conèixer la quantitat de token que hem de rebre a la cartera.
-\item Comprovar que es poden intercanviar token per EGLD: {Snippet} ``swapTokenForEgld()''. S'ha comprovat que es generen els mateixos resultats que els descrits en l'exemple de la secció \ref{subsub:dexamm}. Així mateix, s'emprarà el \textit{snippet} ``getPriceTokenEgld'' per conèixer la quantitat d'EGLD que hem de rebre a la cartera.
+\item \textbf{Compilar el contracte intel·ligent}: \textit{Snippet} ``build''.
+\item \textbf{Desplegar el contracte intel·ligent}: \textit{Snippet} ``deploy''. Com a paràmetre si li passa la taxa (\textit{fee}) que es cobrarà en els \textit{swaps}.
+\item \textbf{Comprovar que el contracte s'ha desplegat correctament}: \textit{Snippet} ``checkDeployment''.
+\item \textbf{Afegir un fons de liquiditat}: \textit{Snippets} ``addLiquidityToken'' (Fig. \ref{fig:test-addegld}) i ``addLiquidityEgld'' (Fig. \ref{fig:test-addtoken}). Es torna a afegir fons al parell per comprovar que no deixa. Finalment, s'intenta crear un fons des d'una cartera que no és la propietaria del contracte intel·ligent per comprovar que dona error (dins del fitxer \textit{devenet.snippets.sh} s'ha de canviar la constant \textit{OWNER\_PEM=``./wallet/wallet1.pem''} per \textit{OWNER\_PEM=``./wallet/wallet2.pem''}).
+\item \textbf{Obtenir la liquiditat del \textit{pool}}: \textit{Snippets} ``getLiquidityToken'' i ``getLiquidityEgld''. Òbviament, els valors obtinguts hauran de coincidir amb les quantitats que s'han d'especificar en la creació del fons en el punt anterior.
+\item \textbf{Obtenir l'estat del fons de liquiditat}: \textit{Snippet} ``getLiquidityStatus''. Executat abans de constituir el fons i després de constituir-lo (ha de donar valors diferents).
+\item \textbf{Calcular la constant K actual}: \textit{Snippets} ``calculateK'' i ``getRatio''. Per l'error de rendodeig en la divisió entre nombres enters que s'ha comentat abans, anirà fluctuant un poc per sobre i per sota del valor de la constant del moment de constituir el fons. S'ha comprovat fent \textit{swaps} que és així.
+\item \textbf{Comprovar que la taxa (\textit{fee})}: \textit{Snippet} ``getFee''. La taxa ha de ser la mateixa que es va definir en el moment de desplegar el contracte intel·ligent. 
+\item \textbf{Calcular el preu en token de l'EGLD (amb i sense taxa)}: \textit{Snippets} ``getPriceEgldToken'', ``getPriceEgldTokenNumerator'', ``getPriceEgldTokenDenominator'', ``getPriceEgldTokenNoFee'' i ``getFeeEgldToken''\footnote{\label{note1}Hi ha tres \textit{snippets} per coincidir amb la implementació que s'ha exposat en la secció \ref{subsub:sc}.}. S'ha comprovat que es generen els mateixos preus que en l'exemple descrit en la secció \ref{subsub:dexamm}.
+\item \textbf{Calcular el preu en EGLD del token (amb i sense taxa)}: \textit{Snippets} ``getPriceTokenEgld'', ``getPriceTokenEgldNumerator'', ``getPriceTokenEgldDenominator'', ``getPriceTokenEgldNoFee'' i ``getFeeTokenEgld''\footnote{\ref{note1}}. S'ha comprovat que es generen els mateixos preus que en l'exemple descrit en la secció \ref{subsub:dexamm}.
+\item \textbf{Comprovar els beneficis obtinguts pels swaps realitzats}: \textit{Snippets} ``getEarningsEgld'' i ``getEarningsToken''. També s'han comprovat que complien amb l'estudi teòric fet a la secció \ref{subsub:dexamm}.
+\item \textbf{Comprovar que el propietari del contracte rep els beneficis d'un token concret quan els reclama}: \textit{Snippet} ``claimEarningsToken()''. S'ha d'emprar també el \textit{snippet} ``getEarningsToken'' per esbrinar la quantitat a rebre i després d'executar-lo ha d'aparèixer a la cartera del propietari del \textit{smart contract}.
+\item  \textbf{Comprovar que el propietari del contracte rep els beneficis en EGLD quan els reclama}: {Snippet} ``claimEarningsEgld()''. S'ha d'emprar també el \textit{snippet} ``getEarningsEgld'' per esbrinar la quantitat a rebre i després d'executar-lo ha d'aparèixer a la cartera del propietari del \textit{smart contract}. Per disseny, l'EGLD que es recuperarà serà el generat amb tots els \textit{swaps} (independentment del parell).
+\item  \textbf{Comprovar que el propietari del contracte rep la part d'EGLD d'un fons de liquiditat quan la reclama}: {Snippet} ``claimLiquidityEgld()''. S'ha d'emprar també el \textit{snippet} ``getLiquidityEgld'' per esbrinar la quantitat a rebre i després d'executar-lo ha d'aparèixer a la cartera del propietari del \textit{smart contract}. A diferència del que passa amb ``claimEarningsEgld()'', aquí només es rebrà l'EGLD d'un parell en concret. 
+\item  \textbf{Comprovar que el propietari del contracte rep la part del token d'un fons de liquiditat quan la reclama}: {Snippet} ``claimLiquidityToken()''. S'ha d'emprar també el \textit{snippet} ``getLiquidityToken'' per esbrinar la quantitat a rebre i després d'executar-lo ha d'aparèixer a la cartera del propietari del \textit{smart contract}.
+\item \textbf{Comprovar que es poden intercanviar EGLD per token}: \textit{Snippet} ``swapEgldForToken()''. S'ha comprovat que es generen els mateixos resultats que els descrits en l'exemple de la secció \ref{subsub:dexamm}. Així mateix, s'emprarà el \textit{snippet} ``getPriceEgldToken'' per conèixer la quantitat de token que hem de rebre a la cartera.
+\item \textbf{Comprovar que es poden intercanviar token per EGLD}: \textit{Snippet} ``swapTokenForEgld()''. S'ha comprovat que es generen els mateixos resultats que els descrits en l'exemple de la secció \ref{subsub:dexamm}. Així mateix, s'emprarà el \textit{snippet} ``getPriceTokenEgld'' per conèixer la quantitat d'EGLD que hem de rebre a la cartera.
 \end{itemize}
 
 \begin{figure}[!htb]
@@ -1002,87 +1029,88 @@ S'han executat els següents \textbf{snippets} per validar el contracte intel·l
 	\caption{Execució de proves per afegir un fons de liquiditat.}
 \end{figure}
 
-Finalment, Elrond disposa d'una eina anomenada \textbf{Mandos i} d'una \textbf{testnet} (local), que permeten \textbf{automatitzar les proves} en un entorn controlat (\cite{elrond2022}, seccions ``\textit{Mandos tests reference}'' i  ``\textit{Setup a Local Testnet}''). A part de per una qüestió merament de temps (són eines específiques que requereixen un temps d'aprenentatge i no podia abarcar-ho tot), per l'objectiu de posar a prova el rediment de la xarxa Elrond he triat realitzar les proves directament a la devnet amb els \textit{snippets}. Com s'ha dit, els test de rendiment es faran en aquesta xarxa.
+Finalment, Elrond disposa d'una eina anomenada \textbf{Mandos} i d'una \textbf{testnet} (local), que permeten \textbf{automatitzar les proves} en un entorn controlat (\cite{elrond2022}, seccions ``\textit{Mandos tests reference}'' i  ``\textit{Setup a Local Testnet}''). A part de per una qüestió merament de temps (són eines específiques que requereixen un temps d'aprenentatge i no podia abastar-ho tot), per l'objectiu de posar a prova el rediment de la xarxa Elrond he triat realitzar les proves directament a la devnet amb els \textit{snippets} (m'ha donat certa experiència de camp amb l'eina). 
 
-\subsubsection{Sobre la dApp}
-S'han comprovar manualment els casos d'ús descrits en la secció \label{subsub:casosdus} a la dAPP.
+\subsubsection{Sobre la DApp}
+S'han comprovat manualment els casos d'ús descrits en la secció \ref{subsub:casosdus}:.
 \begin{enumerate}
-\item S'ha afegit liquiditat: En la finestra que apareix en l'opció ``Fund'' en la llista desplegable apareixen els \textit{tokens} disponibles als moneder de l'usuari que ha accedit a testDEX (Fig. \ref{fig:imp-liqpools2}). El fons quan estigui definit no se li podrà afegir més quantitat d'actius. En qualsevol cas, si es tria el token que defineix el fons apareixerà la quantitat d'actius que té assignat (Fig. \ref{fig:imp-liqpools1}).
-\item S'han realitzat \textit{swap} confirmant que els resultats coindideixen amb l'anàlisi teòric fet a la secció \ref{subsub:dexamm}. En la figura \ref{} es poden comprovar que coincideixen preus calculats, valors transferits i beneficis obtinguts.
-\item S'han recuperat beneficis i fons. En la Fig. \ref{fig:imp-fons} es pot veure l'estat inicial del fons i com queda després de reclamar els beneficis i els fons en sí mateixos.
-\item En totes les finestres de la dApp es mostraran les transaccions relacionades. Filtro les transaccions segons els mètodes del contracte intel·ligent trucats.
+\item S'ha afegit liquiditat. En la finestra que apareix en l'opció ``Fund'' en la llista desplegable apareixen els \textit{tokens} disponibles al moneder de l'usuari que ha accedit a testDEX (Fig. \ref{fig:imp-liqpools2}). Al fons, quan estigui definit, no se li podrà afegir més quantitat d'actius. En qualsevol cas, si es tria el token que defineix el fons ha d'aparèixer la quantitat d'actius que té assignat (Fig. \ref{fig:imp-liqpools1}).
+\item S'han realitzat \textit{swaps} confirmant que els resultats coincideixen amb l'anàlisi teòric fet a la secció \ref{subsub:dexamm}. En la Fig. \ref{fig:swaptests} es pot comprovar que coincideixen preus calculats, valors transferits i beneficis obtinguts.
+\item S'han recuperat beneficis i fons. En la Fig. \ref{fig:imp-fons} es pot veure l'estat inicial del fons i com queda després de reclamar els beneficis i els fons en si mateixos.
+\item En totes les finestres de la DApp es mostraran les transaccions relacionades. Filtro les transaccions segons els mètodes del contracte intel·ligent trucats. S'ha comprovat el correcte funcionament.
 \end{enumerate}
 
+Òbviament s'han emprat també els \textit{snippets} de l'apartat anterior per confirmar els resultats. M'hauria agradat automatitzar el procés de proves amb algun \textit{framework} de React però no he tingut temps material per formar-me.
+
+\clearpage
+
 \begin{figure}[!htb]
-	\begin{subfigure}[b]{0.47\textwidth}
+	\begin{subfigure}[b]{0.42\textwidth}
 	  \includegraphics[width=\linewidth]{imp-liqpools1.png}
 	  \caption{Estat del fons ABC-xEGLD.}\label{fig:imp-liqpools1}
 	\end{subfigure}\hfill
-	\begin{subfigure}[b]{0.47\textwidth}
+	\begin{subfigure}[b]{0.42\textwidth}
 	  \includegraphics[width=\linewidth]{imp-liqpools2.png}
 	  \caption{\textit{Tokens} al \textit{wallet} del client.}\label{fig:imp-liqpools2}
 	\end{subfigure}\hfill
-	\caption{Fons de liquidesa creats.}
+	\caption{Fons de liquiditat creats.}
 \end{figure}
 
 \begin{figure}[!htb]
-	\begin{subfigure}[b]{0.32\textwidth}
-	  \includegraphics[width=\linewidth]{imp-fons1.png}
-	  \caption{Abans de reclamar.}\label{fig:imp-fons1}
-	\end{subfigure}\hfill
-	\begin{subfigure}[b]{0.32\textwidth}
-	  \includegraphics[width=\linewidth]{imp-fons2.png}
-	  \caption{Després de reclamar beneficis.}\label{fig:imp-fons2}
-	\end{subfigure}\hfill
-	\begin{subfigure}[b]{0.32\textwidth}
-	  \includegraphics[width=\linewidth]{imp-fons3.png}
-	  \caption{Després de reclamar el fons.}\label{fig:imp-fons3}
-	\end{subfigure}\hfill
-	\caption{Recuperació de fons de liquidesa i beneficis generats.}
-	\label{fig:imp-fons}
-\end{figure}
-
-\begin{figure}[!htb]
-	\begin{subfigure}[b]{0.47\textwidth}
+	\begin{subfigure}[b]{0.42\textwidth}
 	  \includegraphics[width=\linewidth]{imp-price1.png}
 	  \caption{Preu d'un xEGLD front a UOC.}\label{fig:imp-price1}
 	\end{subfigure}\hfill
-	\begin{subfigure}[b]{0.47\textwidth}
+	\begin{subfigure}[b]{0.42\textwidth}
 	  \includegraphics[width=\linewidth]{imp-price2.png}
-	  \caption{Resultat de \textit{swap} d'un xEGLD per UOC.}\label{fig:imp-price2}
+	  \caption{\textit{Swap} d'un xEGLD per UOC.}\label{fig:imp-price2}
 	\end{subfigure}\hfill
-	\begin{subfigure}[b]{0.47\textwidth}
+	\begin{subfigure}[b]{0.42\textwidth}
 	  \includegraphics[width=\linewidth]{imp-price3.png}
-	  \caption{Preu de mill xEGLD front a xEGLD.}\label{fig:imp-price3}
+	  \caption{Preu de mil xEGLD front a xEGLD.}\label{fig:imp-price3}
 	\end{subfigure}\hfill
-	\begin{subfigure}[b]{0.47\textwidth}
+	\begin{subfigure}[b]{0.42\textwidth}
 	  \includegraphics[width=\linewidth]{imp-price4.png}
 	  \caption{Beneficis després de fer un \textit{swap} d'un xEGLD per UOC i seguit de 1000 UOC per xEGLD.}\label{fig:imp-price4}
 	\end{subfigure}\hfill
 	\caption{\textit{Swaps} realitzats segons allò descrit en la secció \ref{subsub:dexamm}.}
+	\label{fig:swaptests}
 \end{figure}
 
-Un darrer comentari és que he decidit no limitar els nombres que l'usuari pot introduir als quadres de text amb les quantitats. Així es pot provar el comportament del contracte intel·ligent en casos extrems.
-
-M'hagués agradat automatitzar el procediment de proves amb algun \textit{framework} de React però no he tingut temps material per formar-me.
+\begin{figure}[!htb]
+	\begin{subfigure}[b]{0.3\textwidth}
+	  \includegraphics[width=\linewidth]{imp-fons1.png}
+	  \caption{Abans de reclamar.}\label{fig:imp-fons1}
+	\end{subfigure}\hfill
+	\begin{subfigure}[b]{0.3\textwidth}
+	  \includegraphics[width=\linewidth]{imp-fons2.png}
+	  \caption{Després de reclamar beneficis.}\label{fig:imp-fons2}
+	\end{subfigure}\hfill
+	\begin{subfigure}[b]{0.3\textwidth}
+	  \includegraphics[width=\linewidth]{imp-fons3.png}
+	  \caption{Després de reclamar el fons.}\label{fig:imp-fons3}
+	\end{subfigure}\hfill
+	\caption{Recuperació de fons de liquiditat i beneficis generats.}
+	\label{fig:imp-fons}
+\end{figure}
 
 \subsubsection{Sobre el rendiment de la \textit{devnet} d'Elrond}
-Un dels objectius del present treball era definir proves per comprovar les característiques de la xarxa Elrond. Per altra banda, en la secció \ref{sec:revelrond} s'ha fet una revisió de la tecnologia d'Elrond, en la \ref{sub:xarxes} s'han comentat les característiques bàsiques de la \textit{devnet}, en la \ref{subsub:arq} l'arquitectura de testDEX i en la \ref{imp:aspectes} les diferents formes en què ens hem comunicat a la \textit{blockchain}. Amb la intenció de mesurar el temps que triga en realitzar les peticions s'ha realitzat un script en Python (que com he dit es troba en el repositori TFM\_stats).
+Un dels objectius del present treball és definir proves per comprovar les característiques de la xarxa Elrond. En la secció \ref{sub:xarxes} s'han comentat les característiques bàsiques de la \textit{devnet}, en la \ref{subsub:arq} l'arquitectura de testDEX i en la \ref{imp:aspectes} les diferents formes en què ens hem comunicat a la \textit{blockchain}. Tenint en compte tot això, amb la intenció de mesurar el temps que triga a realitzar les peticions s'ha realitzat un \textit{script} en Python, que com he dit es troba en el repositori TFM\_stats.
 
-Amb tot això, les transaccions per minut pot ser un bon indicador per valorar el rendiment de la devnet. Com s'ha vist, si el moneder que envia la transacció es troba la mateix s\textit{hard} que el contracte intel·ligent la transacció serà molt més ràpida que si es troba en un altre \textit{shard}. Des de Python he trobat una solució per enviar transaccions en bloc, però per recuperar-les no he trobat forma de disparar automàticament una funció que tracti la resposta. Ho he implementat amb un bucle que demana les dades de les transaccions segons el seu \textit{hash} a l'API d'Elrond fins que totes tenen l'estat a ``\textit{success}''. Això s'ha de tenir en compte perquè els resultats que es mostren per aquest motiu tenen un retard afegit.
+Les transaccions per unitat de temps poden ser un bon indicador per valorar el rendiment de la devnet. Com s'ha vist, si el moneder que envia la transacció es troba al mateix s\textit{hard} que el contracte intel·ligent la transacció serà més ràpida que si es troba en un altre \textit{shard}. Des de Python he trobat una solució per enviar transaccions en bloc, però per recuperar-les no he trobat forma de disparar automàticament una funció que tracti la resposta. Ho he implementat amb un bucle que demana les dades de les transaccions segons el seu \textit{hash} a l'API d'Elrond fins que totes tenen l'estat a ``\textit{success}''. Això s'ha de tenir en compte perquè els resultats que es mostren, per aquest motiu, tenen un retard afegit.
 
-El que fa el \textit{script} és enviar una transacció que truca el mètode del contracte intel·ligent ``addLiquidityEgld'' i passant-li com a paràmetre ``ABC-109739''. A més la transacció enviarà un valor de 0.01 xEGLD. Amb això el que estem fent és fundar amb xEGLD el fons ABC-xEGLD. En la Fig. \ref{fig:send5trans} es veu un exemple d'execució per a un total de 5 transaccions (5 transaccions executades en 2,896 segons).
+El que fa el \textit{script} és enviar un conjunt de transaccions que trucaran el mètode del contracte intel·ligent ``addLiquidityEgld'' passant-li com a paràmetre ``ABC-109739'' (un \textit{token} creat per mi). A més cada transacció transportarà un valor de 0,01 xEGLD. Amb això el que estem fent és fundar amb xEGLD el fons ABC-xEGLD. En la Fig. \ref{fig:send5trans} es veu un exemple d'execució per a un total de 5 transaccions\footnote{En el codi font han d'estar definits \({NUM\_TRANS=5}\) i \({PEM={'\texttildelow/wallet/wallet3.pem'}}\).} (5 transaccions executades en 2,896 segons).
 
-La prova ``bona'' la faré enviant 1000 transaccions. Això implica que s'enviaran 10 xEGLD al fons. En la Fig. \ref{fig:send1000trans} es pot observar l'estat del fons abans i després de l'execució i en la Fig. \ref{fig:send1000trans2} el resultat (1000 transaccions en 3 minuts i 40 segons).	
+Provant d'enviar un nombre més considerable de transaccions, m'he adonat que a partir de les 2500 transaccions el \textit{script} falla. Però per a 2000 ha obtingut que s'han realitzat en 7 minuts i 7 segons\footnote{En el codi font han d'estar definits \({NUM\_TRANS=2000}\) i \({PEM={'\texttildelow/wallet/wallet3.pem'}}\).}. S'ha de remarcar que això implica que s'han enviat 20 xEGLD al fons remartits entre 2000 transaccions (0.01 xEGLD/transacció). En la Fig. \ref{fig:send2000trans1} es pot veure una captura del resultat.	
 
-A partir de les 2500 transaccions el \textit{script} falla, però per a 2000 ha donat el resultat de realitzades en 7 minuts i 7 segons (Fig. \ref{fig:send2000trans1}).
+Una altra prova obligada és fer les transaccions amb un moneder que es trobi en un altre \textit{shard}. Com que no serà el propietari del contracte intel·ligent, aquest respondrà que no pot fundar el fons. Això implica que la màquina virtual no executarà pràcticament codi. Per aquest motiu, he tornat a llançar el test amb un \textit{wallet} que no és propietari del contracte intel·ligent, però que es troba al mateix \textit{shard} (després ho provaré també amb un fragment diferent). En aquest darrer cas, per a 5 transaccions (Fig. \ref{fig:send5transnotowner}) ha trigat 1 segon (1852 ms) i per a 2000 ha tardat 7 minuts i 3 segons (Fig. \ref{fig:send2000transnotowner}).\footnote{En el codi font han d'estar definits \({NUM\_TRANS=5}\) o \({NUM\_TRANS=2000}\) i \({PEM={'\texttildelow/wallet/wallet1.pem'}}\).}
 
-Una darrera prova és fer la transacció amb un moneder que es trobi en un altre \textit{shard}. Com que no serà el propietari del contracte intel·ligent, aquest respondrà que no pot fundar el fons. Això implica que la màquina virtual no executarà pràcticament codi. Per aquest motiu he tornat a llançat el test amb un wallet que no es propietari del contracte intel·ligent però que es troba al mateix \textit{shard}, per a 5 transaccions (Fig. \ref{fig:send5transnotowner}) ha trigat 1 segond (1852 ms) i per a 2000 ha tardat 7 miunts i 3 segons (Fig. \ref{fig:send2000transnotowner}).
+Dit tot això, la prova ja des d'un compte que no és propietari del contracte i que no es troba al mateix \textit{shard} ha trigat 31 segons per a 5 transaccions (Fig. \ref{fig:send5transnotownerothershards}) i per a 2000 transaccions 7 minuts i 31 segons (Fig. \ref{fig:send2000transnotownerothershards}).\footnote{En el codi font han d'estar definits \({NUM\_TRANS=5}\) o \({NUM\_TRANS=2000}\) i \({PEM={'\texttildelow/wallet/wallet2.pem'}}\).}
 
-Dit tot això, la prova ja des d'un compte que no es propietari del contracte i que no es troba al mateix \textit{shards} ha trigat 31 segons per a 5 transaccions (Fig. \ref{fig:send5transnotownerothershards}) i per a 2000 transaccions 7 minuts i 31 segons (Fig. \ref{fig:send2000transnotownerothershards}).
+Totalitzant aquestes dades en una taula:
 
 \begin{tabularx}{0.8\textwidth} { 
-  | >{\raggedright\arraybackslash}X 
+  | >{\raggedleft\arraybackslash}X 
   | >{\centering\arraybackslash}X
   | >{\centering\arraybackslash}X
   | >{\centering\arraybackslash}X 
@@ -1091,8 +1119,6 @@ Dit tot això, la prova ja des d'un compte que no es propietari del contracte i 
  \textbf{Núm. trans.} & \textit{\textbf{Shard}} & \textit{\textbf{Owner}} & \textbf{Figura} & \textbf{Temps (ms)} \\
  \hline
  5  & 0 & sí  & \ref{fig:send5trans} & 2151  \\
- \hline
- 1000  & 0 & sí  & \ref{fig:send1000trans3} & 220959  \\
  \hline
  2000  & 0 & sí  & \ref{fig:send2000trans1} & 427788  \\
  \hline
@@ -1106,26 +1132,21 @@ Dit tot això, la prova ja des d'un compte que no es propietari del contracte i 
  \hline
 \end{tabularx}
 
+És molt petita la mostra per extreure conclusions fermes, però veiem que quan s'augmenta el nombre de transaccions enviades el temps que triga en els diferents casos convergeix. Amb 2000 transaccions el cas d'un remitent que no és propietari del \textit{smart contract} i que es troba en un altre \textit{shard} és només entorn d'un 5\% més lent. Tot això fa pensar que \textbf{l'arquitectura en \textit{shards} és eficient}. També s'ha de destacar, com s'ha dit en la secció \ref{sub:xarxes}, que la devnet té només 300 nodes validadors, enfront de la testnet i la mainnet que en tenen 3000. Per sortir de dubtes, he desplegat el contracte intel·ligent a la testnet amb:
+\begin{lstlisting}[
+    basicstyle=\footnotesize,
+]
+erdpy contract deploy --pem="~/wallet/wallet3.pem" \
+  --recall-nonce --gas-limit=100000000 --project=. \
+  --proxy="https://testnet-gateway.elrond.com" \
+  --chain="T" --arguments 0x05 --send
+\end{lstlisting}
+
+I he tornat a fer la prova amb 2000 transaccions\footnote{En el codi font han d'estar ha d'estar definit \({NUM\_TRANS=2000}\), \({PEM={'\texttildelow/wallet/wallet3.pem'}}\), \({CHAIN\_ID={'T'}}\) i \(CONTRACT\_ADDRESS={'erd1qqqqqqqqqqqqqpgqs3mnl4qnqrenzmaezf72vzeg5snpe9p0sn2qveucs5'}\).}. Sorprenetment, s'han executat en 8 minuts i 56 segons (536538 ms). Es pot veure una captura en la Fig. \ref{fig:sendtesnet}.
 \begin{figure}[h]
 \includegraphics[width=0.99\textwidth]{send5trans.png}
 \centering
 \caption{Resultat del \textit{script} de Python executat per a 5 transaccions.}\label{fig:send5trans}
-\end{figure} 
-
-\begin{figure}[!htb]
-	\begin{subfigure}[b]{0.47\textwidth}
-	  \includegraphics[width=\linewidth]{send1000trans1.png}
-	\end{subfigure}\hfill
-	\begin{subfigure}[b]{0.47\textwidth}
-	  \includegraphics[width=\linewidth]{send1000trans2.png}
-	\end{subfigure}\hfill
-	\caption{Fons de liquidesa ABC-xEGLD abans i després d'executar el \textit{script}.}\label{fig:send1000trans}
-\end{figure}
-
-\begin{figure}[h]
-\includegraphics[width=0.99\textwidth]{send1000trans3.png}
-\centering
-\caption{Resultat del \textit{script} de Python executat per a 1000 transaccions (es mostren només els darrer \textit{hashes}).}\label{fig:send1000trans3}
 \end{figure} 
 
 \begin{figure}[h]
@@ -1158,52 +1179,84 @@ Dit tot això, la prova ja des d'un compte que no es propietari del contracte i 
 \caption{Resultat del \textit{script} de Python executat per a 2000 transaccions amb un remitent que no és el propietari del \textit{smart contract} i que a més no es troba al mateix \textit{shard}.}\label{fig:send2000transnotownerothershards}
 \end{figure} 
 
+\begin{figure}[h]
+\includegraphics[width=0.99\textwidth]{sendtestnet.png}
+\centering
+\caption{Resultat del \textit{script} de Python executat per a 2000 transaccions em a testnet.}\label{fig:sendtesnet}
+\end{figure} 
+
 \clearpage
 
-\section{Conclusions}
-Deu n'hi do per arribar fins aquí. Era allunyat de la programació de fa més de 10 anys hi ha estat un camí de pedres (en gran part perquè m'he tornat un cotxer rovellat). Tampoc tenia gaire idea de \textit{blockchain} (no he cursat l'assignatura). En qualsevol cas, que hagi pogut finalitzar el present treball és bona mostra de què \textbf{l'entorn d'Elrond és força amigable per al programador} (punt important per a la seva adopció). Elrond ha avançat molt ràpid i, tot i que han desenvolupat molts de continguts per a aprendre la seva tecnologia, podrien estar millor (sobretot he trobat a faltar exemples amb codif font executable del que es comenta a \cite{elrond2022}). Com que és un projecte novedós, no trobes gaire codi a Github, no hi ha cap curs a Udemy o altres plataformes i un llarg etcètera de punts on Ethereum guanya de llarg. Per contra, basta provar testDEX, veus que les transaccions van força més ràpides que a Ethereum.
+\section{Conclusions}\label{sec:con}
+Déu-n'hi-do per arribar fins aquí. Era allunyat de la programació de fa més de deu anys i ha estat un camí pedregós. Tampoc tenia gaire idea de \textit{blockchain} (no he cursat l'assignatura). En qualsevol cas, que hagi pogut finalitzar el present treball és bona mostra de què \textbf{l'entorn d'Elrond és força amigable per al programador} (punt important per a la seva adopció). Aquesta companyia ha avançat molt ràpidament i, tot i que han desenvolupat molts de continguts per a aprendre la seva tecnologia, podrien estar millor (sobretot penso que falten exemples amb codi font executable del que s'explica a \cite{elrond2022}). Com que és un projecte relativament recent, no trobes gaire codi a Github, no hi ha cap curs a Udemy o altres plataformes (Ethereum té una gran comunitat de desenvolupadors i molt de material disponible). Per contra, simplement provant testDEX, veus que \textbf{les transaccions van força més ràpid que amb Ethereum}. Diferents fonts --com \cite{mincub2019-2} o \cite{everstake2020}-- parlem de més de 10000 TPS. Imagino que els meus resultats són més discrets en fer proves en una xarxa configurada amb només 3 \textit{shards}\footnote{``\textit{Testnet exceeded 12k TPS with only 5 shards and 65k with 20 shards} [...]'' (\cite{paradigm2019}). }, per la penalització en temps induïda per la meva implementació i per les eines emprades (que possiblement són limitades).
 
-Penso que el present treball revisa la tecnologia d'Elrond amb un mínim de rigor acadèmic, que s'ha realitzat un exemple pràctic (molt millorable per la meva inexperiència com a programador) i que s'ha provat mínimament el funcionament de la xarxa Elrond. Deu ser un dels primers, no només en català, sinó que també en altres idiomes. En la secció \ref{sub:objectius} no he citat el meu objectiu personal, que era bàsicament aprendre. Penso que això sí que s'ha assolit al 150\%.
+Penso que el present treball revisa la tecnologia d'Elrond amb un mínim de rigor acadèmic, que s'ha realitzat un exemple pràctic (molt millorable per la meva inexperiència com a programador) i que s'ha comprovat el funcionament de la xarxa Elrond d'una forma molt bàsica. Per altra banda, aquest treball possiblement sigui un dels primers en llengua catalana emprant aquesta tecnologia. En la secció \ref{sub:objectius} no he citat el meu objectiu personal, que era bàsicament aprendre. Penso que això sí que s'ha assolit al 150\%.
 
-Com a crítica personal, la meva falta de coneixements i d'experiència en el desenvolupament de programari ha fet que em deviï uns quants dies. Inicialment, en el diseny vaig plasmar que volia fer també un gràfic sobre l'evolució dels preus però faig haver de retallar el projecte un poc per falta de temps (he de dir que n'he dedicat més del que esperava). Sí que ara tinc clara una línia de formació que he de seguir per suplir les meves carències. El meu perfil és més de sistemes i de sistemes gestors de bases de dades, però m'està fascinant el món de les cadenes de blocs.
+Com a \textbf{crítica personal}, la meva falta de coneixements i d'experiència en el desenvolupament de programari ha fet que em desviï uns quants dies en la planificació prevista. Inicialment, en el disseny vaig plasmar que volia fer també un gràfic sobre l'evolució dels preus, però vaig haver de retallar el projecte un poc per falta de temps (he de dir que he hagut de dedicar-ne més del que esperava). També el \textit{script} en Python es podria haver parametritzat i haver fet més genèric (sé que són unes poques hores de feina). O ha faltat emprar alguna bona metodologia per fer proves mentre s'implementava la DApp. En definitiva, em quedo amb un regust agredolç.
 
-comentar tema menys nodes devnet comparat a testnet/producció
+Com a \textbf{línies de treball futures}, parlant a títol personal, ara tinc clara una línia de formació que he de seguir per suplir les meves carències. El meu perfil és més de sistemes i de sistemes gestors de bases de dades, però m'està fascinant el món de les cadenes de blocs. Vull formar-me en React i Rust i refer tot el codi (o tal vegada fer-ne un de nou relacionat amb NFT). Pel que fa a potencials futurs treballs de final de grau o de màster, la part d'estudi del rendiment en TPS és un bon filó per explotar (tot i que penso que sense la col·laboració de l'equip d'Elrond en algunes coses pot ser complicat). Tampoc no s'ha fet cap estudi de les despeses que duen associades les transaccions (punt on Elrond és també superior a Ethereum \cite{paradigm2019} \cite{everstake2020}). Per altra banda, penso que la meva idea original de fer un bon material didàctic amb exemples per aprendre a desenvolupar en la tecnologia Elrond seria força interessant (per la falta de material en general). Finalment, els problemes exposats per a la constant \(k\) donen per a una bona revisió bibliogràfica sobre el tema (com \cite{zhang2018}).
 
-Como línies de treball futures vull formar-me en React i Rust i refer tot el codi (o tal vegada fer-ne un de nou relacionat amb NFT). La part d'estudi del rendiment és també només una pinzellada, i podria també formar-me per intentar realitzar auditories de sistemes de \textit{blockchain}. En allò referent a potencials treballs de fi de grau o de màster, ara que ho he tocat, penso que la meva idea original de fer un bon material didàctic amb exemples per aprendre a desenvolupar en la tecnologia Elrond penso que seria força interessant (i molta gent ho agrairia).
+La meva \textbf{conclusió final}, dins de la meva humil opinió de neòfit en el món del \textit{blockchain}, és que tenint en compte l'eficiència de la xarxa, la limitació en el cost de les transaccions i el maquinari genèric que es necessita per poder posar en producció un node de la xarxa\footnote{Aquest punt pot ser controvertit per la quantitat d'EGLD que s'ha de mantenir en \textit{staking} (en l'hipotètic escenari que pugi molt de preu).}, la tecnologia d'\textbf{Elrond és encara infravalorada}.
 
-La meva conclusió final, dins de la meva humil ignorància de nouvingut al camp, és que la xarxa Elrond està encara infravalorada.
+\newpage 
 
+
+\section{Glossari}\label{sec:glo}
 \begin{itemize}
-\item 
-\end{itemize}
-
- 
-``Este capítulo tiene que incluir:
-\begin{itemize}
-\item Una descripción de las conclusiones del trabajo: Qué lecciones se han aprendido del trabajo?.
-\item Una reflexión crítica sobre el logro de los objetivos planteados inicialmente: Hemos logrado todos los objetivos? Si la respuesta es negativa, por qué motivo? 
-\item Un análisis crítico del seguimiento de la planificación y metodología a lo largo del producto: Se ha seguido la planificación? La metodología prevista ha sido la adecuada? Ha habido que introducir cambios para garantizar el éxito del trabajo? Por qué? 
-\item Las líneas de trabajo futuro que no se han podido explorar en este trabajo y han quedado pendientes.''
+\item \textbf{AMM (\textit{Automated Market Makers})}: Protocol que determina automàticament els preus d'un parell d'actius que conformen un fons de liquiditat.
+\item \textbf{\textit{Blockchain} (cadena de blocs)}: Base de dades distribuïda de comptabilitat que es comparteix entre els nodes d'una xarxa informàtica sense una autoritat central que els gestioni.
+\item \textbf{DApp (\textit{Decentralized Application})}: És una aplicació que funciona sense la necessitat de servidors centrals (gràcies a la tecnologia \textit{blockchain}).
+\item \textbf{DEX (\textit{Decentralized EXchange})}: Mercat d'igual a igual on les transaccions es produeixen directament entre els usuaris sense la intervenció de cap autoritat de control central.
+\item \textbf{PoW (\textit{Proof of Work})}: És un protocol de consens en sistemes descentralitzats que per verificar els blocs i les transaccions requereix els membres de la xarxa que resolguin un problema matemàtic arbitrari que duu associat un càlcul considerable, evitant així que ningú utilitzi de forma il·lícita el sistema.
+\item \textbf{PoS (\textit{Proof of Stake})}: Alternativa a PoW que redueix la potència de càlcul associada per verificar els blocs i les transaccions gràcies a un algoritme de consens amb la participació de nodes validadors que han d'aportar criptoactius com a fiança (\textit{stake}).
+\item \textbf{\textit{Smart contract}}: Contracte emmagatzemat en una \textit{blockchain} que permet l'execució automàtica de certs termes acordats gràcies a un programa informàtic.
+\item \textbf{\textit{Token}}: Unitat de valor fonamentada en la criptografia i \textit{blockchain}.
 \end{itemize}
 
 \newpage 
 
 
-\section{Glossari}
-``Definición de los términos y acrónimos más relevantes utilizados dentro de la Memoria.''
-\newpage 
-
-
-\section{Bibliografia}
+\section{Bibliografia}\label{sec:bib}
 \bibliographystyle{IEEEtran}
 \bibliography{IEEEabrv,sources}
 
 \newpage 
 
 
-\section{Annexos}
-``Listado de apartados que son demasiado extensos para incluir dentro de la memoria y tienen un carácter autocontienido (por ejemplo, manuales de usuario, manuales de instalación, etc.) 
+\section{Annexos}\label{sec:ann}
+\subsection{Breu manual d'usuari de testDEX}\label{sub:manual}
+\subsubsection{Introducció}
+L'aplicació bàsicament té dos perfils d'usuari:
+\begin{itemize}
+\item Propietari del contracte intel·ligent: Podrà accedir a totes les opcions del menú.
+\item Resta d'usuaris de la xarxa Elrond: Podran accedir només a l'opció ``Trading''.
+\end{itemize}
 
-Dependiente del tipo de trabajo, es posible que no haya que añadir ningún anexo.''
+\subsubsection{Opció ``Fund''}
+Permet el propietari del contracte intel·ligent fundar un \textit{liquidity pool}. En la llista desplegable ``Select token'' li apareixeran els diferents tokens ESDT disponibles en la seva cartera. Es triarà un d'aquests tokens (``Select token'') i se li afegirà una quantitat determinada del mateix (``Amount token'') i una altra quantitat de xEGLD (``Amount EGLD''). Una vegada fundat el fons no se li podem afegir més actius (a no ser que es reclami i es torni a fundar). Quan se seleccioni un token es mostraran la quantitat d'actius pels quals està format (camps ``Already funded'').
+\begin{figure}[h]
+\includegraphics[width=0.6\textwidth]{manualfund.png}
+\centering
+\caption{Opció ``Fund'' a testDEX.}\label{fig:manualfund}
+\end{figure} 
+
+\subsubsection{Opció ``Claim''}
+Permet el propietari del contracte intel·ligent recuperar els fons de liquiditat o bé els seus beneficis. Basta triar un \textit{token} de la llista desplegable (``Select pair'') i prémer el botó ``Claim earnings'' o bé ``Claim pool'' (es mostraran només els \textit{pools} disponibles en el \textit{smart contract}). S'ha de destacar que quan es recuperin els beneficis d'un \textit{pool} es recuperarà el xEGLD de tots (no només del parell definit pel \textbf{token} seleccionat). Quan se seleccioni un token es mostraran la quantitat d'actius pels quals està format el fons i els beneficis disponibles (camps ``Pool available'' i camp ``Earnings available'').
+
+\begin{figure}[h]
+\includegraphics[width=0.6\textwidth]{manualclaim.png}
+\centering
+\caption{Opció ``Claim'' a testDEX.}\label{fig:manualclaim}
+\end{figure} 
+
+\subsubsection{Opció ``Trade''}
+En la llista desplegable es podran seleccionar els parells disponibles en el contracte intel·ligent per fer \textit{trading}. Quan es triï un parell es mostraran les quantitats dels actius disponibles en el \textit{pool} i en el moneder de l'usuari (camps ``Pool (amount available)'' i ``Your wallet (amount available)''). En introduir una quantitat (``Amount''), es calcularà automàticament tant el preu de compra com el de venda (camps ``Buy'' i ``Sell'').
+
+Un darrer comentari és que no s'ha limitat l'entrada de nombres que l'usuari pot introduir al quadre de text amb la quantitat. Així es pot provar el comportament del contracte intel·ligent en casos extrems.
+\begin{figure}[h]
+\includegraphics[width=0.6\textwidth]{manualtrade.png}
+\centering
+\caption{Opció ``Claim'' a testDEX.}\label{fig:manualtrade}
+\end{figure} 
 
 \end{document}
