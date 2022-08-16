@@ -9,3 +9,5 @@ The thesis is written in catalan. I compile it using Texmaker (Ubuntu). If you g
 ```
 sudo apt install texlive-publishers
 ```
+
+The thesis was finally [published in the college website](https://openaccess.uoc.edu/handle/10609/146212)
